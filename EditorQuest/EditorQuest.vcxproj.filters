@@ -24,6 +24,9 @@
     <ClCompile Include="Jogo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Janela.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">

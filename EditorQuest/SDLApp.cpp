@@ -37,9 +37,13 @@ int SDLApp::Executar(){
 		while(SDL_PollEvent(&event) != 0)
 		{
 			if(event.type == SDL_QUIT)
-			{
 				sair = true;
-			}
+			if(event.key.keysym.sym == SDLK_ESCAPE)
+				sair = true;
+			if(event.key.keysym.sym == SDLK_KP_7)
+				janela->SetaPosicao(0, 0);
+			if(event.key.keysym.sym == SDLK_KP_5)
+				janela->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 		}
 
 		janela->Renderizar();

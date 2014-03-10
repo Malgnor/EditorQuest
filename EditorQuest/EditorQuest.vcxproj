@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Jogo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SDLApp.cpp" />

@@ -1,0 +1,33 @@
+#include "Janela.h"
+
+Uint32 Janela::PegaID(){
+	return SDL_GetWindowID(window);
+}
+
+const char* Janela::PegaTitulo(){
+	return SDL_GetWindowTitle(window);
+}
+
+void Janela::PegaPosicao(int *x, int *y){
+	SDL_GetWindowPosition(window, x, y);
+}
+
+void Janela::PegaTamanho(int *w, int *h){
+	SDL_GetWindowSize(window, w, h);
+}
+
+void Janela::SetaTitulo(const char* titulo){
+	SDL_SetWindowTitle(window, titulo);
+}
+
+void Janela::SetaIcone(SDL_Surface* icone){
+	SDL_SetWindowIcon(window, icone);
+}
+
+void Janela::SetaPosicao(int x, int y){
+	SDL_SetWindowPosition(window, x, y);
+}
+
+void Janela::SetaTamanho(int w, int h){
+	SDL_SetWindowSize(window, w, h);
+}
