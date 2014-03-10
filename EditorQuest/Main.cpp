@@ -1,7 +1,8 @@
-#include <stdio.h>
+#include "SDLApp.h"
 
-int main(int argc, char* argv){
-	printf_s("Hello world!");
-	getc(stdin);
-	return 0;
+int main(int argc, char* argv[]){
+	SDLApp EditorsQuest;
+	int ret = EditorsQuest.Executar();
+	system("pause");
+	return ret;
 }
