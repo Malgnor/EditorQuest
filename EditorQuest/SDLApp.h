@@ -6,7 +6,6 @@
 
 class SDLApp{
 private:
-	Janela* janela;
 	void Inicializar();
 	void Encerrar();
 

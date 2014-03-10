@@ -1,4 +1,24 @@
 #include "Janela.h"
+#include "GerenteJanela.h"
+
+void Janela::ProcessarEventos(SDL_Event& evento){
+	if(evento.window.windowID == this->PegaID()){
+		switch (evento.window.event)
+		{
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			GJanela.SetaJanelaFocada(this);
+			break;
+		case SDL_WINDOWEVENT_CLOSE:
+			SDL_HideWindow(window);
+			GJanela.Remover(this);
+			return;
+		}
+	}
+}
+
+bool Janela::Existe(){
+	return (window != 0);
+}
 
 Uint32 Janela::PegaID(){
 	return SDL_GetWindowID(window);

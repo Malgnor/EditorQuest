@@ -10,9 +10,13 @@ protected:
 
 public:
 	virtual void Inicializar() = 0;
+	virtual void Atualizar() = 0;
 	virtual void Renderizar() = 0;
 	virtual void Encerrar() = 0;
 
+	void ProcessarEventos(SDL_Event& evento);
+
+	bool Existe();
 	Uint32 PegaID();
 	const char* PegaTitulo();
 	void PegaPosicao(int *x, int *y);

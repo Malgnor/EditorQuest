@@ -1,5 +1,6 @@
 #include "SDLApp.h"
 #include "Jogo.h"
+#include "GerenteJanela.h"
 
 SDLApp::SDLApp(){
 	this->Inicializar();
@@ -17,8 +18,10 @@ void SDLApp::Inicializar(){
 	
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-	janela = new Jogo;
-		
+	Janela* j = new Jogo;
+	j = new Jogo;
+	j->SetaTitulo("Janela");
+
 	int imgFlags = IMG_INIT_PNG;
 	IMG_Init(imgFlags);
 	TTF_Init();
@@ -40,20 +43,22 @@ int SDLApp::Executar(){
 				sair = true;
 			if(event.key.keysym.sym == SDLK_ESCAPE)
 				sair = true;
-			if(event.key.keysym.sym == SDLK_KP_7)
-				janela->SetaPosicao(0, 0);
-			if(event.key.keysym.sym == SDLK_KP_5)
-				janela->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			if(event.key.keysym.sym == SDLK_KP_7){
+				GJanela.PegaJanelaFocada()->SetaPosicao(16, 32);
+			}
+			if(event.key.keysym.sym == SDLK_KP_5){
+				GJanela.PegaJanelaFocada()->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			}
+			GJanela.ProcessarEventos(event);
 		}
-
-		janela->Renderizar();
+		GJanela.Atualizar();
+		GJanela.Renderizar();
 	}
 	return 0;
 }
 
 void SDLApp::Encerrar(){
-	delete janela;
-	janela = 0;
+	GJanela.Finalizar();
 	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();

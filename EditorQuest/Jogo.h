@@ -7,9 +7,10 @@ class Jogo : public Janela
 {
 public:
 	Jogo();
+	~Jogo();
 	virtual void Inicializar();
+	virtual void Atualizar();
 	virtual void Renderizar();
 	virtual void Encerrar();
-	~Jogo();
 };
 #endif
