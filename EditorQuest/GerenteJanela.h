@@ -13,6 +13,7 @@ private:
 	static GerenteJanela* self;
 	std::vector<Janela*> janelas;
 	Janela* janelafocada;
+	friend class Debugger;
 
 public:
 	static GerenteJanela& PegaGerenteJanela();

@@ -16,6 +16,8 @@ public:
 
 	void ProcessarEventos(SDL_Event& evento);
 
+	void Remover();
+
 	bool Existe();
 	Uint32 PegaID();
 	const char* PegaTitulo();

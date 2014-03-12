@@ -16,6 +16,11 @@ void Janela::ProcessarEventos(SDL_Event& evento){
 	}
 }
 
+void Janela::Remover(){
+	SDL_HideWindow(window);
+	GJanela.Remover(this);
+}
+
 bool Janela::Existe(){
 	return (window != 0);
 }

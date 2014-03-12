@@ -1,5 +1,6 @@
 #include "SDLApp.h"
 #include "Jogo.h"
+#include "Debugger.h"
 #include "GerenteJanela.h"
 
 SDLApp::SDLApp(){
@@ -18,10 +19,6 @@ void SDLApp::Inicializar(){
 	
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-	Janela* j = new Jogo;
-	j = new Jogo;
-	j->SetaTitulo("Janela");
-
 	int imgFlags = IMG_INIT_PNG;
 	IMG_Init(imgFlags);
 	TTF_Init();
@@ -33,6 +30,10 @@ int SDLApp::Executar(){
 		printf_s("Algum subsistema do SDL não foi inicializado.\n");
 		return 1;
 	}
+
+	new Jogo;
+	new Debugger;
+
 	bool sair = false;
 	SDL_Event event;
 	
@@ -42,12 +43,20 @@ int SDLApp::Executar(){
 			if(event.type == SDL_QUIT)
 				sair = true;
 			if(event.key.keysym.sym == SDLK_ESCAPE)
-				sair = true;
-			if(event.key.keysym.sym == SDLK_KP_7){
+				sair = true;//GJanela.PegaJanelaFocada()->Remover();
+			if(event.key.keysym.sym == SDLK_KP_7)
 				GJanela.PegaJanelaFocada()->SetaPosicao(16, 32);
-			}
-			if(event.key.keysym.sym == SDLK_KP_5){
+			if(event.key.keysym.sym == SDLK_KP_5)
 				GJanela.PegaJanelaFocada()->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			if(event.key.keysym.sym == SDLK_KP_PLUS){
+				int w,h;
+				GJanela.PegaJanelaFocada()->PegaTamanho(&w, &h);
+				GJanela.PegaJanelaFocada()->SetaTamanho(w+1, h+1);
+			}
+			if(event.key.keysym.sym == SDLK_KP_MINUS){
+				int w,h;
+				GJanela.PegaJanelaFocada()->PegaTamanho(&w, &h);
+				GJanela.PegaJanelaFocada()->SetaTamanho(w-1, h-1); 
 			}
 			GJanela.ProcessarEventos(event);
 		}

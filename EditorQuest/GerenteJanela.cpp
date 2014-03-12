@@ -35,22 +35,28 @@ void GerenteJanela::Adicionar(Janela* janela){
 void GerenteJanela::Remover(Janela* janela){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			if(j == janela)
+			if(j == janela){
 				j->Encerrar();
+				return;
+			}
 }
 
 void GerenteJanela::Remover(Uint32 id){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			if(j->PegaID() == id)
+			if(j->PegaID() == id){
 				j->Encerrar();
+				return;
+			}
 }
 
 void GerenteJanela::Remover(const char* titulo){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			if(j->PegaTitulo() == titulo)
+			if(j->PegaTitulo() == titulo){
 				j->Encerrar();
+				return;
+			}
 }
 
 void GerenteJanela::ProcessarEventos(SDL_Event& evento){

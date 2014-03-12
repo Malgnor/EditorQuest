@@ -7,4 +7,6 @@
 #include <SDL_mixer.h>
 #include <stdio.h>
 
+class Debugger;
+
 #endif

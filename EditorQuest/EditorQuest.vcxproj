@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Jogo.cpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="SDLApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Debugger.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
     <ClInclude Include="Janela.h" />
