@@ -10,11 +10,12 @@ protected:
 
 public:
 	virtual void Inicializar() = 0;
+	virtual void ProcessarEventos(SDL_Event& evento) = 0;
 	virtual void Atualizar() = 0;
 	virtual void Renderizar() = 0;
 	virtual void Encerrar() = 0;
 
-	void ProcessarEventos(SDL_Event& evento);
+	void ProcessarEventosW(SDL_Event& evento);
 
 	void Remover();
 

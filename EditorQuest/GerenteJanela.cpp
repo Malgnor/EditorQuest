@@ -59,10 +59,10 @@ void GerenteJanela::Remover(const char* titulo){
 			}
 }
 
-void GerenteJanela::ProcessarEventos(SDL_Event& evento){
+void GerenteJanela::ProcessarEventosW(SDL_Event& evento){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			j->ProcessarEventos(evento);		
+			j->ProcessarEventosW(evento);		
 }
 
 void GerenteJanela::Atualizar(){

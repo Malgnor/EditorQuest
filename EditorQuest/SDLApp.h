@@ -6,6 +6,7 @@
 
 class SDLApp{
 private:
+	Debugger* dbg;
 	void Inicializar();
 	void Encerrar();
 

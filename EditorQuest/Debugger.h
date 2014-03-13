@@ -17,6 +17,7 @@ public:
 	~Debugger();
 
 	virtual void Inicializar();
+	virtual void ProcessarEventos(SDL_Event& evento);
 	virtual void Atualizar();
 	virtual void Renderizar();
 	virtual void Encerrar();

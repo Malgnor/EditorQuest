@@ -19,6 +19,17 @@ void Jogo::Inicializar(){
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 }
 
+void Jogo::ProcessarEventos(SDL_Event& evento){	
+	if(evento.key.keysym.sym == SDLK_KP_0 && evento.key.state == SDL_RELEASED)		
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	else if(evento.key.keysym.sym == SDLK_KP_1 && evento.key.state == SDL_RELEASED)		
+		SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+	else if(evento.key.keysym.sym == SDLK_KP_2 && evento.key.state == SDL_RELEASED)		
+		SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+	else if(evento.key.keysym.sym == SDLK_KP_3 && evento.key.state == SDL_RELEASED)		
+		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+}
+
 void Jogo::Atualizar(){
 }
 

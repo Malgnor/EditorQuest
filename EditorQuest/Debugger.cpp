@@ -1,4 +1,5 @@
 #include "Debugger.h"
+#include "Jogo.h"
 #include "GerenteJanela.h"
 
 using namespace std;
@@ -20,27 +21,43 @@ void Debugger::Inicializar(){
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_Color black = {0, 0, 0};
 	txt.str("Texto");
-	fonte = TTF_OpenFont("resources/fonts/pixeab.ttf", 16);
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	texto = loadFromRenderedText(txt.str().c_str(), fonte, black, r);
-	r.x = (640 - r.w)/2;
-	r.y = 100;
+	r.x = 6;
+	r.y = 6;
+}
+
+void Debugger::ProcessarEventos(SDL_Event& evento){
+	if(evento.key.keysym.sym == SDLK_KP_PLUS && evento.key.state == SDL_RELEASED)
+		new Jogo;
+	if(evento.type == SDL_MOUSEWHEEL)
+		r.y += evento.wheel.y*10;
 }
 
 void Debugger::Atualizar(){
 	SDL_Color black = {0, 0, 0};
+	int x, y;
 	stringstream ntxt;
 	ntxt.str("");
 	ntxt << "Janelas ativas: " << GJanela.janelas.size() << endl;
 	if(!GJanela.janelas.empty())
-		for(Janela* j: GJanela.janelas)
-			ntxt << "Janela ID: " << j->PegaID() << "\tTitulo: " << j->PegaTitulo() << endl;
+		for(Janela* j: GJanela.janelas){
+			j->PegaPosicao(&x, &y);
+			ntxt << "Janela ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
+			j->PegaTamanho(&x, &y);
+			ntxt << x << ", " << y << ") Foco: " << ((GJanela.PegaJanelaFocada() == j) ? "V" : "F") << endl;
+		}
 	if(ntxt.str() != txt.str()){
 		txt.str(ntxt.str());
 		SDL_DestroyTexture(texto);
 		texto = loadFromRenderedText(txt.str().c_str(), fonte, black, r);
-		r.x = (640 - r.w)/2;
 	}
-	
+	/*
+	ntxt.str("");
+	SDL_GetMouseState(&x, &y);
+	ntxt << "Debugger (" << x << "," << y << ")";
+	this->SetaTitulo(ntxt.str().c_str());
+	*/
 }
 
 void Debugger::Renderizar(){
@@ -67,7 +84,7 @@ SDL_Texture* Debugger::loadFromRenderedText(const char *textureText, TTF_Font *f
 
 	SDL_Texture *texture;
 
-	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 640, 480, 32, rmask, gmask, bmask, amask);
+	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 2048, 2048, 32, rmask, gmask, bmask, amask);
 	SDL_Surface* tmpSurface = 0;
 	SDL_Rect dest;
 	dest.x = 0;

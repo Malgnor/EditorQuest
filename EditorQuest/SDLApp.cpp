@@ -32,7 +32,7 @@ int SDLApp::Executar(){
 	}
 
 	new Jogo;
-	new Debugger;
+	dbg = new Debugger;
 
 	bool sair = false;
 	SDL_Event event;
@@ -42,23 +42,16 @@ int SDLApp::Executar(){
 		{
 			if(event.type == SDL_QUIT)
 				sair = true;
-			if(event.key.keysym.sym == SDLK_ESCAPE)
-				sair = true;//GJanela.PegaJanelaFocada()->Remover();
+			else if(event.type == SDL_WINDOWEVENT)				
+				GJanela.ProcessarEventosW(event);
+			else
+				GJanela.PegaJanelaFocada()->ProcessarEventos(event);
+			/*
 			if(event.key.keysym.sym == SDLK_KP_7)
 				GJanela.PegaJanelaFocada()->SetaPosicao(16, 32);
 			if(event.key.keysym.sym == SDLK_KP_5)
 				GJanela.PegaJanelaFocada()->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-			if(event.key.keysym.sym == SDLK_KP_PLUS){
-				int w,h;
-				GJanela.PegaJanelaFocada()->PegaTamanho(&w, &h);
-				GJanela.PegaJanelaFocada()->SetaTamanho(w+1, h+1);
-			}
-			if(event.key.keysym.sym == SDLK_KP_MINUS){
-				int w,h;
-				GJanela.PegaJanelaFocada()->PegaTamanho(&w, &h);
-				GJanela.PegaJanelaFocada()->SetaTamanho(w-1, h-1); 
-			}
-			GJanela.ProcessarEventos(event);
+			*/
 		}
 		GJanela.Atualizar();
 		GJanela.Renderizar();

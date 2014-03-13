@@ -24,7 +24,7 @@ public:
 	void Remover(Uint32 id);
 	void Remover(const char* titulo);
 
-	void ProcessarEventos(SDL_Event& evento);
+	void ProcessarEventosW(SDL_Event& evento);
 	void Atualizar();
 	void Renderizar();
 

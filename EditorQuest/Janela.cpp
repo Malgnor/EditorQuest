@@ -1,7 +1,7 @@
 #include "Janela.h"
 #include "GerenteJanela.h"
 
-void Janela::ProcessarEventos(SDL_Event& evento){
+void Janela::ProcessarEventosW(SDL_Event& evento){
 	if(evento.window.windowID == this->PegaID()){
 		switch (evento.window.event)
 		{
