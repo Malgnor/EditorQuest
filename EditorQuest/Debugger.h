@@ -2,14 +2,15 @@
 #define _DEBUGGER_H_
 
 #include "Janela.h"
+#include "Sprite.h"
 #include <sstream>
 
 class Debugger : public Janela
 {
 private:
 	TTF_Font *fonte;
-	SDL_Rect r;
-	SDL_Texture *texto;
+	int x, y;
+	Sprite texto;
 	std::stringstream txt;
 
 public:
@@ -21,7 +22,5 @@ public:
 	virtual void Atualizar();
 	virtual void Renderizar();
 	virtual void Encerrar();
-
-	SDL_Texture* loadFromRenderedText(const char *textureText, TTF_Font *font, SDL_Color textColor, SDL_Rect &dst);
 };
 #endif

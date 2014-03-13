@@ -7,6 +7,8 @@ class Sprite{
 private:
 	SDL_Rect src;
 	SDL_Texture* textura;
+	void* pixels;
+	int pitch;
 
 public:
 	Sprite();
@@ -16,7 +18,9 @@ public:
 	bool CarregaTexturaDoTextoS(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor);
 	bool CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor);
 
-	void PegaDimensao(SDL_Rect &rect);
+	void Renderizar(SDL_Renderer *renderer, int x, int y,  unsigned int indice = 0, unsigned int indicey = 0, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+	SDL_Rect PegaDimensao();
 	void PegaDimensao(int &w, int &h);
 
 	void Destruir();
