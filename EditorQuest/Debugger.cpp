@@ -42,9 +42,9 @@ void Debugger::Atualizar(){
 	ntxt << "Janelas ativas: " << GJanela.janelas.size() << endl;
 	if(!GJanela.janelas.empty())
 		for(Janela* j: GJanela.janelas){
-			j->PegaPosicao(&x, &y);
+			j->PegaPosicao(x, y);
 			ntxt << "Janela ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
-			j->PegaTamanho(&x, &y);
+			j->PegaTamanho(x, y);
 			ntxt << x << ", " << y << ") Foco: " << ((GJanela.PegaJanelaFocada() == j) ? "V" : "F") << endl;
 		}
 	if(ntxt.str() != txt.str()){
@@ -52,12 +52,6 @@ void Debugger::Atualizar(){
 		SDL_DestroyTexture(texto);
 		texto = loadFromRenderedText(txt.str().c_str(), fonte, black, r);
 	}
-	/*
-	ntxt.str("");
-	SDL_GetMouseState(&x, &y);
-	ntxt << "Debugger (" << x << "," << y << ")";
-	this->SetaTitulo(ntxt.str().c_str());
-	*/
 }
 
 void Debugger::Renderizar(){
@@ -68,22 +62,7 @@ void Debugger::Renderizar(){
 
 SDL_Texture* Debugger::loadFromRenderedText(const char *textureText, TTF_Font *font, SDL_Color textColor, SDL_Rect &dst)
 {
-    Uint32 rmask, gmask, bmask, amask;
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
-
-	SDL_Texture *texture;
-
+	SDL_Texture *texture = 0;
 	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 2048, 2048, 32, rmask, gmask, bmask, amask);
 	SDL_Surface* tmpSurface = 0;
 	SDL_Rect dest;

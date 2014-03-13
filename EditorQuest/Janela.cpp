@@ -33,12 +33,12 @@ const char* Janela::PegaTitulo(){
 	return SDL_GetWindowTitle(window);
 }
 
-void Janela::PegaPosicao(int *x, int *y){
-	SDL_GetWindowPosition(window, x, y);
+void Janela::PegaPosicao(int &x, int &y){
+	SDL_GetWindowPosition(window, &x, &y);
 }
 
-void Janela::PegaTamanho(int *w, int *h){
-	SDL_GetWindowSize(window, w, h);
+void Janela::PegaTamanho(int &w, int &h){
+	SDL_GetWindowSize(window, &w, &h);
 }
 
 void Janela::SetaTitulo(const char* titulo){

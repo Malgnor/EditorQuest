@@ -36,7 +36,7 @@ int SDLApp::Executar(){
 
 	bool sair = false;
 	SDL_Event event;
-	
+	ticks = SDL_GetTicks();
 	while(!sair) {
 		while(SDL_PollEvent(&event) != 0)
 		{
@@ -55,6 +55,10 @@ int SDLApp::Executar(){
 		}
 		GJanela.Atualizar();
 		GJanela.Renderizar();
+
+		while(SDL_GetTicks() < ticks+(1000/60))
+			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
+		ticks = SDL_GetTicks();
 	}
 	return 0;
 }

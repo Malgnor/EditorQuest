@@ -22,8 +22,8 @@ public:
 	bool Existe();
 	Uint32 PegaID();
 	const char* PegaTitulo();
-	void PegaPosicao(int *x, int *y);
-	void PegaTamanho(int *w, int *h);
+	void PegaPosicao(int &x, int &y);
+	void PegaTamanho(int &w, int &h);
 
 	void SetaTitulo(const char* titulo);
 	void SetaIcone(SDL_Surface* icone);

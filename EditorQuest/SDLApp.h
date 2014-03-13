@@ -7,6 +7,7 @@
 class SDLApp{
 private:
 	Debugger* dbg;
+	Uint32 ticks;
 	void Inicializar();
 	void Encerrar();
 
