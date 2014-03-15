@@ -48,4 +48,8 @@ bool GerenciadorTelas::Acabou()
 
 GerenciadorTelas::~GerenciadorTelas()
 {
+	if(tela)
+		tela->Finalizar();
+	delete tela;
+	tela = 0;
 }

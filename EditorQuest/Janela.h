@@ -4,23 +4,27 @@
 #include "globaldef.h"
 
 class GerenciadorTelas;
+class Tela;
 
 class Janela{
-protected:
+private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 	GerenciadorTelas* gerente;
 
 public:
-	virtual void Inicializar() = 0;
-	virtual void ProcessarEventos(SDL_Event& evento) = 0;
-	virtual void Atualizar() = 0;
-	virtual void Renderizar() = 0;
-	virtual void Encerrar() = 0;
-	virtual ~Janela() {}
+	Janela(Tela* telainicial);
+	void Inicializar(Tela* telainicial);
+	void ProcessarEventos(SDL_Event& evento);
+	void Atualizar();
+	void Renderizar();
+	void Encerrar();
+	~Janela();
 
 	void ProcessarEventosW(SDL_Event& evento);
 
+	void Mostrar();
+	void Esconder();
 	void Remover();
 
 	bool Existe();

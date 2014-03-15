@@ -1,7 +1,8 @@
 #include "SDLApp.h"
-#include "Jogo.h"
-#include "Debugger.h"
 #include "GerenteJanela.h"
+#include "Janela.h"
+#include "MenuInicial.h"
+#include "DebugJanelas.h"
 
 SDLApp::SDLApp(){
 	this->Inicializar();
@@ -31,8 +32,10 @@ int SDLApp::Executar(){
 		return 1;
 	}
 
-	new Jogo;
-	new Debugger;
+	new Janela(new MenuInicial());
+#ifdef DEBUG
+	new Janela(new DebugJanelas());
+#endif
 
 	bool sair = false;
 	SDL_Event event;
@@ -46,12 +49,6 @@ int SDLApp::Executar(){
 				GJanela.ProcessarEventosW(event);
 			else
 				GJanela.PegaJanelaFocada()->ProcessarEventos(event);
-			/*
-			if(event.key.keysym.sym == SDLK_KP_7)
-				GJanela.PegaJanelaFocada()->SetaPosicao(16, 32);
-			if(event.key.keysym.sym == SDLK_KP_5)
-				GJanela.PegaJanelaFocada()->SetaPosicao(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-			*/
 		}
 		GJanela.Atualizar();
 		GJanela.Renderizar();

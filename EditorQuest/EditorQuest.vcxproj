@@ -81,23 +81,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Debugger.cpp" />
+    <ClCompile Include="DebugJanelas.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="Janela.cpp" />
-    <ClCompile Include="Jogo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuInicial.cpp" />
     <ClCompile Include="SDLApp.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Debugger.h" />
+    <ClInclude Include="DebugJanelas.h" />
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
     <ClInclude Include="Janela.h" />
-    <ClInclude Include="Jogo.h" />
     <ClInclude Include="MenuInicial.h" />
     <ClInclude Include="SDLApp.h" />
     <ClInclude Include="Sprite.h" />

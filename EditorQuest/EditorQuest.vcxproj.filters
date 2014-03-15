@@ -36,22 +36,19 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debugger.cpp">
-      <Filter>Source Files\Janelas</Filter>
-    </ClCompile>
     <ClCompile Include="GerenteJanela.cpp">
       <Filter>Source Files\Janelas</Filter>
     </ClCompile>
     <ClCompile Include="Janela.cpp">
       <Filter>Source Files\Janelas</Filter>
     </ClCompile>
-    <ClCompile Include="Jogo.cpp">
-      <Filter>Source Files\Janelas</Filter>
-    </ClCompile>
     <ClCompile Include="GerenciadorTelas.cpp">
       <Filter>Source Files\Telas</Filter>
     </ClCompile>
     <ClCompile Include="MenuInicial.cpp">
+      <Filter>Source Files\Telas</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugJanelas.cpp">
       <Filter>Source Files\Telas</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,13 +65,7 @@
     <ClInclude Include="GerenteJanela.h">
       <Filter>Header Files\Janelas</Filter>
     </ClInclude>
-    <ClInclude Include="Debugger.h">
-      <Filter>Header Files\Janelas</Filter>
-    </ClInclude>
     <ClInclude Include="Janela.h">
-      <Filter>Header Files\Janelas</Filter>
-    </ClInclude>
-    <ClInclude Include="Jogo.h">
       <Filter>Header Files\Janelas</Filter>
     </ClInclude>
     <ClInclude Include="Tela.h">
@@ -84,6 +75,9 @@
       <Filter>Header Files\Telas</Filter>
     </ClInclude>
     <ClInclude Include="MenuInicial.h">
+      <Filter>Header Files\Telas</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugJanelas.h">
       <Filter>Header Files\Telas</Filter>
     </ClInclude>
   </ItemGroup>
