@@ -12,7 +12,7 @@ public:
 	~SDLApp();
 	void Inicializar();
 	int Executar();
-	void Encerrar();
+	void Finalizar();
 };
 
 #endif

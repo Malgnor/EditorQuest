@@ -12,6 +12,7 @@ private:
 	GerenteJanela();
 	static GerenteJanela* self;
 	std::vector<Janela*> janelas;
+	std::vector<Janela*> removidos;
 	Janela* janelafocada;
 
 #ifdef DEBUG

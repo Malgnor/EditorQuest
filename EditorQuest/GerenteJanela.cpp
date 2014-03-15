@@ -36,7 +36,7 @@ void GerenteJanela::Remover(Janela* janela){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
 			if(j == janela){
-				j->Encerrar();
+				j->Finalizar();
 				return;
 			}
 }
@@ -45,7 +45,7 @@ void GerenteJanela::Remover(Uint32 id){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
 			if(j->PegaID() == id){
-				j->Encerrar();
+				j->Finalizar();
 				return;
 			}
 }
@@ -54,7 +54,7 @@ void GerenteJanela::Remover(const char* titulo){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
 			if(j->PegaTitulo() == titulo){
-				j->Encerrar();
+				j->Finalizar();
 				return;
 			}
 }
@@ -62,12 +62,13 @@ void GerenteJanela::Remover(const char* titulo){
 void GerenteJanela::ProcessarEventosW(SDL_Event& evento){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			j->ProcessarEventosW(evento);		
+			j->ProcessarEventosW(evento);	
 }
 
 void GerenteJanela::Atualizar(){
 	std::vector<Janela*> removidos;
 	std::vector<Janela*> ativos;
+
 	if(!janelas.empty())
 		for(Janela* j: janelas){
 			if(j->Existe()){
@@ -76,7 +77,9 @@ void GerenteJanela::Atualizar(){
 			} else
 				removidos.push_back(j);
 		}
+
 	swap(janelas, ativos);
+
 	if(!removidos.empty())
 		for(Janela* j: removidos)
 			delete j;

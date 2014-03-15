@@ -42,6 +42,67 @@ bool Sprite::CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, 
 			}
 			else
 			{
+				SDL_SetTextureBlendMode( newTexture, SDL_BLENDMODE_BLEND );
+				//Lock texture for manipulation
+				SDL_LockTexture( newTexture, &formattedSurface->clip_rect, &pixels, &pitch );
+
+				//Copy loaded/formatted surface pixels
+				memcpy( pixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h );
+
+				src = formattedSurface->clip_rect;
+				
+				//Unlock texture to update
+				SDL_UnlockTexture( newTexture );
+				pixels = NULL;
+			}
+			//Get rid of old formatted surface
+			SDL_FreeSurface( formattedSurface );
+		}	
+		
+		//Get rid of old loaded surface
+		SDL_FreeSurface( loadedSurface );
+	}
+	
+	if(largura)
+		src.w = largura;
+	if(altura)
+		src.h = altura;
+
+	textura = newTexture;
+
+	return (textura != 0);
+}
+
+bool Sprite::CarregaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, int largura, int altura, Uint8 r, Uint8 g, Uint8 b){
+	this->Destruir();
+
+	//The final texture
+	SDL_Texture* newTexture = NULL;
+
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load( imagem );
+	if( loadedSurface == NULL )
+	{
+		printf( "Unable to load image %s! SDL_image Error: %s\n", imagem, IMG_GetError() );
+	}
+	else
+	{
+		//Convert surface to display format
+		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, NULL );
+		if( formattedSurface == NULL )
+		{
+			printf( "Unable to convert loaded surface to display format! %s\n", SDL_GetError() );
+		}
+		else
+		{
+			//Create blank streamable texture
+			newTexture = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formattedSurface->w, formattedSurface->h );
+			if( newTexture == NULL )
+			{
+				printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
+			}
+			else
+			{
 				//Enable blending on texture
 				SDL_SetTextureBlendMode( newTexture, SDL_BLENDMODE_BLEND );
 
@@ -59,8 +120,8 @@ bool Sprite::CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, 
 				int pixelCount = ( pitch / 4 ) * src.h;
 
 				//Map colors				
-				Uint32 colorKey = SDL_MapRGB( formattedSurface->format, 0, 0xFF, 0xFF );
-				Uint32 transparent = SDL_MapRGBA( formattedSurface->format, 0x00, 0xFF, 0xFF, 0x00 );
+				Uint32 colorKey = SDL_MapRGB( formattedSurface->format, r, g, b );
+				Uint32 transparent = SDL_MapRGBA( formattedSurface->format, r, g, b, 0x00 );
 
 				//Color key pixels
 				for( int i = 0; i < pixelCount; ++i )
@@ -94,7 +155,7 @@ bool Sprite::CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, 
 	return (textura != 0);
 }
 
-bool Sprite::CarregaTexturaDoTextoS(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
+bool Sprite::CarregaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
 	this->Destruir();
 
 	SDL_Surface* surface = TTF_RenderText_Solid(fonte, texto, cor);
@@ -150,10 +211,10 @@ bool Sprite::CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, T
 	return (textura != 0);
 }
 
-void Sprite::Renderizar(SDL_Renderer *renderer, int x, int y, unsigned int indicex, unsigned int indicey, double angle, SDL_Point* center, SDL_RendererFlip flip)
+void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int indicex, unsigned int indicey, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, src.w, src.h };
+	SDL_Rect renderQuad = { (int)x, (int)y, src.w, src.h };
 
 	//Set clip rendering dimensions
 	if( indicex != 0 || indicey != 0){
@@ -177,6 +238,22 @@ SDL_Rect Sprite::PegaDimensao(){
 void Sprite::PegaDimensao(int &w, int &h){
 	w = src.w;
 	h = src.h;
+}
+
+int Sprite::SetaAlphaMod(Uint8 alfa){
+	return SDL_SetTextureAlphaMod(textura, alfa);
+}
+
+int Sprite::SetaBlendMode(SDL_BlendMode blend){
+	return SDL_SetTextureBlendMode(textura, blend);
+}
+
+int Sprite::SetaColorMod(Uint8 r, Uint8 g, Uint8 b){
+	return SDL_SetTextureColorMod(textura, r, g, b);
+}
+
+int Sprite::SetaColorMod(SDL_Color cor){
+	return SDL_SetTextureColorMod(textura, cor.r, cor.g, cor.b);
 }
 
 void Sprite::Destruir(){

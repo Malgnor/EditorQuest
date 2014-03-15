@@ -9,6 +9,7 @@ void DebugJanelas::Inicializar(Janela* _janela){
 	janela->SetaTitulo("Debugger - Janelas");
 	janela->SetaTamanho(640, 480);
 	janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
 
 	SDL_Color black = {0, 0, 0};
@@ -33,10 +34,12 @@ void DebugJanelas::Atualizar(){
 	ntxt << "Janelas ativas: " << GJanela.janelas.size() << endl;
 	if(!GJanela.janelas.empty())
 		for(Janela* j: GJanela.janelas){
-			j->PegaPosicao(x, y);
-			ntxt << "ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
-			j->PegaTamanho(x, y);
-			ntxt << x << ", " << y << ") Foco: " << ((GJanela.PegaJanelaFocada() == j) ? "V" : "F") << endl;
+			if(j->Existe()){
+				j->PegaPosicao(x, y);
+				ntxt << "ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
+				j->PegaTamanho(x, y);
+				ntxt << x << ", " << y << ") Foco: " << ((GJanela.PegaJanelaFocada() == j) ? "V" : "F") << endl;
+			}
 		}
 	if(ntxt.str() != txt.str()){
 		txt.str(ntxt.str());
@@ -45,7 +48,7 @@ void DebugJanelas::Atualizar(){
 }
 
 void DebugJanelas::Renderizar(){
-	texto.Renderizar(janela->PegaRenderder(), x, y, 0, 0, r);
+	texto.Renderizar(janela->PegaRenderder(), (double)x, (double)y, 0, 0, r);
 }
 
 void DebugJanelas::Finalizar(){

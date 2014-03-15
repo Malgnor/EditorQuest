@@ -1,5 +1,21 @@
 #include "FW_Entrada.h"
 
+FW_Entrada::FW_Entrada(){
+	for(int i=0; i<FW_MAX_TECLAS; i++){
+        tecla[i].pressionado = false;
+        tecla[i].liberado = false;
+        tecla[i].ativo = false;
+        tecla[i].repeticao = 0;
+	}
+    for(int i=0; i<3; i++){
+        mouse.botoes[i].pressionado = false;
+        mouse.botoes[i].liberado = false;
+        mouse.botoes[i].ativo = false;
+        mouse.botoes[i].repeticao = 0;
+	}
+	mouse.wx = mouse.wy = mouse.x = mouse.y = 0;
+}
+
 //funções de retorno de entrada, mouse e teclado
 FW_Botao* FW_Entrada::pegaTecla()
 {
@@ -17,15 +33,15 @@ void FW_Entrada::processaTecla(FW_Botao* tecla,SDL_Event& event)
 	switch(event.type)
     {
     case SDL_KEYDOWN:
-        tecla->pressionado=true;
-        tecla->liberado=false;
-        tecla->ativo=true;
+        tecla->pressionado = true;
+        tecla->liberado = false;
+        tecla->ativo = true;
 		tecla->repeticao = event.key.repeat;
         break;
     case SDL_KEYUP:
-        tecla->ativo=false;
-        tecla->liberado=true;
-        tecla->pressionado=false;
+        tecla->ativo = false;
+        tecla->liberado = true;
+        tecla->pressionado = false;
 		tecla->repeticao = 0;
         break;
     }

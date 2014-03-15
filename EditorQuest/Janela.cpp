@@ -19,7 +19,9 @@ Janela::~Janela(){
 void Janela::Inicializar(Tela* telainicial){
 	window = SDL_CreateWindow("Undefined", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 256, 256, SDL_WINDOW_HIDDEN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	corfundo.r = corfundo.g = corfundo.b = corfundo.a = 0;
+	SDL_SetRenderDrawColor(renderer, corfundo.r, corfundo.g, corfundo.b, corfundo.a);
+	entrada = FW_Entrada();
 	gerente = new GerenciadorTelas(telainicial, this);
 }
 
@@ -35,6 +37,7 @@ void Janela::ProcessarEventosW(SDL_Event& evento){
 		case SDL_WINDOWEVENT_SHOWN:
 		case SDL_WINDOWEVENT_HIDDEN:
 		case SDL_WINDOWEVENT_EXPOSED:
+		case SDL_WINDOWEVENT_CLOSE:
 		case SDL_WINDOWEVENT_LEAVE:
 		case SDL_WINDOWEVENT_MOVED:
 		case SDL_WINDOWEVENT_RESIZED:
@@ -73,13 +76,14 @@ void Janela::Atualizar(){
 void Janela::Renderizar(){
 	if(this->Existe())
 		if(!gerente->Acabou()){
+			SDL_SetRenderDrawColor(renderer, corfundo.r, corfundo.g, corfundo.b, corfundo.a);
 			SDL_RenderClear(renderer);
 			gerente->Renderizar();
 			SDL_RenderPresent(renderer);
 		}
 }
 
-void Janela::Encerrar(){	
+void Janela::Finalizar(){	
 	if(this->Existe()){
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
@@ -111,6 +115,10 @@ SDL_Renderer* Janela::PegaRenderder(){
 	return renderer;
 }
 
+SDL_Color Janela::PegaCorFundo(){
+	return corfundo;
+}
+
 Uint32 Janela::PegaID(){
 	return SDL_GetWindowID(window);
 }
@@ -125,6 +133,17 @@ void Janela::PegaPosicao(int &x, int &y){
 
 void Janela::PegaTamanho(int &w, int &h){
 	SDL_GetWindowSize(window, &w, &h);
+}
+
+void Janela::SetaCorFundo(SDL_Color cor){
+	corfundo = cor;
+}
+
+void Janela::SetaCorFundo(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+	corfundo.r = r;
+	corfundo.g = g;
+	corfundo.b = b;
+	corfundo.a = a;
 }
 
 void Janela::SetaTitulo(const char* titulo){

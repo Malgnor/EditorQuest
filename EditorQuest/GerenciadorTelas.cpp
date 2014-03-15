@@ -51,5 +51,5 @@ GerenciadorTelas::~GerenciadorTelas()
 	if(tela)
 		tela->Finalizar();
 	delete tela;
-	tela = 0;
+	tela = nullptr;
 }

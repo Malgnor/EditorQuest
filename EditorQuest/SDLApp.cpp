@@ -9,7 +9,7 @@ SDLApp::SDLApp(){
 }
 
 SDLApp::~SDLApp(){
-	this->Encerrar();
+	this->Finalizar();
 }
 
 void SDLApp::Inicializar(){
@@ -18,7 +18,16 @@ void SDLApp::Inicializar(){
 		return;
 	}
 	
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	
+	if( !SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") )
+	{
+		printf( "Warning: Linear texture filtering not enabled!" );
+	}
+
+	if( !SDL_SetHint( SDL_HINT_RENDER_VSYNC, "1" ) )
+	{
+		printf( "Warning: VSync not enabled!" );
+	}
 
 	int imgFlags = IMG_INIT_PNG;
 	IMG_Init(imgFlags);
@@ -61,7 +70,7 @@ int SDLApp::Executar(){
 	return 0;
 }
 
-void SDLApp::Encerrar(){
+void SDLApp::Finalizar(){
 	GJanela.Finalizar();
 	Mix_Quit();
 	TTF_Quit();

@@ -12,6 +12,7 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 	GerenciadorTelas* gerente;
+	SDL_Color corfundo;
 
 public:	
 	FW_Entrada entrada;
@@ -21,7 +22,7 @@ public:
 	void ProcessarEventosW(SDL_Event& evento);
 	void Atualizar();
 	void Renderizar();
-	void Encerrar();
+	void Finalizar();
 	~Janela();
 	
 	void Mostrar();
@@ -31,11 +32,14 @@ public:
 	bool Existe();
 
 	SDL_Renderer* PegaRenderder();
+	SDL_Color PegaCorFundo();
 	Uint32 PegaID();
 	const char* PegaTitulo();
 	void PegaPosicao(int &x, int &y);
 	void PegaTamanho(int &w, int &h);
 
+	void SetaCorFundo(SDL_Color cor);
+	void SetaCorFundo(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void SetaTitulo(const char* titulo);
 	void SetaIcone(SDL_Surface* icone);
 	void SetaPosicao(int x, int y);

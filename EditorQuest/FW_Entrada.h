@@ -61,6 +61,8 @@ struct FW_Mouse
 class FW_Entrada
 {
 public:	
+	FW_Entrada();
+
 	FW_Mouse* pegaMouse();
 	FW_Botao* pegaTecla();
 
