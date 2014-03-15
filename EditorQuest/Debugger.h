@@ -10,6 +10,7 @@ class Debugger : public Janela
 private:
 	TTF_Font *fonte;
 	int x, y;
+	double r;
 	Sprite texto;
 	std::stringstream txt;
 

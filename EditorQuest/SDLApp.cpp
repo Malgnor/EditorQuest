@@ -32,7 +32,7 @@ int SDLApp::Executar(){
 	}
 
 	new Jogo;
-	dbg = new Debugger;
+	new Debugger;
 
 	bool sair = false;
 	SDL_Event event;

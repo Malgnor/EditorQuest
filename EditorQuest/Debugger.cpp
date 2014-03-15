@@ -23,12 +23,17 @@ void Debugger::Inicializar(){
 	txt.str("Texto");
 	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	texto.CarregaTexturaDoTextoC(renderer, txt.str().c_str(), fonte, black);
-	x = y = 6;
+	x = y = 100;
+	r = 0.0;
 }
 
 void Debugger::ProcessarEventos(SDL_Event& evento){
 	if(evento.key.keysym.sym == SDLK_KP_PLUS && evento.key.state == SDL_RELEASED)
 		new Jogo;
+	if(evento.key.keysym.sym == SDLK_RIGHT)
+		r+=5.0;
+	if(evento.key.keysym.sym == SDLK_LEFT)
+		r-=5.0;
 	if(evento.type == SDL_MOUSEWHEEL)
 		y += evento.wheel.y*10;
 }
@@ -54,7 +59,7 @@ void Debugger::Atualizar(){
 
 void Debugger::Renderizar(){
 	SDL_RenderClear(renderer);
-	texto.Renderizar(renderer, x, y);
+	texto.Renderizar(renderer, x, y, 0, 0, r);
 	SDL_RenderPresent(renderer);
 }
 

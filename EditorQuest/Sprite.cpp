@@ -108,7 +108,7 @@ bool Sprite::CarregaTexturaDoTextoS(SDL_Renderer* renderer, const char *texto, T
 bool Sprite::CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
 	this->Destruir();
 
-	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 2048, 2048, 32, rmask, gmask, bmask, amask);
+	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 1024, 1024, 32, rmask, gmask, bmask, amask);
 	SDL_Surface* tmpSurface = 0;
 	SDL_Rect dest;
 	src.x = dest.x = 0;

@@ -25,6 +25,10 @@ bool Janela::Existe(){
 	return (window != 0);
 }
 
+SDL_Renderer* Janela::PegaRenderder(){
+	return renderer;
+}
+
 Uint32 Janela::PegaID(){
 	return SDL_GetWindowID(window);
 }

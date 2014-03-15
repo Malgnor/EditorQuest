@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Janelas">
+      <UniqueIdentifier>{b71d5772-f877-484b-9a83-91214bcc90d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Janelas">
+      <UniqueIdentifier>{b7ea9fbd-21b7-4470-b4ad-498cdd2b6075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Telas">
+      <UniqueIdentifier>{1ae140f8-5dbd-4f9b-b27e-c3fe7610b209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Telas">
+      <UniqueIdentifier>{b1629151-42ac-48c9-a978-07de514fabe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,20 +33,26 @@
     <ClCompile Include="SDLApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Jogo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Janela.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GerenteJanela.cpp">
+    <ClCompile Include="Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debugger.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Janelas</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GerenteJanela.cpp">
+      <Filter>Source Files\Janelas</Filter>
+    </ClCompile>
+    <ClCompile Include="Janela.cpp">
+      <Filter>Source Files\Janelas</Filter>
+    </ClCompile>
+    <ClCompile Include="Jogo.cpp">
+      <Filter>Source Files\Janelas</Filter>
+    </ClCompile>
+    <ClCompile Include="GerenciadorTelas.cpp">
+      <Filter>Source Files\Telas</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuInicial.cpp">
+      <Filter>Source Files\Telas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,20 +62,29 @@
     <ClInclude Include="SDLApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Janela.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Jogo.h">
+    <ClInclude Include="Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GerenteJanela.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Janelas</Filter>
     </ClInclude>
     <ClInclude Include="Debugger.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Janelas</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Janela.h">
+      <Filter>Header Files\Janelas</Filter>
+    </ClInclude>
+    <ClInclude Include="Jogo.h">
+      <Filter>Header Files\Janelas</Filter>
+    </ClInclude>
+    <ClInclude Include="Tela.h">
+      <Filter>Header Files\Telas</Filter>
+    </ClInclude>
+    <ClInclude Include="GerenciadorTelas.h">
+      <Filter>Header Files\Telas</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuInicial.h">
+      <Filter>Header Files\Telas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
