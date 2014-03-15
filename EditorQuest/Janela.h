@@ -2,6 +2,7 @@
 #define _JANELA_H_
 
 #include "globaldef.h"
+#include "FW_Entrada.h"
 
 class GerenciadorTelas;
 class Tela;
@@ -12,17 +13,17 @@ private:
 	SDL_Window* window;
 	GerenciadorTelas* gerente;
 
-public:
+public:	
+	FW_Entrada entrada;
 	Janela(Tela* telainicial);
 	void Inicializar(Tela* telainicial);
 	void ProcessarEventos(SDL_Event& evento);
+	void ProcessarEventosW(SDL_Event& evento);
 	void Atualizar();
 	void Renderizar();
 	void Encerrar();
 	~Janela();
-
-	void ProcessarEventosW(SDL_Event& evento);
-
+	
 	void Mostrar();
 	void Esconder();
 	void Remover();

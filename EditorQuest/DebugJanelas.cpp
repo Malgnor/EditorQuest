@@ -15,11 +15,17 @@ void DebugJanelas::Inicializar(Janela* _janela){
 	txt.str("Texto");
 	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	texto.CarregaTexturaDoTextoC(janela->PegaRenderder(), txt.str().c_str(), fonte, black);
-	x = y = 100;
+	x = y = 10;
 	r = 0.0;
 }
 
 void DebugJanelas::Atualizar(){
+	y += 10*Mouse->wy;
+	if(Teclas[FW_ESQUERDA].ativo)
+		r--;
+	if(Teclas[FW_DIREITA].ativo)
+		r++;
+
 	SDL_Color black = {0, 0, 0};
 	int x, y;
 	stringstream ntxt;
@@ -28,7 +34,7 @@ void DebugJanelas::Atualizar(){
 	if(!GJanela.janelas.empty())
 		for(Janela* j: GJanela.janelas){
 			j->PegaPosicao(x, y);
-			ntxt << "Janela ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
+			ntxt << "ID: " << j->PegaID() << " Titulo: " << j->PegaTitulo() << " (" << x << ", " << y << ") (";
 			j->PegaTamanho(x, y);
 			ntxt << x << ", " << y << ") Foco: " << ((GJanela.PegaJanelaFocada() == j) ? "V" : "F") << endl;
 		}

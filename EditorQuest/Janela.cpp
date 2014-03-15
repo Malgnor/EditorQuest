@@ -23,15 +23,43 @@ void Janela::Inicializar(Tela* telainicial){
 	gerente = new GerenciadorTelas(telainicial, this);
 }
 
-void Janela::ProcessarEventos(SDL_Event& evento){	
-	if(evento.key.keysym.sym == SDLK_KP_0 && evento.key.state == SDL_RELEASED)		
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	else if(evento.key.keysym.sym == SDLK_KP_1 && evento.key.state == SDL_RELEASED)		
-		SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-	else if(evento.key.keysym.sym == SDLK_KP_2 && evento.key.state == SDL_RELEASED)		
-		SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-	else if(evento.key.keysym.sym == SDLK_KP_3 && evento.key.state == SDL_RELEASED)		
-		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+void Janela::ProcessarEventos(SDL_Event& evento){
+	entrada.atualiza(evento);
+}
+
+void Janela::ProcessarEventosW(SDL_Event& evento){
+	if(evento.window.windowID == this->PegaID()){
+		switch (evento.window.event)
+		{
+		/*
+		case SDL_WINDOWEVENT_SHOWN:
+		case SDL_WINDOWEVENT_HIDDEN:
+		case SDL_WINDOWEVENT_EXPOSED:
+		case SDL_WINDOWEVENT_LEAVE:
+		case SDL_WINDOWEVENT_MOVED:
+		case SDL_WINDOWEVENT_RESIZED:
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+		case SDL_WINDOWEVENT_MINIMIZED:
+		case SDL_WINDOWEVENT_MAXIMIZED:
+		case SDL_WINDOWEVENT_RESTORED:
+		case SDL_WINDOWEVENT_ENTER:
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+		*/
+		case SDL_WINDOWEVENT_HIDDEN:
+		case SDL_WINDOWEVENT_LEAVE:
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+		case SDL_WINDOWEVENT_MINIMIZED:
+			entrada.reseta();
+			break;
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			GJanela.SetaJanelaFocada(this);
+			break;
+		case SDL_WINDOWEVENT_CLOSE:
+			SDL_HideWindow(window);
+			GJanela.Remover(this);
+			return;
+		}
+	}
 }
 
 void Janela::Atualizar(){
@@ -59,21 +87,6 @@ void Janela::Encerrar(){
 		renderer = NULL;
 		window = NULL;
 		gerente = NULL;
-	}
-}
-
-void Janela::ProcessarEventosW(SDL_Event& evento){
-	if(evento.window.windowID == this->PegaID()){
-		switch (evento.window.event)
-		{
-		case SDL_WINDOWEVENT_FOCUS_GAINED:
-			GJanela.SetaJanelaFocada(this);
-			break;
-		case SDL_WINDOWEVENT_CLOSE:
-			SDL_HideWindow(window);
-			GJanela.Remover(this);
-			return;
-		}
 	}
 }
 

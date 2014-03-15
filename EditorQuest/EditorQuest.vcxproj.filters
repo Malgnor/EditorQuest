@@ -51,6 +51,9 @@
     <ClCompile Include="DebugJanelas.cpp">
       <Filter>Source Files\Telas</Filter>
     </ClCompile>
+    <ClCompile Include="FW_Entrada.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="DebugJanelas.h">
       <Filter>Header Files\Telas</Filter>
+    </ClInclude>
+    <ClInclude Include="FW_Entrada.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

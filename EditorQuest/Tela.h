@@ -3,6 +3,9 @@
 
 class Janela;
 
+#define Teclas janela->entrada.pegaTecla()
+#define Mouse janela->entrada.pegaMouse()
+
 class Tela
 {
 protected:

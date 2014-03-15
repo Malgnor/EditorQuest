@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DebugJanelas.cpp" />
+    <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="Janela.cpp" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugJanelas.h" />
+    <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />

@@ -41,6 +41,7 @@ int SDLApp::Executar(){
 	SDL_Event event;
 	ticks = SDL_GetTicks();
 	while(!sair) {
+		GJanela.PegaJanelaFocada()->entrada.reseta();
 		while(SDL_PollEvent(&event) != 0)
 		{
 			if(event.type == SDL_QUIT)

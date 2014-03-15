@@ -10,6 +10,14 @@ void MenuInicial::Inicializar(Janela* _janela){
 }
 
 void MenuInicial::Atualizar(){
+	if(Teclas[FW_1].pressionado)
+		SDL_SetRenderDrawColor(janela->PegaRenderder(), 255, 255, 255, 255);
+	if(Teclas[FW_2].pressionado)
+		SDL_SetRenderDrawColor(janela->PegaRenderder(), 0, 255, 255, 255);
+	if(Teclas[FW_3].pressionado)
+		SDL_SetRenderDrawColor(janela->PegaRenderder(), 255, 0, 255, 255);
+	if(Teclas[FW_4].pressionado)
+		SDL_SetRenderDrawColor(janela->PegaRenderder(), 255, 255, 0, 255);
 }
 
 void MenuInicial::Renderizar(){
