@@ -12,7 +12,7 @@ Sprite::~Sprite(){
 	this->Destruir();
 }
 
-bool Sprite::CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int largura, int altura){
+bool Sprite::CriaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int largura, int altura){
 	this->Destruir();
 
 	//The final texture
@@ -73,7 +73,7 @@ bool Sprite::CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, 
 	return (textura != 0);
 }
 
-bool Sprite::CarregaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, int largura, int altura, Uint8 r, Uint8 g, Uint8 b){
+bool Sprite::CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, int largura, int altura, Uint8 r, Uint8 g, Uint8 b){
 	this->Destruir();
 
 	//The final texture
@@ -155,20 +155,44 @@ bool Sprite::CarregaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem,
 	return (textura != 0);
 }
 
-bool Sprite::CarregaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
+bool Sprite::CriaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
 	this->Destruir();
 
 	SDL_Surface* surface = TTF_RenderText_Solid(fonte, texto, cor);
-	textura = SDL_CreateTextureFromSurface(renderer, surface);
-	src = surface->clip_rect;
+	if(surface == 0){
+		printf( "Falha ao criar Surface! SDL Error: %s\n",  SDL_GetError() );
+	} else {
+		textura = SDL_CreateTextureFromSurface(renderer, surface);
+		if(textura == 0){
+			printf( "Falha ao criar Texture! SDL Error: %s\n",  SDL_GetError() );
+		} else {
+		src = surface->clip_rect;
+		}
+	}
 	SDL_FreeSurface(surface);
 
 	return (textura != 0);
 }
 
-bool Sprite::CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
+bool Sprite::CriaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor, Uint32 largura){
 	this->Destruir();
 
+	SDL_Surface* txtSurface = TTF_RenderText_Blended_Wrapped(fonte, texto, cor, largura);
+	if(txtSurface == 0){
+		printf( "Falha ao criar Surface! SDL Error: %s\n",  TTF_GetError() );
+	} else {
+		textura = SDL_CreateTextureFromSurface(renderer, txtSurface);
+		if(textura == 0){
+			printf( "Falha ao criar Texture! SDL Error: %s\n",  SDL_GetError() );
+		} else {
+			src = txtSurface->clip_rect;
+		}
+	}
+	SDL_FreeSurface(txtSurface);
+
+	return (textura != 0);
+
+	/*
 	SDL_Surface* textSurface = SDL_CreateRGBSurface(0, 1024, 1024, 32, rmask, gmask, bmask, amask);
 	SDL_Surface* tmpSurface = 0;
 	SDL_Rect dest;
@@ -209,10 +233,83 @@ bool Sprite::CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, T
 	SDL_FreeSurface(textSurface);
 
 	return (textura != 0);
+	*/
+}
+
+bool Sprite::CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const char *texto, TTF_Font *fonte, SDL_Color cortexto){
+	this->Destruir();
+
+	SDL_Surface* txtSurface = TTF_RenderText_Solid(fonte, texto, cortexto);
+	if(txtSurface == 0){
+		printf( "Falha ao criar Surface! SDL Error: %s\n",  TTF_GetError() );
+	} else {
+		SDL_Surface* menuSurface = IMG_Load(imagem);
+		if(menuSurface == 0){
+			printf( "Falha ao criar Surface! Imagem: %s  SDL Error: %s\n", imagem, IMG_GetError() );
+		} else {
+			SDL_Rect srcrect = menuSurface->clip_rect;
+			srcrect.w /= 3;
+			srcrect.h /= 3;
+			SDL_Rect dstrect = {0, 0, srcrect.w, srcrect.h};
+			src.w = ((txtSurface->clip_rect.w/srcrect.w)+3)*srcrect.w;
+			src.h = txtSurface->clip_rect.h < srcrect.h*2 ? srcrect.h*2 : ((txtSurface->clip_rect.h/srcrect.h)+1)*srcrect.h;
+
+			SDL_Surface* endSurface = SDL_CreateRGBSurface(0, src.w, src.h, 32, rmask, gmask, bmask, amask);
+			if(endSurface == 0){
+				printf( "Falha ao criar Surface! SDL Error: %s\n",  SDL_GetError() );
+			} else {
+				for(int y = 0; y < src.h/srcrect.h; y++){
+					for(int x = 0; x < src.w/srcrect.w; x++){
+						dstrect.x = x*srcrect.w;
+						dstrect.y = y*srcrect.h;
+						if(y == 0)
+							srcrect.y = 0;
+						else if(y == (src.h/srcrect.h)-1)
+							srcrect.y = srcrect.h*2;
+						else
+							srcrect.y = srcrect.h;
+						if(x == 0)
+							srcrect.x = 0;
+						else if(x == (src.w/srcrect.w)-1)
+							srcrect.x = srcrect.w*2;
+						else
+							srcrect.x = srcrect.w;
+						SDL_BlitSurface(menuSurface, &srcrect, endSurface, &dstrect);
+					}
+				}
+	
+				srcrect = txtSurface->clip_rect;
+				dstrect.x = (src.w-srcrect.w)/2;
+				dstrect.y = (src.h-srcrect.h)/2;
+				dstrect.w = srcrect.w;
+				dstrect.h = srcrect.h;
+
+				SDL_BlitSurface(txtSurface, &srcrect, endSurface, &dstrect);
+
+				textura = SDL_CreateTextureFromSurface(renderer, endSurface);
+				if(textura == 0){
+					printf( "Falha ao criar Textura! SDL Error: %s\n",  SDL_GetError() );
+				}
+			}
+			SDL_FreeSurface(endSurface);
+		}
+		SDL_FreeSurface(menuSurface);
+	}
+	SDL_FreeSurface(txtSurface);
+
+	return (textura != 0);
 }
 
 void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int indicex, unsigned int indicey, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
+	if(textura == 0){		
+		printf( "Falha ao renderizar Sprite! Textura nula\n");
+		return;
+	}
+	else if(renderer == 0){
+		printf( "Falha ao renderizar Sprite! Renderer nulo\n" );
+		return;
+	}
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { (int)x, (int)y, src.w, src.h };
 

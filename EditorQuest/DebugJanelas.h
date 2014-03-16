@@ -7,10 +7,11 @@
 
 class DebugJanelas : public Tela{
 private:
-	TTF_Font *fonte;
+	TTF_Font *fonte[3];
 	int x, y;
 	double r;
 	Sprite texto;
+	Sprite menu[5];
 	std::stringstream txt;
 
 public:

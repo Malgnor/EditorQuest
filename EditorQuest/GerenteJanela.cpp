@@ -88,7 +88,8 @@ void GerenteJanela::Atualizar(){
 void GerenteJanela::Renderizar(){
 	if(!janelas.empty())
 		for(Janela* j: janelas)
-			j->Renderizar();
+			if(j->Existe())
+				j->Renderizar();
 }
 
 Janela* GerenteJanela::PegaJanelaPorID(Uint32 id){

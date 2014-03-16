@@ -31,7 +31,7 @@ public:
 
 	bool Existe();
 
-	SDL_Renderer* PegaRenderder();
+	SDL_Renderer* PegaRenderer();
 	SDL_Color PegaCorFundo();
 	Uint32 PegaID();
 	const char* PegaTitulo();

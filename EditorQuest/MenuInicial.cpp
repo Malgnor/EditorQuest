@@ -11,11 +11,13 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
-	t.CarregaTexturaDaImagem(janela->PegaRenderder(), "resources/imgs/torre.png", 32);
-	t_.CarregaTexturaDaImagemC(janela->PegaRenderder(), "resources/imgs/torre_.png", 32, 0, 0x00, 0xFF, 0x00);
+	t.CriaTexturaDaImagem(janela->PegaRenderer(), "resources/imgs/torre.png", 32);
+	t_.CriaTexturaDaImagemC(janela->PegaRenderer(), "resources/imgs/torre_.png", 32, 0, 0x00, 0xFF, 0x00);
 }
 
 void MenuInicial::Atualizar(){
+	FW_Botao* Teclas = PegaTecla();
+	FW_Mouse* Mouse = PegaMouse();
 	if(Teclas[FW_1].pressionado)
 		janela->SetaCorFundo(255, 255, 255);
 	if(Teclas[FW_2].pressionado)
@@ -47,14 +49,16 @@ void MenuInicial::Atualizar(){
 }
 
 void MenuInicial::Renderizar(){
-	t.Renderizar(janela->PegaRenderder(), x1, y1, ind1%4);
-	t_.Renderizar(janela->PegaRenderder(), x2, y2, ind2%4);
+	t.Renderizar(janela->PegaRenderer(), x1, y1, ind1%4);
+	t_.Renderizar(janela->PegaRenderer(), x2, y2, ind2%4);
 }
 
 void MenuInicial::Finalizar(){
 }
 
 Tela* MenuInicial::ProximaTela(){
+	if(PegaTecla()[FW_ENCERRA].pressionado)
+		return nullptr;
 	return this;
 }
 	

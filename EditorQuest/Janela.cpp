@@ -12,13 +12,22 @@ Janela::Janela(Tela* telainicial){
 }
 
 Janela::~Janela(){
-	if(this->Existe())
-		GJanela.Remover(this);
+	this->Finalizar();
 }
 
 void Janela::Inicializar(Tela* telainicial){
 	window = SDL_CreateWindow("Undefined", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 256, 256, SDL_WINDOW_HIDDEN);
+	if(window == 0){
+		printf( "Falha ao criar Window! SDL Error: %s\n",  SDL_GetError() );
+		this->Finalizar();
+		return;
+	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if(renderer == 0){
+		printf( "Falha ao criar Renderer! SDL Error: %s\n",  SDL_GetError() );
+		this->Finalizar();
+		return;
+	}
 	corfundo.r = corfundo.g = corfundo.b = corfundo.a = 0;
 	SDL_SetRenderDrawColor(renderer, corfundo.r, corfundo.g, corfundo.b, corfundo.a);
 	entrada = FW_Entrada();
@@ -57,10 +66,6 @@ void Janela::ProcessarEventosW(SDL_Event& evento){
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
 			GJanela.SetaJanelaFocada(this);
 			break;
-		case SDL_WINDOWEVENT_CLOSE:
-			SDL_HideWindow(window);
-			GJanela.Remover(this);
-			return;
 		}
 	}
 }
@@ -70,7 +75,7 @@ void Janela::Atualizar(){
 		if(!gerente->Acabou())
 			gerente->Atualizar();
 		else
-			GJanela.Remover(this);
+			this->Finalizar();
 }
 
 void Janela::Renderizar(){
@@ -84,14 +89,12 @@ void Janela::Renderizar(){
 }
 
 void Janela::Finalizar(){	
-	if(this->Existe()){
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		delete gerente;
-		renderer = NULL;
-		window = NULL;
-		gerente = NULL;
-	}
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	delete gerente;
+	renderer = NULL;
+	window = NULL;
+	gerente = NULL;
 }
 
 void Janela::Mostrar(){
@@ -104,14 +107,14 @@ void Janela::Esconder(){
 
 void Janela::Remover(){
 	SDL_HideWindow(window);
-	GJanela.Remover(this);
+	this->Finalizar();
 }
 
 bool Janela::Existe(){
 	return (window != 0);
 }
 
-SDL_Renderer* Janela::PegaRenderder(){
+SDL_Renderer* Janela::PegaRenderer(){
 	return renderer;
 }
 

@@ -14,10 +14,11 @@ public:
 	Sprite();
 	~Sprite();
 
-	bool CarregaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int largura = 0, int altura = 0);
-	bool CarregaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, int largura = 0, int altura = 0, Uint8 r = 0xFF, Uint8 g = 0x00, Uint8 b = 0xFF);
-	bool CarregaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor);
-	bool CarregaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor);
+	bool CriaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int largura = 0, int altura = 0);
+	bool CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, int largura = 0, int altura = 0, Uint8 r = 0xFF, Uint8 g = 0x00, Uint8 b = 0xFF);
+	bool CriaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor);
+	bool CriaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor, Uint32 largura);
+	bool CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const char *texto, TTF_Font *fonte, SDL_Color cortexto);
 
 	void Renderizar(SDL_Renderer *renderer, double x, double y,  unsigned int indice = 0, unsigned int indicey = 0, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 

@@ -71,6 +71,7 @@ void FW_Entrada::atualiza(SDL_Event& event)
 	{
 		case SDL_QUIT:
 			tecla[FW_ENCERRA].pressionado = true;
+			tecla[FW_ENCERRA].ativo = true;
 			break;
 
 		case SDL_KEYDOWN:
@@ -216,5 +217,9 @@ void FW_Entrada::atualiza(SDL_Event& event)
 					break;
 			}
 			break; //break dos eventos de mouse button up
+	}
+	if(event.window.event == SDL_WINDOWEVENT_CLOSE){
+		tecla[FW_ENCERRA].pressionado = true;
+		tecla[FW_ENCERRA].ativo = true;
 	}
 }

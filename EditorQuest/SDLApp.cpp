@@ -29,9 +29,12 @@ void SDLApp::Inicializar(){
 		printf( "Warning: VSync not enabled!" );
 	}
 
-	int imgFlags = IMG_INIT_PNG;
-	IMG_Init(imgFlags);
-	TTF_Init();
+	if(IMG_Init(IMG_INIT_PNG) == 0){
+		printf_s("Falha ao iniciar a SDL_Image! Erro: %s\n", IMG_GetError());
+	}
+	if(TTF_Init() == -1){		
+		printf_s("Falha ao iniciar a SDL_ttf! Erro: %s\n", TTF_GetError());
+	}
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 }
 
@@ -57,8 +60,7 @@ int SDLApp::Executar(){
 				sair = true;
 			else if(event.type == SDL_WINDOWEVENT)				
 				GJanela.ProcessarEventosW(event);
-			else
-				GJanela.PegaJanelaFocada()->ProcessarEventos(event);
+			GJanela.PegaJanelaFocada()->ProcessarEventos(event);
 		}
 		GJanela.Atualizar();
 		GJanela.Renderizar();
