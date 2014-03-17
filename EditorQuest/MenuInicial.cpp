@@ -1,5 +1,6 @@
 #include "MenuInicial.h"
 #include "Janela.h"
+#include "Ingame.h"
 
 void MenuInicial::Inicializar(Janela* _janela){
 	x1 = y1 = 100.0;
@@ -7,8 +8,12 @@ void MenuInicial::Inicializar(Janela* _janela){
 	ind1 = ind2 = 0;
 	janela = _janela;
 	janela->SetaTitulo("Editor's Quest - Menu Inicial");
-	janela->SetaTamanho(800, 600);
-	janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+	int w, h;
+	janela->PegaTamanho(w, h);
+	if( w != 800 && h != 600){
+		janela->SetaTamanho(800, 600);
+		janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+	}
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
 	t.CriaTexturaDaImagem(janela->PegaRenderer(), "resources/imgs/torre.png", 32);
@@ -59,6 +64,8 @@ void MenuInicial::Finalizar(){
 Tela* MenuInicial::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado)
 		return nullptr;
+	if(PegaTecla()[FW_ESC].pressionado)
+		return new Ingame();
 	return this;
 }
 	

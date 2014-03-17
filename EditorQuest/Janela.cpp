@@ -138,6 +138,13 @@ void Janela::PegaTamanho(int &w, int &h){
 	SDL_GetWindowSize(window, &w, &h);
 }
 
+SDL_Rect Janela::PegaPosicaoeTamanho(){
+	SDL_Rect rect;
+	SDL_GetWindowPosition(window, &rect.x, &rect.y);
+	SDL_GetWindowSize(window, &rect.w, &rect.h);
+	return rect;
+}
+
 void Janela::SetaCorFundo(SDL_Color cor){
 	corfundo = cor;
 }

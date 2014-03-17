@@ -54,6 +54,9 @@
     <ClCompile Include="FW_Entrada.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ingame.cpp">
+      <Filter>Source Files\Telas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="FW_Entrada.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ingame.h">
+      <Filter>Header Files\Telas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

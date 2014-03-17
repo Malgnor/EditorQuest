@@ -85,6 +85,7 @@
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
+    <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuInicial.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
+    <ClInclude Include="Ingame.h" />
     <ClInclude Include="Janela.h" />
     <ClInclude Include="MenuInicial.h" />
     <ClInclude Include="SDLApp.h" />

@@ -300,6 +300,42 @@ bool Sprite::CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const c
 	return (textura != 0);
 }
 
+bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, Uint8 mapa[32][32], Uint8 largura, Uint8 altura){
+	this->Destruir();
+
+	SDL_Surface* tileSurface = IMG_Load("resources/imgs/tileset.png");
+	if(tileSurface == 0){
+		printf("Falha ao criar Surface! Path: resources/imgs/tileset.png IMG_Error: %s\n", IMG_GetError());
+	} else {
+		SDL_Surface* mapSurface = SDL_CreateRGBSurface(0, largura*32, altura*32, 32, rmask, gmask, bmask, amask);
+		if(mapSurface == 0){
+			printf("Falha ao criar Surface! SDL Error: %s\n", SDL_GetError());
+		} else {
+			SDL_Rect srcrect = {0, 0, 32, 32};
+			SDL_Rect dstrect = {0, 0, 32, 32};
+			for(Uint8 i = 0; i < altura; i++){
+				for(Uint8 j = 0; j < largura; j++){
+					dstrect.x = j*32;
+					dstrect.y = i*32;
+					srcrect.x = mapa[i][j]*32;
+					SDL_BlitSurface(tileSurface, &srcrect, mapSurface, &dstrect);
+				}
+			}
+			textura = SDL_CreateTextureFromSurface(renderer, mapSurface);
+			if(textura == 0){
+				printf("Falha ao criar textura! SDL Error: %s\n", SDL_GetError());
+			} else {
+				src = mapSurface->clip_rect;
+			}
+		}
+		SDL_FreeSurface(mapSurface);
+	}
+
+	SDL_FreeSurface(tileSurface);
+
+	return (textura != 0);
+}
+
 void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int indicex, unsigned int indicey, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 	if(textura == 0){		

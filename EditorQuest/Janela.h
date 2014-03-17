@@ -37,6 +37,7 @@ public:
 	const char* PegaTitulo();
 	void PegaPosicao(int &x, int &y);
 	void PegaTamanho(int &w, int &h);
+	SDL_Rect PegaPosicaoeTamanho();
 
 	void SetaCorFundo(SDL_Color cor);
 	void SetaCorFundo(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);

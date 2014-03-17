@@ -8,8 +8,12 @@ using namespace std;
 void DebugJanelas::Inicializar(Janela* _janela){
 	janela = _janela;
 	janela->SetaTitulo("Debugger - Janelas");
-	janela->SetaTamanho(640, 480);
-	janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+	int w, h;
+	janela->PegaTamanho(w, h);
+	if( w != 640 && h != 480){
+		janela->SetaTamanho(640, 480);
+		janela->SetaPosicao(SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);
+	}
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
 
@@ -75,6 +79,8 @@ void DebugJanelas::Finalizar(){
 Tela* DebugJanelas::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado)
 		return nullptr;
+	if(PegaTecla()[FW_ESC].pressionado)
+		return new DebugJanelas();
 	return this;
 }
 	
