@@ -23,11 +23,11 @@ void DebugJanelas::Inicializar(Janela* _janela){
 	fonte[1] = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	fonte[2] = TTF_OpenFont("resources/fonts/pix.ttf", 8);
 	texto.CriaTexturaDoTextoC(janela->PegaRenderer(), txt.str().c_str(), fonte[0], black, 640);
-	menu[0].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botao.png", "Menu", fonte[0], black);
-	menu[1].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaop.png", "Menu Longo", fonte[1], black);
-	menu[2].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botao.png", "Menu muito longo", fonte[2], black);
-	menu[3].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botao.png", "Menu muito longo mesmo", fonte[1], black);
-	menu[4].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botao.png", "M", fonte[2], black);
+	menu[0].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu", fonte[0], black);
+	menu[1].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu Longo", fonte[1], black);
+	menu[2].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu muito longo", fonte[2], black);
+	menu[3].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu muito longo mesmo", fonte[1], black);
+	menu[4].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "M", fonte[2], black);
 	x = y = 10;
 	r = 0.0;
 }

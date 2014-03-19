@@ -5,6 +5,7 @@
 void MenuInicial::Inicializar(Janela* _janela){
 	x1 = y1 = 100.0;
 	x2 = y2 = 200.0;
+	escala = 1.0;
 	ind1 = ind2 = 0;
 	janela = _janela;
 	janela->SetaTitulo("Editor's Quest - Menu Inicial");
@@ -51,11 +52,12 @@ void MenuInicial::Atualizar(){
 		ind1++;
 	if(Mouse->botoes[FW_MDIREITO].pressionado)
 		ind2++;
+	escala += Mouse->wy/10.0;
 }
 
 void MenuInicial::Renderizar(){
 	t.Renderizar(janela->PegaRenderer(), x1, y1, ind1%4);
-	t_.Renderizar(janela->PegaRenderer(), x2, y2, ind2%4);
+	t_.Renderizar(janela->PegaRenderer(), x2, y2, ind2%4, 0, 0.0, escala, escala);
 }
 
 void MenuInicial::Finalizar(){

@@ -13,6 +13,16 @@ GerenteJanela& GerenteJanela::PegaGerenteJanela(){
 }
 
 void GerenteJanela::Finalizar(){
+	
+	/*
+	for(std::vector<Janela*>::iterator it = janelas.begin(); it != janelas.end(); it++){
+	(*(*it)).Atualizar();
+	it[0]->Atualizar();
+	(*it)->Atualizar();
+	(*it)[0].Atualizar();
+	it[0][0].Atualizar();
+	}
+	*/
 	if(self){
 		if(!janelas.empty()){
 			for(Janela* j:janelas){

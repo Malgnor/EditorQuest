@@ -336,7 +336,7 @@ bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, Uint8 mapa[32][32], Uint8 l
 	return (textura != 0);
 }
 
-void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int indicex, unsigned int indicey, double angle, SDL_Point* center, SDL_RendererFlip flip)
+void Sprite::Renderizar(SDL_Renderer *renderer, double posX, double posY, unsigned int indiceX, unsigned int indiceY, double angulo, double escalaX, double escalaY, SDL_Point* centro, SDL_RendererFlip flip)
 {
 	if(textura == 0){		
 		printf( "Falha ao renderizar Sprite! Textura nula\n");
@@ -347,12 +347,12 @@ void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int
 		return;
 	}
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { (int)x, (int)y, src.w, src.h };
+	SDL_Rect renderQuad = { (int)posX, (int)posY, (int)(src.w*escalaX), (int)(src.h*escalaY) };
 
 	//Set clip rendering dimensions
-	if( indicex != 0 || indicey != 0){
-		src.x = indicex*src.w;
-		src.y = indicey*src.h;
+	if( indiceX != 0 || indiceY != 0){
+		src.x = indiceX*src.w;
+		src.y = indiceY*src.h;
 	}
 	else{		
 		src.x = 0;
@@ -360,7 +360,7 @@ void Sprite::Renderizar(SDL_Renderer *renderer, double x, double y, unsigned int
 	}
 
 	//Render to screen
-	SDL_RenderCopyEx(renderer, textura, &src, &renderQuad, angle, center, flip );
+	SDL_RenderCopyEx(renderer, textura, &src, &renderQuad, angulo, centro, flip );
 }
 
 SDL_Rect Sprite::PegaDimensao(){

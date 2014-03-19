@@ -21,7 +21,7 @@ public:
 	bool CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const char *texto, TTF_Font *fonte, SDL_Color cortexto);
 	bool CriaTexturaMapa(SDL_Renderer* renderer, Uint8 mapa[32][32], Uint8 largura, Uint8 altura);
 
-	void Renderizar(SDL_Renderer *renderer, double x, double y,  unsigned int indice = 0, unsigned int indicey = 0, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void Renderizar(SDL_Renderer *renderer, double posX, double posY, unsigned int indiceX = 0, unsigned int indiceY = 0, double angulo = 0.0, double escalaX = 1.0, double escalaY = 1.0, SDL_Point* centro = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	SDL_Rect PegaDimensao();
 	void PegaDimensao(int &w, int &h);
