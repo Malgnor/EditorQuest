@@ -81,9 +81,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ator.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
+    <ClCompile Include="GerenteAtor.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="Janela.cpp" />
@@ -93,9 +95,11 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ator.h" />
     <ClInclude Include="DebugJanelas.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
+    <ClInclude Include="GerenteAtor.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
     <ClInclude Include="Ingame.h" />

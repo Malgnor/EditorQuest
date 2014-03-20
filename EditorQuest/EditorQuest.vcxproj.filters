@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Telas">
       <UniqueIdentifier>{b1629151-42ac-48c9-a978-07de514fabe0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Atores">
+      <UniqueIdentifier>{ef440940-cfe4-401c-bc0b-7c910ddf263d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Atores">
+      <UniqueIdentifier>{813cfd0d-c407-4bde-b54c-2817452eacd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -56,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="Ingame.cpp">
       <Filter>Source Files\Telas</Filter>
+    </ClCompile>
+    <ClCompile Include="Ator.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="GerenteAtor.cpp">
+      <Filter>Source Files\Atores</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="Ingame.h">
       <Filter>Header Files\Telas</Filter>
+    </ClInclude>
+    <ClInclude Include="GerenteAtor.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Ator.h">
+      <Filter>Header Files\Atores</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
