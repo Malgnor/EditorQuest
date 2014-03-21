@@ -9,12 +9,12 @@ class Tela;
 
 class Janela{
 private:
-	SDL_Renderer* renderer;
 	SDL_Window* window;
 	GerenciadorTelas* gerente;
 	SDL_Color corfundo;
 
 public:	
+	SDL_Renderer* renderer;
 	FW_Entrada entrada;
 	Janela(Tela* telainicial);
 	void Inicializar(Tela* telainicial);
@@ -31,7 +31,6 @@ public:
 
 	bool Existe();
 
-	SDL_Renderer* PegaRenderer();
 	SDL_Color PegaCorFundo();
 	Uint32 PegaID();
 	const char* PegaTitulo();

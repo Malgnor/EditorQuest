@@ -22,12 +22,12 @@ void DebugJanelas::Inicializar(Janela* _janela){
 	fonte[0] = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	fonte[1] = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	fonte[2] = TTF_OpenFont("resources/fonts/pix.ttf", 8);
-	texto.CriaTexturaDoTextoC(janela->PegaRenderer(), txt.str().c_str(), fonte[0], black, 640);
-	menu[0].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu", fonte[0], black);
-	menu[1].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu Longo", fonte[1], black);
-	menu[2].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu muito longo", fonte[2], black);
-	menu[3].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "Menu muito longo mesmo", fonte[1], black);
-	menu[4].CriaTexturaMenu(janela->PegaRenderer(), "resources/imgs/botaog.png", "M", fonte[2], black);
+	texto.CriaTexturaDoTextoC(janela->renderer, txt.str().c_str(), fonte[0], black, 640);
+	menu[0].CriaTexturaMenu(janela->renderer, "resources/imgs/botaog.png", "Menu", fonte[0], black);
+	menu[1].CriaTexturaMenu(janela->renderer, "resources/imgs/botaog.png", "Menu Longo", fonte[1], black);
+	menu[2].CriaTexturaMenu(janela->renderer, "resources/imgs/botaog.png", "Menu muito longo", fonte[2], black);
+	menu[3].CriaTexturaMenu(janela->renderer, "resources/imgs/botaog.png", "Menu muito longo mesmo", fonte[1], black);
+	menu[4].CriaTexturaMenu(janela->renderer, "resources/imgs/botaog.png", "M", fonte[2], black);
 	x = y = 10;
 	r = 0.0;
 }
@@ -57,17 +57,17 @@ void DebugJanelas::Atualizar(){
 		}
 	if(ntxt.str() != txt.str()){
 		txt.str(ntxt.str());
-		texto.CriaTexturaDoTextoC(janela->PegaRenderer(), txt.str().c_str(), fonte[0], black, 640);
+		texto.CriaTexturaDoTextoC(janela->renderer, txt.str().c_str(), fonte[0], black, 640);
 	}
 }
 
 void DebugJanelas::Renderizar(){
-	texto.Renderizar(janela->PegaRenderer(), (double)x, (double)y, 0, 0, r);
-	menu[0].Renderizar(janela->PegaRenderer(), 320.0-menu[0].PegaDimensao().w/2, 200.0);
-	menu[1].Renderizar(janela->PegaRenderer(), 320.0-menu[1].PegaDimensao().w/2, 240.0);
-	menu[2].Renderizar(janela->PegaRenderer(), 320.0-menu[2].PegaDimensao().w/2, 280.0);
-	menu[3].Renderizar(janela->PegaRenderer(), 320.0-menu[3].PegaDimensao().w/2, 320.0);
-	menu[4].Renderizar(janela->PegaRenderer(), 320.0-menu[4].PegaDimensao().w/2, 160.0);
+	texto.Renderizar(janela->renderer, (double)x, (double)y, 0, 0, r);
+	menu[0].Renderizar(janela->renderer, 320.0-menu[0].PegaDimensao().w/2, 200.0);
+	menu[1].Renderizar(janela->renderer, 320.0-menu[1].PegaDimensao().w/2, 240.0);
+	menu[2].Renderizar(janela->renderer, 320.0-menu[2].PegaDimensao().w/2, 280.0);
+	menu[3].Renderizar(janela->renderer, 320.0-menu[3].PegaDimensao().w/2, 320.0);
+	menu[4].Renderizar(janela->renderer, 320.0-menu[4].PegaDimensao().w/2, 160.0);
 }
 
 void DebugJanelas::Finalizar(){

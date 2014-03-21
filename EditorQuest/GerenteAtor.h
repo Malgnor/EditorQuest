@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _GERENTEATOR_H_
+#define _GERENTEATOR_H_
 
 #include <vector>
 #include "Janela.h"
@@ -19,7 +20,8 @@ class GerenteAtor
 		GerenteAtor(Janela& _janela);
 		void Adicionar(Ator* ator);
 		void Atualizar();
-		void Renderizar();
+		void Renderizar(SDL_Rect* camera);
 		~GerenteAtor();
 };
 
+#endif

@@ -63,15 +63,27 @@ void GerenteAtor::Atualizar()
 
 	//Substitui a lista de atores pela de vivos.
 	swap(atores, vivos);
+	
+	if(atores.empty())
+		return;
+
+	for(unsigned int i = 0; i < atores.size() - 1; i++){
+		for(unsigned int j = i + 1; j < atores.size(); j++){
+			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), 0) == SDL_TRUE){
+				atores[i]->Colidiu(atores[j]);
+				atores[j]->Colidiu(atores[i]);
+			}
+		}
+	}
 }
 
 
-void GerenteAtor::Renderizar()
+void GerenteAtor::Renderizar(SDL_Rect* camera)
 {
 	if(!atores.empty())
 		for (Ator* ator : atores) 
 		{
-			ator->Renderizar();
+			ator->Renderizar(camera);
 		}
 }
 

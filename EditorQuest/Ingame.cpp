@@ -40,7 +40,7 @@ void Ingame::Inicializar(Janela* _janela){
 		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	};
-	mapa.CriaTexturaMapa(janela->PegaRenderer(), map, 32, 32);
+	mapa.CriaTexturaMapa(janela->renderer, map, 32, 32);
 	int w, h;
 	janela->PegaTamanho(w, h);
 	camera.x = 0;
@@ -64,7 +64,7 @@ void Ingame::Atualizar(){
 }
 
 void Ingame::Renderizar(){
-	mapa.Renderizar(janela->PegaRenderer(), (double)-camera.x, (double)-camera.y);
+	mapa.Renderizar(janela->renderer, (double)-camera.x, (double)-camera.y);
 }
 
 void Ingame::Finalizar(){

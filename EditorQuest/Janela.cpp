@@ -114,10 +114,6 @@ bool Janela::Existe(){
 	return (window != 0);
 }
 
-SDL_Renderer* Janela::PegaRenderer(){
-	return renderer;
-}
-
 SDL_Color Janela::PegaCorFundo(){
 	return corfundo;
 }

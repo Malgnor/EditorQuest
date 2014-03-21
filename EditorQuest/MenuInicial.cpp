@@ -17,8 +17,8 @@ void MenuInicial::Inicializar(Janela* _janela){
 	}
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
-	t.CriaTexturaDaImagem(janela->PegaRenderer(), "resources/imgs/torre.png", 32);
-	t_.CriaTexturaDaImagemC(janela->PegaRenderer(), "resources/imgs/torre_.png", 32, 0, 0x00, 0xFF, 0x00);
+	t.CriaTexturaDaImagem(janela->renderer, "resources/imgs/torre.png", 32);
+	t_.CriaTexturaDaImagemC(janela->renderer, "resources/imgs/torre_.png", 32, 0, 0x00, 0xFF, 0x00);
 }
 
 void MenuInicial::Atualizar(){
@@ -56,8 +56,8 @@ void MenuInicial::Atualizar(){
 }
 
 void MenuInicial::Renderizar(){
-	t.Renderizar(janela->PegaRenderer(), x1, y1, ind1%4);
-	t_.Renderizar(janela->PegaRenderer(), x2, y2, ind2%4, 0, 0.0, escala, escala);
+	t.Renderizar(janela->renderer, x1, y1, ind1%4);
+	t_.Renderizar(janela->renderer, x2, y2, ind2%4, 0, 0.0, escala, escala);
 }
 
 void MenuInicial::Finalizar(){
