@@ -15,9 +15,9 @@ class GerenteAtor
 		std::vector<Ator*> excluidos;
 
 	public:
-		Janela& janela;
+		Janela* janela;
 
-		GerenteAtor(Janela& _janela);
+		void Inicializar(Janela* _janela);
 		void Adicionar(Ator* ator);
 		void Atualizar();
 		void Renderizar(SDL_Rect* camera);

@@ -3,10 +3,6 @@
 #include "Ingame.h"
 
 void MenuInicial::Inicializar(Janela* _janela){
-	x1 = y1 = 100.0;
-	x2 = y2 = 200.0;
-	escala = 1.0;
-	ind1 = ind2 = 0;
 	janela = _janela;
 	janela->SetaTitulo("Editor's Quest - Menu Inicial");
 	int w, h;
@@ -17,8 +13,6 @@ void MenuInicial::Inicializar(Janela* _janela){
 	}
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
-	t.CriaTexturaDaImagem(janela->renderer, "resources/imgs/torre.png", 32);
-	t_.CriaTexturaDaImagemC(janela->renderer, "resources/imgs/torre_.png", 32, 0, 0x00, 0xFF, 0x00);
 }
 
 void MenuInicial::Atualizar(){
@@ -32,32 +26,9 @@ void MenuInicial::Atualizar(){
 		janela->SetaCorFundo(255, 0, 255);
 	if(Teclas[FW_4].pressionado)
 		janela->SetaCorFundo(255, 255, 0);
-	if(Teclas[FW_W].ativo)
-		y1--;
-	else if(Teclas[FW_S].ativo)
-		y1++;
-	if(Teclas[FW_CIMA].ativo)
-		y2--;
-	else if(Teclas[FW_BAIXO].ativo)
-		y2++;
-	if(Teclas[FW_D].ativo)
-		x1++;
-	else if(Teclas[FW_A].ativo)
-		x1--;
-	if(Teclas[FW_DIREITA].ativo)
-		x2++;
-	else if(Teclas[FW_ESQUERDA].ativo)
-		x2--;
-	if(Mouse->botoes[FW_MESQUERDO].pressionado)
-		ind1++;
-	if(Mouse->botoes[FW_MDIREITO].pressionado)
-		ind2++;
-	escala += Mouse->wy/10.0;
 }
 
 void MenuInicial::Renderizar(){
-	t.Renderizar(janela->renderer, x1, y1, ind1%4);
-	t_.Renderizar(janela->renderer, x2, y2, ind2%4, 0, 0.0, escala, escala);
 }
 
 void MenuInicial::Finalizar(){

@@ -3,8 +3,11 @@
 
 class Janela;
 
-#define PegaTecla() janela->entrada.pegaTecla()
-#define PegaMouse() janela->entrada.pegaMouse()
+#ifndef _INPUT_
+#define _INPUT_
+#define PegaTecla janela->entrada.pegaTecla
+#define PegaMouse janela->entrada.pegaMouse
+#endif
 
 class Tela
 {

@@ -3,9 +3,8 @@
 
 using namespace std;
 
-GerenteAtor::GerenteAtor(Janela& _janela)
-	:janela(_janela)
-{
+void GerenteAtor::Inicializar(Janela* _janela){
+	janela = _janela;
 }
 
 void GerenteAtor::Adicionar(Ator* ator)
@@ -64,7 +63,7 @@ void GerenteAtor::Atualizar()
 	//Substitui a lista de atores pela de vivos.
 	swap(atores, vivos);
 	
-	if(atores.empty())
+	if(atores.size() < 2)
 		return;
 
 	for(unsigned int i = 0; i < atores.size() - 1; i++){

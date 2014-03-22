@@ -1,5 +1,6 @@
 #include "Ingame.h"
-#include "Janela.h"
+#include "janela.h"
+#include "Jogador.h"
 #include "MenuInicial.h"
 
 void Ingame::Inicializar(Janela* _janela){
@@ -47,24 +48,34 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.y = 0;
 	camera.w = w;
 	camera.h = h;
+	gerenteAtor.Inicializar(janela);
+	gerenteAtor.Adicionar(new Jogador(gerenteAtor));
 }
 
 void Ingame::Atualizar(){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
-	if(Teclas[FW_W].ativo)
-		camera.y-=5;
-	else if(Teclas[FW_S].ativo)
-		camera.y+=5;
-	if(Teclas[FW_A].ativo)
-		camera.x-=5;
-	else if(Teclas[FW_D].ativo)
-		camera.x+=5;
-
+	//Se o mouse está dentro da janela
+	if(((Mouse->y > 0) && (Mouse->y < camera.h) && (Mouse->x > 0) && (Mouse->x < camera.w))){
+		if(Mouse->y < 100)
+			camera.y-=5;
+		else if(Mouse->y > camera.h-100)
+			camera.y+=5;
+		if(Mouse->x < 100)
+			camera.x-=5;
+		else if(Mouse->x > camera.w-100)
+			camera.x+=5;
+	}
+	if(camera.x < 0) camera.x = 0;
+	else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
+	if(camera.y < 0) camera.y = 0;
+	else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
+	gerenteAtor.Atualizar();
 }
 
 void Ingame::Renderizar(){
 	mapa.Renderizar(janela->renderer, (double)-camera.x, (double)-camera.y);
+	gerenteAtor.Renderizar(&camera);
 }
 
 void Ingame::Finalizar(){

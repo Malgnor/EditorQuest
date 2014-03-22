@@ -5,11 +5,6 @@
 #include "Sprite.h"
 
 class MenuInicial : public Tela{
-private:
-	Sprite t, t_;
-	double x1, x2, y1, y2;
-	Uint8 ind1, ind2;
-	double escala;
 public:
 	virtual void Inicializar(Janela* _janela);
 	virtual void Atualizar();
