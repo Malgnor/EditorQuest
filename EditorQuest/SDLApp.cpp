@@ -69,7 +69,8 @@ int SDLApp::Executar(){
 		}
 		GJanela.Atualizar(deltaTime);
 		GJanela.Renderizar();
-
+		if(GJanela.PegaQtdJanelas() == 0)
+			sair = true;
 	}
 	return 0;
 }

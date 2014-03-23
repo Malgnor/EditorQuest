@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ator.cpp" />
+    <ClCompile Include="Botao.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ator.h" />
+    <ClInclude Include="Botao.h" />
     <ClInclude Include="DebugJanelas.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />

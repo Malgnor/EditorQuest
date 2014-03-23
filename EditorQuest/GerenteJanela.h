@@ -35,6 +35,8 @@ public:
 	Janela* PegaJanelaPorID(Uint32 id);
 	Janela* PegaJanelaPorTitulo(const char* titulo);
 	Janela* PegaJanelaFocada();
+
+	unsigned int PegaQtdJanelas();
 	
 	void SetaJanelaFocada(Janela* janela);
 };
