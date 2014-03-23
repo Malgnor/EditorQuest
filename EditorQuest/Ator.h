@@ -11,6 +11,8 @@
 class GerenteAtor;
 struct cMap;
 
+enum {ATOR_SEMCOLISAO, ATOR_JOGADOR, ATOR_INIMIGO, ATOR_ARMADILHA};
+
 class Ator
 {
 protected:
@@ -20,6 +22,7 @@ public:
 	Ator(GerenteAtor& _gerente);
 	
 	virtual SDL_Rect PegaBoundingBox() = 0;
+	virtual unsigned int PegaTipo() = 0;
 	
 	virtual bool EstaNoJogo() = 0;
 

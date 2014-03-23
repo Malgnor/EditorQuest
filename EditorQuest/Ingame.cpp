@@ -90,13 +90,20 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.w = w;
 	camera.h = h;
 	gerenteAtor.Inicializar(janela);
-	gerenteAtor.Adicionar(new Jogador(gerenteAtor));
+	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
 }
 
 void Ingame::Atualizar(Uint32 deltaTime){
-	//printf("%d\t", deltaTime);
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
+	camera.x = jogador->PegaBoundingBox().x - camera.w/2;
+	camera.y = jogador->PegaBoundingBox().y - camera.h/2;
+	if(camera.x < 0) camera.x = 0;
+	else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
+	if(camera.y < 0) camera.y = 0;
+	else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
+	/*	
+	//printf("%d\t", deltaTime);
 	//Se o mouse está dentro da janela
 	if(((Mouse->y > 0) && (Mouse->y < camera.h) && (Mouse->x > 0) && (Mouse->x < camera.w))){
 		if(Mouse->y < 100)
@@ -108,10 +115,8 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		else if(Mouse->x > camera.w-100)
 			camera.x+=5;
 	}
-	if(camera.x < 0) camera.x = 0;
-	else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
-	if(camera.y < 0) camera.y = 0;
-	else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
+	*/
+	
 	gerenteAtor.Atualizar(deltaTime, &mapa);
 }
 

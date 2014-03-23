@@ -14,6 +14,9 @@ SDL_Rect Jogador::PegaBoundingBox(){
 	ret.y = (int)y;
 	return ret;
 }
+unsigned int Jogador::PegaTipo(){
+	return ATOR_JOGADOR;
+}
 	
 bool Jogador::EstaNoJogo(){
 	return true;
@@ -67,22 +70,22 @@ void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 
 void Jogador::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/torre.png", 32);
-	x = 400;
-	y = 300;
+	x = 400.0;
+	y = 300.0;
 	indice = 0;
 }
 
 void Jogador::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();	
-	if(Teclas[FW_CIMA].ativo)
-		y-=5;
-	else if(Teclas[FW_BAIXO].ativo)
-		y+=5;
-	if(Teclas[FW_ESQUERDA].ativo)
-		x-=5;
-	else if(Teclas[FW_DIREITA].ativo)
-		x+=5;
+	if(Teclas[FW_W].ativo)
+		y-=(300.0/SEG*deltaTime);
+	else if(Teclas[FW_S].ativo)
+		y+=(300.0/SEG*deltaTime);
+	if(Teclas[FW_A].ativo)
+		x-=(300.0/SEG*deltaTime);
+	else if(Teclas[FW_D].ativo)
+		x+=(300.0/SEG*deltaTime);
 	indice = 0;
 }
 

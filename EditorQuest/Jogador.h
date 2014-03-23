@@ -17,6 +17,7 @@ public:
 	virtual SDL_Rect PegaBoundingBox();
 	
 	virtual bool EstaNoJogo();
+	virtual unsigned int PegaTipo();
 
 	virtual void Colidiu(Ator* ator);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);

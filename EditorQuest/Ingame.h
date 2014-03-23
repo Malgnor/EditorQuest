@@ -12,6 +12,7 @@ private:
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;
+	Ator* jogador;
 
 public:
 	virtual void Inicializar(Janela* _janela);

@@ -72,7 +72,12 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa)
 		cMap* tiles = mapa->PegaColisao();
 		for(Ator* ator : atores)
 		{
-			for(unsigned int i = 0; i < mapa->PegaQtdColisao(); i++){
+			if(ator->PegaTipo() == ATOR_SEMCOLISAO)
+			{
+				continue;
+			}
+			for(unsigned int i = 0; i < mapa->PegaQtdColisao(); i++)
+			{
 				if(SDL_IntersectRect(&ator->PegaBoundingBox(), &tiles[i].rect, &rcolisao) == SDL_TRUE)
 				{
 					ator->ColidiuMapa(&tiles[i], &rcolisao);
@@ -84,8 +89,18 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa)
 	//Checa colisão entre atores
 	if(atores.size() < 2)
 		return;
-	for(unsigned int i = 0; i < atores.size() - 1; i++){
-		for(unsigned int j = i + 1; j < atores.size(); j++){
+	for(unsigned int i = 0; i < atores.size() - 1; i++)
+	{
+		if(atores[i]->PegaTipo() == ATOR_SEMCOLISAO)
+		{
+			continue;
+		}
+		for(unsigned int j = i + 1; j < atores.size(); j++)
+		{
+			if(atores[j]->PegaTipo() == ATOR_SEMCOLISAO)
+			{
+				continue;
+			}
 			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), 0) == SDL_TRUE){
 				atores[i]->Colidiu(atores[j]);
 				atores[j]->Colidiu(atores[i]);
@@ -104,6 +119,59 @@ void GerenteAtor::Renderizar(SDL_Rect* camera)
 		}
 }
 
+Ator* GerenteAtor::PegaAtormaisProximo(double x, double y){
+	Ator* ret = 0;
+	double dx, dy, d;
+	d = 9999.0;
+	if(!atores.empty())
+		for (Ator* ator : atores) 
+		{
+			dx = x - ator->PegaBoundingBox().x;
+			dy = y - ator->PegaBoundingBox().y;
+			double dr = sqrt(dx*dx+dy*dy);
+			if(d > dr)
+			{
+				ret = ator;
+				d = dr;
+			}
+		}
+	return ret;
+}
+
+Ator* GerenteAtor::PegaAtormaisProximo(double x, double y, unsigned int tipo){
+	Ator* ret = 0;
+	double dx, dy, d;
+	d = 9999.0;
+	if(!atores.empty())
+		for (Ator* ator : atores) 
+		{
+			if(ator->PegaTipo() == tipo)
+			{
+				dx = x - ator->PegaBoundingBox().x;
+				dy = y - ator->PegaBoundingBox().y;
+				double dr = sqrt(dx*dx+dy*dy);
+				if(d > dr)
+				{
+					ret = ator;
+					d = dr;
+				}
+			}
+		}
+	return ret;
+}
+/*
+Ator* GerenteAtor::PegaPrimeiroAtornaLista(unsigned int tipo){
+	if(!atores.empty())
+		for (Ator* ator : atores) 
+		{
+			if(ator->PegaTipo() == tipo)
+			{
+				return ator;
+			}
+		}
+	return 0;
+}
+*/
 GerenteAtor::~GerenteAtor()
 {
 	for (Ator* ator : atores) 

@@ -22,6 +22,11 @@ class GerenteAtor
 		void Adicionar(Ator* ator);
 		void Atualizar(Uint32 deltaTime, Mapa* mapa);
 		void Renderizar(SDL_Rect* camera);
+
+		Ator* PegaAtormaisProximo(double x, double y);
+		Ator* PegaAtormaisProximo(double x, double y, unsigned int tipo);
+		//Ator* PegaPrimeiroAtornaLista(unsigned int tipo = ATOR_JOGADOR);
+
 		~GerenteAtor();
 };
 
