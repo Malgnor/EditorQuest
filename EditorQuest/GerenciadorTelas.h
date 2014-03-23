@@ -3,6 +3,7 @@
 
 class Janela;
 class Tela;
+#include "globaldef.h"
 
 class GerenciadorTelas
 {
@@ -11,7 +12,7 @@ class GerenciadorTelas
 		Janela* janela;
 	public:
 		GerenciadorTelas(Tela* tela, Janela* _janela);
-		void Atualizar();
+		void Atualizar(Uint32 deltaTime);
 		void Renderizar();
 		bool Acabou();
 		~GerenciadorTelas();

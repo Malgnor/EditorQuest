@@ -51,8 +51,13 @@ int SDLApp::Executar(){
 
 	bool sair = false;
 	SDL_Event event;
+	Uint32 deltaTime = 0;
 	ticks = SDL_GetTicks();
 	while(!sair) {
+		while(SDL_GetTicks() < ticks+(1000/60))
+			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
+		deltaTime = SDL_GetTicks() - ticks;
+		ticks = SDL_GetTicks();
 		GJanela.PegaJanelaFocada()->entrada.reseta();
 		while(SDL_PollEvent(&event) != 0)
 		{
@@ -62,12 +67,9 @@ int SDLApp::Executar(){
 				GJanela.ProcessarEventosW(event);
 			GJanela.PegaJanelaFocada()->ProcessarEventos(event);
 		}
-		GJanela.Atualizar();
+		GJanela.Atualizar(deltaTime);
 		GJanela.Renderizar();
 
-		while(SDL_GetTicks() < ticks+(1000/60))
-			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
-		ticks = SDL_GetTicks();
 	}
 	return 0;
 }

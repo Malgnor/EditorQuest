@@ -20,7 +20,7 @@ public:
 	void Inicializar(Tela* telainicial);
 	void ProcessarEventos(SDL_Event& evento);
 	void ProcessarEventosW(SDL_Event& evento);
-	void Atualizar();
+	void Atualizar(Uint32 deltaTime);
 	void Renderizar();
 	void Finalizar();
 	~Janela();

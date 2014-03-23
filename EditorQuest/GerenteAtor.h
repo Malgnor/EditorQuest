@@ -5,6 +5,7 @@
 #include "Janela.h"
 
 class Ator;
+class Mapa;
 
 class GerenteAtor
 {
@@ -19,7 +20,7 @@ class GerenteAtor
 
 		void Inicializar(Janela* _janela);
 		void Adicionar(Ator* ator);
-		void Atualizar();
+		void Atualizar(Uint32 deltaTime, Mapa* mapa);
 		void Renderizar(SDL_Rect* camera);
 		~GerenteAtor();
 };

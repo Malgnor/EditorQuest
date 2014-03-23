@@ -15,7 +15,7 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->Mostrar();
 }
 
-void MenuInicial::Atualizar(){
+void MenuInicial::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
 	if(Teclas[FW_1].pressionado)

@@ -70,10 +70,10 @@ void Janela::ProcessarEventosW(SDL_Event& evento){
 	}
 }
 
-void Janela::Atualizar(){
+void Janela::Atualizar(Uint32 deltaTime){
 	if(this->Existe())
 		if(!gerente->Acabou())
-			gerente->Atualizar();
+			gerente->Atualizar(deltaTime);
 		else
 			this->Finalizar();
 }

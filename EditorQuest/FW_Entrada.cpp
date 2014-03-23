@@ -13,7 +13,7 @@ FW_Entrada::FW_Entrada(){
         mouse.botoes[i].ativo = false;
         mouse.botoes[i].repeticao = 0;
 	}
-	mouse.wx = mouse.wy = mouse.x = mouse.y = 0;
+	mouse.wx = mouse.wy = 0;
 }
 
 //funções de retorno de entrada, mouse e teclado
@@ -61,7 +61,7 @@ void FW_Entrada::reseta(){
         mouse.botoes[i].pressionado = false;
         mouse.botoes[i].liberado = false;
 	}
-	mouse.wx = mouse.wy = 0;
+	mouse.wx = mouse.wy = mouse.x = mouse.y = 0;
 }
 
 void FW_Entrada::atualiza(SDL_Event& event)

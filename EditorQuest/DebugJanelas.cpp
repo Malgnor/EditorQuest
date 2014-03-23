@@ -32,7 +32,7 @@ void DebugJanelas::Inicializar(Janela* _janela){
 	r = 0.0;
 }
 
-void DebugJanelas::Atualizar(){
+void DebugJanelas::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
 	y += 10*Mouse->wy;

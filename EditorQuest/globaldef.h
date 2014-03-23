@@ -19,6 +19,6 @@
 	#define amask 0xff000000
 #endif
 
-#define DEBUG
+//#define DEBUG
 
 #endif

@@ -2,6 +2,7 @@
 #define _TELA_H_
 
 class Janela;
+#include "globaldef.h"
 
 #ifndef _INPUT_
 #define _INPUT_
@@ -16,7 +17,7 @@ protected:
 
 public:
 	virtual void Inicializar(Janela* _janela) = 0;
-	virtual void Atualizar() = 0;
+	virtual void Atualizar(Uint32 deltaTime) = 0;
 	virtual void Renderizar() = 0;
 	virtual void Finalizar() = 0;
 

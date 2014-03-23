@@ -75,14 +75,14 @@ void GerenteJanela::ProcessarEventosW(SDL_Event& evento){
 			j->ProcessarEventosW(evento);	
 }
 
-void GerenteJanela::Atualizar(){
+void GerenteJanela::Atualizar(Uint32 deltaTime){
 	std::vector<Janela*> removidos;
 	std::vector<Janela*> ativos;
 
 	if(!janelas.empty())
 		for(Janela* j: janelas){
 			if(j->Existe()){
-				j->Atualizar();
+				j->Atualizar(deltaTime);
 				ativos.push_back(j);
 			} else
 				removidos.push_back(j);

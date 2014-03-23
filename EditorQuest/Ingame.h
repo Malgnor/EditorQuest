@@ -4,17 +4,18 @@
 #include "Tela.h"
 #include "Sprite.h"
 #include "GerenteAtor.h"
+#include "Mapa.h"
 
 class Ingame : public Tela
 {
 private:
 	GerenteAtor gerenteAtor;
-	Sprite mapa;
 	SDL_Rect camera;
+	Mapa mapa;
 
 public:
 	virtual void Inicializar(Janela* _janela);
-	virtual void Atualizar() ;
+	virtual void Atualizar(Uint32 deltaTime);
 	virtual void Renderizar();
 	virtual void Finalizar();
 

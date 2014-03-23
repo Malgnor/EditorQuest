@@ -16,7 +16,7 @@ private:
 
 public:
 	virtual void Inicializar(Janela* _janela);
-	virtual void Atualizar();
+	virtual void Atualizar(Uint32 deltaTime);
 	virtual void Renderizar();
 	virtual void Finalizar();
 

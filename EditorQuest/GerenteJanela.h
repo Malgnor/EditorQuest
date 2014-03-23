@@ -29,7 +29,7 @@ public:
 	void Remover(const char* titulo);
 
 	void ProcessarEventosW(SDL_Event& evento);
-	void Atualizar();
+	void Atualizar(Uint32 deltaTime);
 	void Renderizar();
 
 	Janela* PegaJanelaPorID(Uint32 id);

@@ -2,12 +2,16 @@
 #include "janela.h"
 #include "Jogador.h"
 #include "MenuInicial.h"
+#include <fstream>
+#include <string>
 
 void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
 	janela->SetaTitulo("Editor's Quest - Ingame");
 	janela->SetaCorFundo(0, 0, 0);
-	Uint8 map[32][32] = { 
+	
+	/*
+	unsigned int map[32][32] = { 
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
 		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
@@ -41,7 +45,44 @@ void Ingame::Inicializar(Janela* _janela){
 		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	};
-	mapa.CriaTexturaMapa(janela->renderer, map, 32, 32);
+	altura = largura = 32;
+	std::ofstream out;
+	out.open("teste.equest", std::ios_base::binary);
+	if(out.is_open())
+	{
+		out << largura << " " << altura << std::endl;
+		for(unsigned int i = 0; i < altura; i++)
+		{
+			for(unsigned int j = 0; j < largura; j++)
+			{
+				out << map[i][j] << " ";
+			}
+			out << std::endl;
+		}
+		out.close();
+	}
+	*/
+	unsigned int** map = 0;
+	unsigned int altura, largura;
+	std::string buffer;
+	std::ifstream in;
+	in.open("teste.equest", std::ios_base::binary);
+	if(in.is_open())
+	{
+		in >> largura  >> altura;
+		map = new unsigned int*[altura];
+		for(unsigned int i = 0; i < altura; i++)
+		{
+			map[i] = new unsigned int[largura];
+			for(unsigned int j = 0; j < largura; j++)
+			{
+				in >> map[i][j];
+			}
+			in;
+		}
+		in.close();
+	}
+	mapa.Inicializar(janela->renderer, map, altura, largura);	
 	int w, h;
 	janela->PegaTamanho(w, h);
 	camera.x = 0;
@@ -52,7 +93,8 @@ void Ingame::Inicializar(Janela* _janela){
 	gerenteAtor.Adicionar(new Jogador(gerenteAtor));
 }
 
-void Ingame::Atualizar(){
+void Ingame::Atualizar(Uint32 deltaTime){
+	//printf("%d\t", deltaTime);
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
 	//Se o mouse está dentro da janela
@@ -70,11 +112,11 @@ void Ingame::Atualizar(){
 	else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
 	if(camera.y < 0) camera.y = 0;
 	else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
-	gerenteAtor.Atualizar();
+	gerenteAtor.Atualizar(deltaTime, &mapa);
 }
 
 void Ingame::Renderizar(){
-	mapa.Renderizar(janela->renderer, (double)-camera.x, (double)-camera.y);
+	mapa.Renderizar(janela->renderer, &camera);
 	gerenteAtor.Renderizar(&camera);
 }
 

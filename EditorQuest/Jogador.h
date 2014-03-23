@@ -19,9 +19,10 @@ public:
 	virtual bool EstaNoJogo();
 
 	virtual void Colidiu(Ator* ator);
+	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		
-	virtual void Atualizar();	
+	virtual void Atualizar(Uint32 deltaTime);	
 	virtual void Renderizar(SDL_Rect* camera);
 	virtual void Finalizar();
 };

@@ -1,5 +1,6 @@
 #include "GerenteAtor.h"
 #include "Ator.h"
+#include "Mapa.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ void GerenteAtor::Adicionar(Ator* ator)
 	ator->Inicializar();
 }
 
-void GerenteAtor::Atualizar()
+void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa)
 {
 	//1. Excluir os atores na lista excluido
 	//para libera-la. 
@@ -48,7 +49,7 @@ void GerenteAtor::Atualizar()
 
 	for (Ator* ator : atores) 
 	{
-		ator->Atualizar();
+		ator->Atualizar(deltaTime);
 		if (ator->EstaNoJogo())
 		{
 			vivos.push_back(ator);
@@ -62,10 +63,27 @@ void GerenteAtor::Atualizar()
 
 	//Substitui a lista de atores pela de vivos.
 	swap(atores, vivos);
-	
+
+	//Checa colisão com o mapa
+	if(atores.size() < 1)
+		return;
+	if(mapa != 0){
+		SDL_Rect rcolisao;
+		cMap* tiles = mapa->PegaColisao();
+		for(Ator* ator : atores)
+		{
+			for(unsigned int i = 0; i < mapa->PegaQtdColisao(); i++){
+				if(SDL_IntersectRect(&ator->PegaBoundingBox(), &tiles[i].rect, &rcolisao) == SDL_TRUE)
+				{
+					ator->ColidiuMapa(&tiles[i], &rcolisao);
+				}
+			}
+		}
+	}
+
+	//Checa colisão entre atores
 	if(atores.size() < 2)
 		return;
-
 	for(unsigned int i = 0; i < atores.size() - 1; i++){
 		for(unsigned int j = i + 1; j < atores.size(); j++){
 			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), 0) == SDL_TRUE){

@@ -1,4 +1,5 @@
 #include "Jogador.h"
+#include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
 
@@ -22,6 +23,48 @@ void Jogador::Colidiu(Ator* ator){
 
 }
 
+void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
+	double dx,dy;
+	switch (tile->id)
+	{
+	case 1:
+		if(colisao->w > colisao->h)
+		{
+			dy = (double)(y-tile->rect.y);
+			if( dy > 0)
+			{
+				y += colisao->h;
+			}
+			else
+			{
+				y -= colisao->h;
+			}
+		}
+		else
+		{			
+			dx = (double)(x-tile->rect.x);
+			if( dx > 0)
+			{
+				x += colisao->w;
+			}
+			else
+			{
+				x -= colisao->w;
+			}
+		}
+		indice = 1;
+		break;
+	case 3:
+		indice = 2;
+		break;
+	case 4:
+		indice = 3;
+		break;
+	default:
+		break;
+	}
+}
+
 void Jogador::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/torre.png", 32);
 	x = 400;
@@ -29,7 +72,7 @@ void Jogador::Inicializar(){
 	indice = 0;
 }
 
-void Jogador::Atualizar(){
+void Jogador::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();	
 	if(Teclas[FW_CIMA].ativo)
@@ -40,6 +83,7 @@ void Jogador::Atualizar(){
 		x-=5;
 	else if(Teclas[FW_DIREITA].ativo)
 		x+=5;
+	indice = 0;
 }
 
 void Jogador::Renderizar(SDL_Rect* camera){

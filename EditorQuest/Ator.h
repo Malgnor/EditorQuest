@@ -7,8 +7,9 @@
 #define PegaMouse gerente.janela->entrada.pegaMouse
 #endif
 
+#include "globaldef.h"
 class GerenteAtor;
-struct SDL_Rect;
+struct cMap;
 
 class Ator
 {
@@ -23,9 +24,10 @@ public:
 	virtual bool EstaNoJogo() = 0;
 
 	virtual void Colidiu(Ator* ator) = 0;
+	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao) = 0;
 
 	virtual void Inicializar() = 0;		
-	virtual void Atualizar() = 0;	
+	virtual void Atualizar(Uint32 deltaTime) = 0;	
 	virtual void Renderizar(SDL_Rect* camera) = 0;
 	virtual void Finalizar() = 0;
 

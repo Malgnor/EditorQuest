@@ -300,7 +300,7 @@ bool Sprite::CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const c
 	return (textura != 0);
 }
 
-bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, Uint8 mapa[32][32], Uint8 largura, Uint8 altura){
+bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, unsigned int **mapa, unsigned int largura, unsigned int altura){
 	this->Destruir();
 
 	SDL_Surface* tileSurface = IMG_Load("resources/imgs/tileset.png");
@@ -313,8 +313,8 @@ bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, Uint8 mapa[32][32], Uint8 l
 		} else {
 			SDL_Rect srcrect = {0, 0, 32, 32};
 			SDL_Rect dstrect = {0, 0, 32, 32};
-			for(Uint8 i = 0; i < altura; i++){
-				for(Uint8 j = 0; j < largura; j++){
+			for(unsigned int i = 0; i < altura; i++){
+				for(unsigned int j = 0; j < largura; j++){
 					dstrect.x = j*32;
 					dstrect.y = i*32;
 					srcrect.x = mapa[i][j]*32;

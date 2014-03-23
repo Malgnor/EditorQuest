@@ -8,7 +8,7 @@ GerenciadorTelas::GerenciadorTelas(Tela* _tela, Janela* _janela)
 	tela->Inicializar(janela);
 }
 
-void GerenciadorTelas::Atualizar()
+void GerenciadorTelas::Atualizar(Uint32 deltaTime)
 {
 	Tela* proximaTela = tela->ProximaTela();
 
@@ -31,7 +31,7 @@ void GerenciadorTelas::Atualizar()
 		}
 
 		//caso seja a mesma apenas atualiza
-		tela->Atualizar();
+		tela->Atualizar(deltaTime);
 	}
 }
 
