@@ -16,8 +16,8 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->Mostrar();
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	jogar.Inicializar(janela->renderer, "Jogar", w/2.0, 200, fonte, cor);
-	sair.Inicializar(janela->renderer, "Sair", w/2.0, 400, fonte, cor);
+	jogar.Inicializar(janela->renderer, "Jogar", w/3.0*2.0, 200, fonte, cor);
+	sair.Inicializar(janela->renderer, "Sair", w/3.0*2.0, 400, fonte, cor);
 	TTF_CloseFont(fonte);
 }
 

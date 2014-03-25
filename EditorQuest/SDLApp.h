@@ -4,8 +4,6 @@
 #include "globaldef.h"
 
 class SDLApp{
-private:
-	Uint32 ticks;
 
 public:
 	SDLApp();

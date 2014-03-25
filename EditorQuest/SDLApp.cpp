@@ -52,7 +52,7 @@ int SDLApp::Executar(){
 	bool sair = false;
 	SDL_Event event;
 	Uint32 deltaTime = 0;
-	ticks = SDL_GetTicks();
+	Uint32 ticks = SDL_GetTicks();
 	while(!sair) {
 		while(SDL_GetTicks() < ticks+(1000/60))
 			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());

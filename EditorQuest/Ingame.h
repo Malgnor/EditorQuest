@@ -5,14 +5,19 @@
 #include "Sprite.h"
 #include "GerenteAtor.h"
 #include "Mapa.h"
+#include "Botao.h"
 
 class Ingame : public Tela
 {
 private:
+	enum { ESTADO_INGAME, ESTADO_PAUSADO };
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;
 	Ator* jogador;
+	Botao sair;
+	Sprite filtro;
+	unsigned int estado;
 
 public:
 	virtual void Inicializar(Janela* _janela);
