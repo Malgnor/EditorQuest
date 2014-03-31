@@ -11,11 +11,12 @@ class Ingame : public Tela
 {
 private:
 	enum { ESTADO_INGAME, ESTADO_PAUSADO, ESTADO_STATUS, ESTADO_INVENTARIO };
+	enum { BOTAO_SAIR, BOTAO_VOLTAR, BOTAO_MENUINICIAL, BOTAO_STATUS, BOTAO_INVENTARIO};
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;
 	Ator* jogador;
-	Botao sair;
+	Botao botoes[5];
 	Sprite filtro;
 	unsigned int estado;
 

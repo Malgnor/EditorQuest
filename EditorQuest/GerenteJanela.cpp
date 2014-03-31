@@ -127,6 +127,7 @@ Janela* GerenteJanela::PegaJanelaFocada(){
 unsigned int GerenteJanela::PegaQtdJanelas(){
 	return janelas.size();
 }
+
 void GerenteJanela::SetaJanelaFocada(Janela* janela){
 	janelafocada = janela;
 }

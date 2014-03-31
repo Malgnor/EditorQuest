@@ -17,7 +17,11 @@ Item::Item()
 Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* _icone, Atributos _atributos)
 	: nome(_nome), descricao(_descricao), atributos(_atributos)
 {
+	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
+	SDL_Color cor = {0, 0, 0};
 	icone.CriaTexturaDaImagem(renderer, _icone);
+	txtdesc.CriaTexturaDoTexto(renderer, descricao.c_str(), fonte, cor);
+	TTF_CloseFont(fonte);
 }
 
 string Item::PegaNome(){
@@ -34,4 +38,12 @@ Atributos Item::PegaAtributos(){
 
 Sprite& Item::PegaIcone(){
 	return icone;
+}
+
+Sprite& Item::PegaTxtNome(){
+	return txtnome;
+}
+
+Sprite& Item::PegaTxtDesc(){
+	return txtdesc;
 }

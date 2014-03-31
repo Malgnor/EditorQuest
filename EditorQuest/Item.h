@@ -18,7 +18,7 @@ class Item{
 private:
 	std::string nome;
 	std::string descricao;
-	Sprite icone;
+	Sprite icone, txtnome, txtdesc;
 	Atributos atributos;
 
 public:
@@ -28,6 +28,8 @@ public:
 	std::string PegaDescricao();
 	Atributos PegaAtributos();
 	Sprite& PegaIcone();
+	Sprite& PegaTxtNome();
+	Sprite& PegaTxtDesc();
 };
 
 #endif

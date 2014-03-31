@@ -7,10 +7,8 @@ class SDLApp{
 
 public:
 	SDLApp();
-	~SDLApp();
 	void Inicializar();
 	int Executar();
-	void Finalizar();
 };
 
 #endif

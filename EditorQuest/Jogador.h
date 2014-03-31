@@ -15,6 +15,9 @@ private:
 	unsigned int indice;
 	Item inventario[10];
 	Item equipamento[5];
+	Atributos atributos;
+	int hpatual, mpatual;
+	Uint32 time;
 
 public:
 	Jogador(GerenteAtor& _gerente);

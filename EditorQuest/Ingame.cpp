@@ -92,7 +92,11 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.h = h;
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	sair.Inicializar(janela->renderer, "Sair", w/2.0-25, 500, fonte, cor);
+	botoes[BOTAO_STATUS].Inicializar(janela->renderer, "Status", 50, 75, fonte, cor);
+	botoes[BOTAO_INVENTARIO].Inicializar(janela->renderer, "Inventario", 50, 175, fonte, cor);
+	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, 375, fonte, cor);
+	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, 450, fonte, cor);
+	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, 525, fonte, cor);
 	TTF_CloseFont(fonte);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
@@ -118,10 +122,25 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			estado = ESTADO_PAUSADO;
 		break;
 	case ESTADO_PAUSADO:
-		sair.Atualizar();
-		if(Teclas[FW_ESC].pressionado)
+		for(int i = 0; i < 5; i++)
+			botoes[i].Atualizar();
+		if(Teclas[FW_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
+		if(botoes[BOTAO_INVENTARIO].Pressionado())
+			estado = ESTADO_INVENTARIO;
+		if(botoes[BOTAO_STATUS].Pressionado())
+			estado = ESTADO_STATUS;
 	break;
+	case ESTADO_STATUS:
+		botoes[BOTAO_VOLTAR].Atualizar();
+		if(botoes[BOTAO_VOLTAR].Pressionado())
+			estado = ESTADO_INGAME;
+		break;
+	case ESTADO_INVENTARIO:
+		botoes[BOTAO_VOLTAR].Atualizar();
+		if(botoes[BOTAO_VOLTAR].Pressionado())
+			estado = ESTADO_INGAME;
+		break;
 	default:
 		break;
 	}
@@ -130,7 +149,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 void Ingame::Renderizar(){
 	mapa.Renderizar(janela->renderer, &camera);
 	gerenteAtor.Renderizar(&camera);
-	if(estado == ESTADO_PAUSADO)
+	if(estado != ESTADO_INGAME)
 	{
 		filtro.Renderizar(janela->renderer, 0.0, 0.0);
 	}
@@ -138,8 +157,15 @@ void Ingame::Renderizar(){
 	{
 	case ESTADO_INGAME:
 		break;
-	case ESTADO_PAUSADO:
-		sair.Renderizar(janela->renderer);
+	case ESTADO_PAUSADO:		
+		for(int i = 0; i < 5; i++)
+			botoes[i].Renderizar(janela->renderer);
+		break;
+	case ESTADO_INVENTARIO:
+		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
+		break;
+	case ESTADO_STATUS:
+		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	default:
 		break;
@@ -150,9 +176,9 @@ void Ingame::Finalizar(){
 }
 
 Tela* Ingame::ProximaTela(){
-	if(PegaTecla()[FW_ENCERRA].pressionado)
+	if(PegaTecla()[FW_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
 		return 0;
-	if(sair.Pressionado())
+	if(botoes[BOTAO_MENUINICIAL].Pressionado())
 		return new MenuInicial();
 	return this;
 }

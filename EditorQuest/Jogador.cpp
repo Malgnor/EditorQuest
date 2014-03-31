@@ -75,11 +75,29 @@ void Jogador::Inicializar(){
 	y = 300.0;
 	direcao = 0.0;
 	indice = 0;
+	hpatual = atributos.hp = 100;
+	atributos.hpregen = 1;
+	mpatual = atributos.mp = 100;
+	atributos.mpregen = 2;
+	atributos.forca = 5;
+	atributos.defesa = 5;
+	atributos.magia = 5;
+	time = 0;
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
+	time += deltaTime;
+	if(time >= 1000){
+		time -= 1000;
+		hpatual += atributos.hpregen;
+		mpatual += atributos.mpregen;
+		if(hpatual > atributos.hp)
+			hpatual = atributos.hp;
+		if(mpatual > atributos.mp)
+			mpatual = atributos.mp;
+	}
 	// SEG = 1000.0
 	if(Teclas[FW_W].ativo)
 		y-=(300.0/SEG*deltaTime);

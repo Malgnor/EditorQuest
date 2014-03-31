@@ -8,10 +8,6 @@ SDLApp::SDLApp(){
 	this->Inicializar();
 }
 
-SDLApp::~SDLApp(){
-	this->Finalizar();
-}
-
 void SDLApp::Inicializar(){
 	if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0){
 		printf_s("Falha ao iniciar a SDL! Erro: %s\n", SDL_GetError());
@@ -73,13 +69,10 @@ int SDLApp::Executar(){
 		if(gerente.PegaQtdJanelas() == 0)
 			sair = true;
 	}
-	return 0;
-}
-
-void SDLApp::Finalizar(){
-	GJanela.Finalizar();
+	gerente.Finalizar();
 	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	return 0;
 }
