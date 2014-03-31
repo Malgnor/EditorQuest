@@ -2,6 +2,7 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
+#include "Habilidade.h"
 
 Jogador::Jogador(GerenteAtor& _gerente) : Ator(_gerente)
 {
@@ -72,12 +73,14 @@ void Jogador::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/torre.png", 32);
 	x = 400.0;
 	y = 300.0;
+	direcao = 0.0;
 	indice = 0;
 }
 
-void Jogador::Atualizar(Uint32 deltaTime){
+void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	FW_Botao* Teclas = PegaTecla();
-	FW_Mouse* Mouse = PegaMouse();	
+	FW_Mouse* Mouse = PegaMouse();
+	// SEG = 1000.0
 	if(Teclas[FW_W].ativo)
 		y-=(300.0/SEG*deltaTime);
 	else if(Teclas[FW_S].ativo)
@@ -86,11 +89,15 @@ void Jogador::Atualizar(Uint32 deltaTime){
 		x-=(300.0/SEG*deltaTime);
 	else if(Teclas[FW_D].ativo)
 		x+=(300.0/SEG*deltaTime);
+	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16)*180.0/M_PI;
+	if(Mouse->botoes[FW_MESQUERDO].pressionado)
+		gerente.Adicionar(new Habilidade(gerente, x, y, direcao));
+	//printf("%f %d %d\n", direcao, Mouse->x, Mouse->y);
 	indice = 0;
 }
 
 void Jogador::Renderizar(SDL_Rect* camera){
-	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, indice);
+	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, indice, 0, direcao);
 }
 
 void Jogador::Finalizar(){

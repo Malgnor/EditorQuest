@@ -4,15 +4,14 @@
 #include "Tela.h"
 
 Janela::Janela(Tela* telainicial){	
-	renderer = NULL;
-	window = NULL;
-	gerente = NULL;
+	renderer = 0;
+	window = 0;
+	gerente = 0;
 	this->Inicializar(telainicial);
 	GJanela.Adicionar(this);
 }
 
 Janela::~Janela(){
-	this->Finalizar();
 }
 
 void Janela::Inicializar(Tela* telainicial){
@@ -88,13 +87,15 @@ void Janela::Renderizar(){
 		}
 }
 
-void Janela::Finalizar(){	
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
+void Janela::Finalizar(){
+	if((unsigned int)renderer != 0xfeeefeee)
+		SDL_DestroyRenderer(renderer);
+	if((unsigned int)window != 0xfeeefeee)
+		SDL_DestroyWindow(window);
 	delete gerente;
-	renderer = NULL;
-	window = NULL;
-	gerente = NULL;
+	renderer = 0;
+	window = 0;
+	gerente = 0;
 }
 
 void Janela::Mostrar(){

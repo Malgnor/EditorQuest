@@ -14,7 +14,7 @@ void GerenteAtor::Adicionar(Ator* ator)
 	ator->Inicializar();
 }
 
-void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa)
+void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 {
 	//1. Excluir os atores na lista excluido
 	//para libera-la. 
@@ -49,7 +49,7 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa)
 
 	for (Ator* ator : atores) 
 	{
-		ator->Atualizar(deltaTime);
+		ator->Atualizar(deltaTime, camera);
 		if (ator->EstaNoJogo())
 		{
 			vivos.push_back(ator);

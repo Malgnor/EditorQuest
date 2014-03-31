@@ -78,6 +78,12 @@
     <ClCompile Include="Botao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Habilidade.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -126,6 +132,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Botao.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Habilidade.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

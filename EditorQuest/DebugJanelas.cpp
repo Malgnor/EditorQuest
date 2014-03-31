@@ -78,7 +78,7 @@ void DebugJanelas::Finalizar(){
 
 Tela* DebugJanelas::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado)
-		return nullptr;
+		return 0;
 	if(PegaTecla()[FW_ESC].pressionado)
 		return new DebugJanelas();
 	return this;

@@ -11,7 +11,7 @@
 class GerenteAtor;
 struct cMap;
 
-enum {ATOR_SEMCOLISAO, ATOR_JOGADOR, ATOR_INIMIGO, ATOR_ARMADILHA};
+enum {ATOR_SEMCOLISAO, ATOR_JOGADOR, ATOR_HABILIDADE, ATOR_INIMIGO, ATOR_ARMADILHA};
 
 class Ator
 {
@@ -30,7 +30,7 @@ public:
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao) = 0;
 
 	virtual void Inicializar() = 0;		
-	virtual void Atualizar(Uint32 deltaTime) = 0;	
+	virtual void Atualizar(Uint32 deltaTime, SDL_Rect* camera) = 0;	
 	virtual void Renderizar(SDL_Rect* camera) = 0;
 	virtual void Finalizar() = 0;
 

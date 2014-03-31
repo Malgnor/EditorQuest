@@ -46,7 +46,7 @@ void MenuInicial::Finalizar(){
 
 Tela* MenuInicial::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado || sair.Pressionado())
-		return nullptr;
+		return 0;
 	if(jogar.Pressionado())
 		return new Ingame();
 	return this;

@@ -10,7 +10,7 @@
 class Ingame : public Tela
 {
 private:
-	enum { ESTADO_INGAME, ESTADO_PAUSADO };
+	enum { ESTADO_INGAME, ESTADO_PAUSADO, ESTADO_STATUS, ESTADO_INVENTARIO };
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;

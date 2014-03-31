@@ -1,23 +1,19 @@
-#ifndef _JOGADOR_H_
-#define _JOGADOR_H_
-
-enum { EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES};
+#ifndef _HABILIDADE_H_
+#define _HABILIDADE_H_
 
 #include "Ator.h"
 #include "Sprite.h"
-#include "Item.h"
 
-class Jogador : public Ator
+class Habilidade : public Ator
 {
 private:
 	Sprite sprite;
 	double x, y, direcao;
-	unsigned int indice;
-	Item inventario[10];
-	Item equipamento[5];
+	unsigned int indice, tempodevida;
+	bool vivo;
 
 public:
-	Jogador(GerenteAtor& _gerente);
+	Habilidade(GerenteAtor& _gerente, double _x, double _y, double _direcao);
 	
 	virtual SDL_Rect PegaBoundingBox();
 	
@@ -32,4 +28,6 @@ public:
 	virtual void Renderizar(SDL_Rect* camera);
 	virtual void Finalizar();
 };
+
 #endif
+

@@ -53,7 +53,7 @@ void FW_Entrada::reseta(){
     // Remove o liberamento das teclas do passo anterior
     for(int i=0;i<FW_MAX_TECLAS;i++){
         tecla[i].pressionado = false;
-        tecla[i].liberado= false;
+        tecla[i].liberado = false;
 	}
     // Remove o pressionamento do mouse do passo anterior
     // Remove o liberamento do mouse do passo anterior
@@ -61,7 +61,7 @@ void FW_Entrada::reseta(){
         mouse.botoes[i].pressionado = false;
         mouse.botoes[i].liberado = false;
 	}
-	mouse.wx = mouse.wy = mouse.x = mouse.y = 0;
+	mouse.wx = mouse.wy = 0;
 }
 
 void FW_Entrada::atualiza(SDL_Event& event)

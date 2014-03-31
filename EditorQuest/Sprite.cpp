@@ -16,19 +16,19 @@ bool Sprite::CriaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int
 	this->Destruir();
 
 	//The final texture
-	SDL_Texture* newTexture = NULL;
+	SDL_Texture* newTexture = 0;
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( imagem );
-	if( loadedSurface == NULL )
+	if( loadedSurface == 0 )
 	{
 		printf( "Unable to load image %s! SDL_image Error: %s\n", imagem, IMG_GetError() );
 	}
 	else
 	{
 		//Convert surface to display format
-		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, NULL );
-		if( formattedSurface == NULL )
+		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, 0 );
+		if( formattedSurface == 0 )
 		{
 			printf( "Unable to convert loaded surface to display format! %s\n", SDL_GetError() );
 		}
@@ -36,7 +36,7 @@ bool Sprite::CriaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int
 		{
 			//Create blank streamable texture
 			newTexture = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formattedSurface->w, formattedSurface->h );
-			if( newTexture == NULL )
+			if( newTexture == 0 )
 			{
 				printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
 			}
@@ -53,7 +53,7 @@ bool Sprite::CriaTexturaDaImagem(SDL_Renderer* renderer, const char *imagem, int
 				
 				//Unlock texture to update
 				SDL_UnlockTexture( newTexture );
-				pixels = NULL;
+				pixels = 0;
 			}
 			//Get rid of old formatted surface
 			SDL_FreeSurface( formattedSurface );
@@ -77,19 +77,19 @@ bool Sprite::CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, in
 	this->Destruir();
 
 	//The final texture
-	SDL_Texture* newTexture = NULL;
+	SDL_Texture* newTexture = 0;
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( imagem );
-	if( loadedSurface == NULL )
+	if( loadedSurface == 0 )
 	{
 		printf( "Unable to load image %s! SDL_image Error: %s\n", imagem, IMG_GetError() );
 	}
 	else
 	{
 		//Convert surface to display format
-		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, NULL );
-		if( formattedSurface == NULL )
+		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, 0 );
+		if( formattedSurface == 0 )
 		{
 			printf( "Unable to convert loaded surface to display format! %s\n", SDL_GetError() );
 		}
@@ -97,7 +97,7 @@ bool Sprite::CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, in
 		{
 			//Create blank streamable texture
 			newTexture = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formattedSurface->w, formattedSurface->h );
-			if( newTexture == NULL )
+			if( newTexture == 0 )
 			{
 				printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
 			}
@@ -134,7 +134,7 @@ bool Sprite::CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, in
 
 				//Unlock texture to update
 				SDL_UnlockTexture( newTexture );
-				pixels = NULL;
+				pixels = 0;
 			}
 
 			//Get rid of old formatted surface
@@ -213,7 +213,7 @@ bool Sprite::CriaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_
 		tmpSurface = TTF_RenderText_Solid(fonte, tmp.c_str(), cor);
 		dest.w = tmpSurface->w;
 		dest.h = tmpSurface->h;
-		SDL_BlitSurface(tmpSurface, NULL, textSurface, &dest);
+		SDL_BlitSurface(tmpSurface, 0, textSurface, &dest);
 		SDL_FreeSurface(tmpSurface);
 		dest.y += tmpSurface->h;
 		if(dest.w > src.w)
@@ -227,7 +227,7 @@ bool Sprite::CriaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_
 	dest.w = src.w;
 	dest.h = src.h;
 	tmpSurface = SDL_CreateRGBSurface(0, src.w, src.h, 32, rmask, gmask, bmask, amask);
-	SDL_BlitSurface(textSurface, &dest, tmpSurface, NULL);
+	SDL_BlitSurface(textSurface, &dest, tmpSurface, 0);
 	textura = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
 	SDL_FreeSurface(textSurface);

@@ -88,7 +88,9 @@
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteAtor.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
+    <ClCompile Include="Habilidade.cpp" />
     <ClCompile Include="Ingame.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Jogador.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -106,7 +108,9 @@
     <ClInclude Include="GerenteAtor.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
+    <ClInclude Include="Habilidade.h" />
     <ClInclude Include="Ingame.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Janela.h" />
     <ClInclude Include="Jogador.h" />
     <ClInclude Include="Mapa.h" />

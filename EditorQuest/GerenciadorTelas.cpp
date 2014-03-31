@@ -13,11 +13,11 @@ void GerenciadorTelas::Atualizar(Uint32 deltaTime)
 	Tela* proximaTela = tela->ProximaTela();
 
 	//se mandar tela nula termina o programa
-	if (proximaTela == nullptr) 
+	if (proximaTela == 0) 
 	{
 		tela->Finalizar();
 		delete tela;
-		tela = nullptr;
+		tela = 0;
 	} 
 	else
 	{
@@ -37,19 +37,19 @@ void GerenciadorTelas::Atualizar(Uint32 deltaTime)
 
 void GerenciadorTelas::Renderizar()
 {
-	if (tela != nullptr)
+	if (tela != 0)
 		tela->Renderizar();
 }
 
 bool GerenciadorTelas::Acabou()
 {
-	return tela == nullptr;
+	return tela == 0;
 }
 
 GerenciadorTelas::~GerenciadorTelas()
 {
-	if(tela)
+	if(tela != 0)
 		tela->Finalizar();
 	delete tela;
-	tela = nullptr;
+	tela = 0;
 }

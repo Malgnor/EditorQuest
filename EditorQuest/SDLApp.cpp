@@ -53,23 +53,24 @@ int SDLApp::Executar(){
 	SDL_Event event;
 	Uint32 deltaTime = 0;
 	Uint32 ticks = SDL_GetTicks();
+	GerenteJanela gerente = GerenteJanela::PegaGerenteJanela();
 	while(!sair) {
 		while(SDL_GetTicks() < ticks+(1000/60))
 			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
 		deltaTime = SDL_GetTicks() - ticks;
 		ticks = SDL_GetTicks();
-		GJanela.PegaJanelaFocada()->entrada.reseta();
+		gerente.PegaJanelaFocada()->entrada.reseta();
 		while(SDL_PollEvent(&event) != 0)
 		{
 			if(event.type == SDL_QUIT)
 				sair = true;
 			else if(event.type == SDL_WINDOWEVENT)				
-				GJanela.ProcessarEventosW(event);
-			GJanela.PegaJanelaFocada()->ProcessarEventos(event);
+				gerente.ProcessarEventosW(event);
+			gerente.PegaJanelaFocada()->ProcessarEventos(event);
 		}
-		GJanela.Atualizar(deltaTime);
-		GJanela.Renderizar();
-		if(GJanela.PegaQtdJanelas() == 0)
+		gerente.Atualizar(deltaTime);
+		gerente.Renderizar();
+		if(gerente.PegaQtdJanelas() == 0)
 			sair = true;
 	}
 	return 0;

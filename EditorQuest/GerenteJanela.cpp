@@ -26,8 +26,10 @@ void GerenteJanela::Finalizar(){
 	if(self){
 		if(!janelas.empty()){
 			for(Janela* j:janelas){
-				delete j;
-				j = 0;
+				if(j->Existe()){
+					delete j;
+					j = 0;
+				}
 			}
 			janelas.clear();
 			janelafocada = 0;

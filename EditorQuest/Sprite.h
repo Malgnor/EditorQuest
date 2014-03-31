@@ -21,7 +21,7 @@ public:
 	bool CriaTexturaMenu(SDL_Renderer* renderer, const char *imagem, const char *texto, TTF_Font *fonte, SDL_Color cortexto);
 	bool CriaTexturaMapa(SDL_Renderer* renderer, unsigned int **mapa, unsigned int largura, unsigned int altura);
 
-	void Renderizar(SDL_Renderer *renderer, double posX, double posY, unsigned int indiceX = 0, unsigned int indiceY = 0, double angulo = 0.0, double escalaX = 1.0, double escalaY = 1.0, SDL_Point* centro = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void Renderizar(SDL_Renderer *renderer, double posX, double posY, unsigned int indiceX = 0, unsigned int indiceY = 0, double angulo = 0.0, double escalaX = 1.0, double escalaY = 1.0, SDL_Point* centro = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	SDL_Rect PegaDimensao();
 	void PegaDimensao(int &w, int &h);
@@ -69,7 +69,7 @@ class LTexture
 		void setAlpha( Uint8 alpha );
 		
 		//Renders texture at given point
-		void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+		void render( int x, int y, SDL_Rect* clip = 0, double angle = 0.0, SDL_Point* center = 0, SDL_RendererFlip flip = SDL_FLIP_NONE );
 
 		//Set self as render target
 		void setAsRenderTarget();
@@ -136,10 +136,10 @@ bool loadMedia();
 void close();
 
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window* gWindow = 0;
 
 //The window renderer
-SDL_Renderer* gRenderer = NULL;
+SDL_Renderer* gRenderer = 0;
 
 //Scene textures
 LTexture gDotTexture;
@@ -147,10 +147,10 @@ LTexture gDotTexture;
 LTexture::LTexture()
 {
 	//Initialize
-	mTexture = NULL;
+	mTexture = 0;
 	mWidth = 0;
 	mHeight = 0;
-	mPixels = NULL;
+	mPixels = 0;
 	mPitch = 0;
 }
 
@@ -166,19 +166,19 @@ bool LTexture::loadFromFile( std::string path )
 	free();
 
 	//The final texture
-	SDL_Texture* newTexture = NULL;
+	SDL_Texture* newTexture = 0;
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-	if( loadedSurface == NULL )
+	if( loadedSurface == 0 )
 	{
 		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	else
 	{
 		//Convert surface to display format
-		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, NULL );
-		if( formattedSurface == NULL )
+		SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface, SDL_PIXELFORMAT_RGBA8888, 0 );
+		if( formattedSurface == 0 )
 		{
 			printf( "Unable to convert loaded surface to display format! %s\n", SDL_GetError() );
 		}
@@ -186,7 +186,7 @@ bool LTexture::loadFromFile( std::string path )
 		{
 			//Create blank streamable texture
 			newTexture = SDL_CreateTexture( gRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formattedSurface->w, formattedSurface->h );
-			if( newTexture == NULL )
+			if( newTexture == 0 )
 			{
 				printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
 			}
@@ -224,7 +224,7 @@ bool LTexture::loadFromFile( std::string path )
 
 				//Unlock texture to update
 				SDL_UnlockTexture( newTexture );
-				mPixels = NULL;
+				mPixels = 0;
 			}
 
 			//Get rid of old formatted surface
@@ -237,7 +237,7 @@ bool LTexture::loadFromFile( std::string path )
 
 	//Return success
 	mTexture = newTexture;
-	return mTexture != NULL;
+	return mTexture != 0;
 }
 
 #ifdef _SDL_TTF_H
@@ -248,11 +248,11 @@ bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColo
 
 	//Render text surface
 	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
-	if( textSurface != NULL )
+	if( textSurface != 0 )
 	{
 		//Create texture from surface pixels
         mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
-		if( mTexture == NULL )
+		if( mTexture == 0 )
 		{
 			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
 		}
@@ -273,7 +273,7 @@ bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColo
 
 	
 	//Return success
-	return mTexture != NULL;
+	return mTexture != 0;
 }
 #endif
 		
@@ -281,7 +281,7 @@ bool LTexture::createBlank( int width, int height, SDL_TextureAccess access )
 {
 	//Create uninitialized texture
 	mTexture = SDL_CreateTexture( gRenderer, SDL_PIXELFORMAT_RGBA8888, access, width, height );
-	if( mTexture == NULL )
+	if( mTexture == 0 )
 	{
 		printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
 	}
@@ -291,19 +291,19 @@ bool LTexture::createBlank( int width, int height, SDL_TextureAccess access )
 		mHeight = height;
 	}
 
-	return mTexture != NULL;
+	return mTexture != 0;
 }
 
 void LTexture::free()
 {
 	//Free texture if it exists
-	if( mTexture != NULL )
+	if( mTexture != 0 )
 	{
 		SDL_DestroyTexture( mTexture );
-		mTexture = NULL;
+		mTexture = 0;
 		mWidth = 0;
 		mHeight = 0;
-		mPixels = NULL;
+		mPixels = 0;
 		mPitch = 0;
 	}
 }
@@ -332,7 +332,7 @@ void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* ce
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
 	//Set clip rendering dimensions
-	if( clip != NULL )
+	if( clip != 0 )
 	{
 		renderQuad.w = clip->w;
 		renderQuad.h = clip->h;
@@ -363,7 +363,7 @@ bool LTexture::lockTexture()
 	bool success = true;
 
 	//Texture is already locked
-	if( mPixels != NULL )
+	if( mPixels != 0 )
 	{
 		printf( "Texture is already locked!\n" );
 		success = false;
@@ -371,7 +371,7 @@ bool LTexture::lockTexture()
 	//Lock texture
 	else
 	{
-		if( SDL_LockTexture( mTexture, NULL, &mPixels, &mPitch ) != 0 )
+		if( SDL_LockTexture( mTexture, 0, &mPixels, &mPitch ) != 0 )
 		{
 			printf( "Unable to lock texture! %s\n", SDL_GetError() );
 			success = false;
@@ -386,7 +386,7 @@ bool LTexture::unlockTexture()
 	bool success = true;
 
 	//Texture is not locked
-	if( mPixels == NULL )
+	if( mPixels == 0 )
 	{
 		printf( "Texture is not locked!\n" );
 		success = false;
@@ -395,7 +395,7 @@ bool LTexture::unlockTexture()
 	else
 	{
 		SDL_UnlockTexture( mTexture );
-		mPixels = NULL;
+		mPixels = 0;
 		mPitch = 0;
 	}
 
@@ -410,7 +410,7 @@ void* LTexture::getPixels()
 void LTexture::copyPixels( void* pixels )
 {
 	//Texture is locked
-	if( mPixels != NULL )
+	if( mPixels != 0 )
 	{
 		//Copy to locked pixels
 		memcpy( mPixels, pixels, mPitch * mHeight );

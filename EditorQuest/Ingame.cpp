@@ -62,6 +62,7 @@ void Ingame::Inicializar(Janela* _janela){
 		out.close();
 	}
 	*/
+
 	unsigned int altura, largura;
 	unsigned int** mapp = 0;
 	std::string buffer;
@@ -71,7 +72,6 @@ void Ingame::Inicializar(Janela* _janela){
 	{
 		in.read((char*)&largura, sizeof(unsigned int));
 		in.read((char*)&altura, sizeof(unsigned int));
-		//in >> largura  >> altura;
 		mapp = new unsigned int*[altura];
 		for(unsigned int i = 0; i < altura; i++)
 		{
@@ -79,7 +79,6 @@ void Ingame::Inicializar(Janela* _janela){
 			for(unsigned int j = 0; j < largura; j++)
 			{
 				in.read((char*)&mapp[i][j], sizeof(unsigned int));
-				//in >> mapp[i][j];
 			}
 		}
 		in.close();
@@ -104,6 +103,7 @@ void Ingame::Inicializar(Janela* _janela){
 void Ingame::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
+	//printf("%d\t", deltaTime);
 	switch(estado)
 	{
 	case ESTADO_INGAME:
@@ -113,22 +113,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
 		if(camera.y < 0) camera.y = 0;
 		else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
-		/*	
-		printf("%d\t", deltaTime);
-		//Se o mouse está dentro da janela
-		if(((Mouse->y > 0) && (Mouse->y < camera.h) && (Mouse->x > 0) && (Mouse->x < camera.w))){
-			if(Mouse->y < 100)
-				camera.y-=5;
-			else if(Mouse->y > camera.h-100)
-				camera.y+=5;
-			if(Mouse->x < 100)
-				camera.x-=5;
-			else if(Mouse->x > camera.w-100)
-				camera.x+=5;
-		}
-		*/
-	
-		gerenteAtor.Atualizar(deltaTime, &mapa);
+		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		break;
@@ -148,9 +133,6 @@ void Ingame::Renderizar(){
 	if(estado == ESTADO_PAUSADO)
 	{
 		filtro.Renderizar(janela->renderer, 0.0, 0.0);
-		//SDL_Rect rect = {0, 0, camera.w, camera.h};
-		//SDL_SetRenderDrawColor(janela->renderer, 25, 25, 75, 255);
-		//SDL_RenderFillRect(janela->renderer, &rect);
 	}
 	switch(estado)
 	{
@@ -169,7 +151,7 @@ void Ingame::Finalizar(){
 
 Tela* Ingame::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado)
-		return nullptr;
+		return 0;
 	if(sair.Pressionado())
 		return new MenuInicial();
 	return this;

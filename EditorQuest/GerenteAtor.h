@@ -20,7 +20,7 @@ class GerenteAtor
 
 		void Inicializar(Janela* _janela);
 		void Adicionar(Ator* ator);
-		void Atualizar(Uint32 deltaTime, Mapa* mapa);
+		void Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera);
 		void Renderizar(SDL_Rect* camera);
 
 		Ator* PegaAtormaisProximo(double x, double y);
