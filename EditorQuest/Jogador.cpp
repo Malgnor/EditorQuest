@@ -23,6 +23,10 @@ Atributos& Jogador::PegaAtributos(){
 	return atributos;
 }
 
+unsigned int Jogador::PegaSkillSelecionada(){
+	return skill;
+}
+
 SDL_Rect Jogador::PegaBoundingBox(){
 	SDL_Rect ret = sprite.PegaDimensao();
 	ret.x = (int)x;
@@ -178,10 +182,16 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 			gerente.Adicionar(new Slash(gerente, x, y, direcao));
 			break;
 		case 1:
-			gerente.Adicionar(new EnergyBall(gerente, x, y, direcao));
+			if(atributos.mpatual >= 10){
+				gerente.Adicionar(new EnergyBall(gerente, x, y, direcao));
+				atributos.mpatual -= 10;
+			}
 			break;
 		case 2:
-			gerente.Adicionar(new Explosion(gerente, Mouse->x-(double)camera->x, Mouse->y-(double)camera->y, direcao));
+			if(atributos.mpatual >= 25){
+				gerente.Adicionar(new Explosion(gerente, Mouse->x+(double)camera->x, Mouse->y+(double)camera->y, direcao));
+				atributos.mpatual -= 25;
+			}
 			break;
 		default:
 			gerente.Adicionar(new Slash(gerente, x, y, direcao));

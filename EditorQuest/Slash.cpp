@@ -44,7 +44,7 @@ void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Slash::Inicializar(){
-	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/energyball.png");
+	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/slash.png");
 	indice = tempodevida = 0;
 	vivo = true;
 }

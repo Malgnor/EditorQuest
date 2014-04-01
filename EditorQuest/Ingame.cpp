@@ -110,6 +110,9 @@ void Ingame::Inicializar(Janela* _janela){
 		<< "\nDefesa = " << a.defesa
 		<< "\nMagia = " << a.magia;
 	txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, 600);
+	skills[0].CriaTexturaDaImagem(janela->renderer, "resources/imgs/1.png");
+	skills[1].CriaTexturaDaImagem(janela->renderer, "resources/imgs/2.png");
+	skills[2].CriaTexturaDaImagem(janela->renderer, "resources/imgs/3.png");
 	estado = ESTADO_INGAME;
 	invselecionado = 0;	
 }
@@ -193,6 +196,7 @@ void Ingame::Renderizar(){
 	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
 	SDL_RenderDrawRect(janela->renderer, &hpbar);
 	SDL_RenderDrawRect(janela->renderer, &mpbar);
+	skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, 400.0, 550.0);
 	if(estado != ESTADO_INGAME)
 	{
 		//filtro.Renderizar(janela->renderer, 0.0, 0.0);

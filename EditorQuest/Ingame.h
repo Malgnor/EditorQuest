@@ -21,7 +21,7 @@ private:
 	Botao botoes[5];
 	TTF_Font* fonte;
 	std::stringstream status;
-	Sprite filtro, txtstatus;
+	Sprite filtro, txtstatus, skills[3];
 	unsigned int estado, invselecionado;
 
 public:

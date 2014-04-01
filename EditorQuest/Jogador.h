@@ -26,6 +26,7 @@ public:
 	Item** PegaInventario();
 	Item** PegaEquipamentos();
 	Atributos& PegaAtributos();
+	unsigned int PegaSkillSelecionada();
 
 	virtual bool EstaNoJogo();
 	virtual unsigned int PegaTipo();
