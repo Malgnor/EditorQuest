@@ -6,8 +6,10 @@
 
 struct Atributos{
 	int hp;
+	int hpatual;
 	int hpregen;
 	int mp;
+	int mpatual;
 	int mpregen;
 	int forca;
 	int defesa;

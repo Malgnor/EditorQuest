@@ -5,7 +5,9 @@
 #include "Sprite.h"
 #include "GerenteAtor.h"
 #include "Mapa.h"
+#include "Jogador.h"
 #include "Botao.h"
+#include <sstream>
 
 class Ingame : public Tela
 {
@@ -15,10 +17,12 @@ private:
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;
-	Ator* jogador;
+	Jogador* jogador;
 	Botao botoes[5];
-	Sprite filtro;
-	unsigned int estado;
+	TTF_Font* fonte;
+	std::stringstream status;
+	Sprite filtro, txtstatus;
+	unsigned int estado, invselecionado;
 
 public:
 	virtual void Inicializar(Janela* _janela);

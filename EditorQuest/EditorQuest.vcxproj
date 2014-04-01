@@ -84,11 +84,12 @@
     <ClCompile Include="Ator.cpp" />
     <ClCompile Include="Botao.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteAtor.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
-    <ClCompile Include="Habilidade.cpp" />
+    <ClCompile Include="EnergyBall.cpp" />
     <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Janela.cpp" />
@@ -97,18 +98,20 @@
     <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="MenuInicial.cpp" />
     <ClCompile Include="SDLApp.cpp" />
+    <ClCompile Include="Slash.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ator.h" />
     <ClInclude Include="Botao.h" />
     <ClInclude Include="DebugJanelas.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteAtor.h" />
     <ClInclude Include="GerenteJanela.h" />
     <ClInclude Include="globaldef.h" />
-    <ClInclude Include="Habilidade.h" />
+    <ClInclude Include="EnergyBall.h" />
     <ClInclude Include="Ingame.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Janela.h" />
@@ -116,6 +119,7 @@
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="MenuInicial.h" />
     <ClInclude Include="SDLApp.h" />
+    <ClInclude Include="Slash.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Tela.h" />
   </ItemGroup>

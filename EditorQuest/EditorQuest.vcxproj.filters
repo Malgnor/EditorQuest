@@ -78,11 +78,17 @@
     <ClCompile Include="Botao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Habilidade.cpp">
-      <Filter>Source Files\Atores</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnergyBall.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Slash.cpp">
+      <Filter>Source Files\Atores</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,11 +140,17 @@
     <ClInclude Include="Botao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Habilidade.h">
-      <Filter>Header Files\Atores</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyBall.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Slash.h">
+      <Filter>Header Files\Atores</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

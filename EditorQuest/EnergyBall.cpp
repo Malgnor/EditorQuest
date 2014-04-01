@@ -1,34 +1,34 @@
-#include "Habilidade.h"
+#include "EnergyBall.h"
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
 
-Habilidade::Habilidade(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
+EnergyBall::EnergyBall(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
 {
 	x = _x;
 	y = _y;
 	direcao = _direcao*M_PI/180.0;
 }
 	
-SDL_Rect Habilidade::PegaBoundingBox(){
+SDL_Rect EnergyBall::PegaBoundingBox(){
 	SDL_Rect ret = sprite.PegaDimensao();
 	ret.x = (int)x;
 	ret.y = (int)y;
 	return ret;
 }
-unsigned int Habilidade::PegaTipo(){
+unsigned int EnergyBall::PegaTipo(){
 	return ATOR_HABILIDADE;
 }
 	
-bool Habilidade::EstaNoJogo(){
+bool EnergyBall::EstaNoJogo(){
 	return vivo;
 }
 
-void Habilidade::Colidiu(Ator* ator){
+void EnergyBall::Colidiu(Ator* ator){
 
 }
 
-void Habilidade::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
+void EnergyBall::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 	switch (tile->id)
 	{
 	case 1:
@@ -43,13 +43,13 @@ void Habilidade::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 	}
 }
 
-void Habilidade::Inicializar(){
+void EnergyBall::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/energyball.png");
 	indice = tempodevida = 0;
 	vivo = true;
 }
 
-void Habilidade::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
+void EnergyBall::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
 	x += cos(direcao)*500.0/SEG*deltaTime;
 	y += sin(direcao)*500.0/SEG*deltaTime;
@@ -58,10 +58,10 @@ void Habilidade::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		vivo = false;
 }
 
-void Habilidade::Renderizar(SDL_Rect* camera){
+void EnergyBall::Renderizar(SDL_Rect* camera){
 	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y);
 }
 
-void Habilidade::Finalizar(){
+void EnergyBall::Finalizar(){
 
 }

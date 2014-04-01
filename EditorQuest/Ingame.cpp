@@ -1,9 +1,10 @@
 #include "Ingame.h"
 #include "janela.h"
-#include "Jogador.h"
 #include "MenuInicial.h"
 #include <fstream>
-#include <string>
+#include <iostream>
+
+using namespace std;
 
 void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
@@ -46,7 +47,7 @@ void Ingame::Inicializar(Janela* _janela){
 	};
 	unsigned int altura, largura;
 	altura = largura = 32;
-	std::ofstream out;
+	ofstream out;
 	out.open("teste.equest", std::ios_base::binary);
 	if(out.is_open())
 	{
@@ -65,8 +66,8 @@ void Ingame::Inicializar(Janela* _janela){
 
 	unsigned int altura, largura;
 	unsigned int** mapp = 0;
-	std::string buffer;
-	std::ifstream in;
+	string buffer;
+	ifstream in;
 	in.open("teste.equest", std::ios_base::binary);
 	if(in.is_open())
 	{
@@ -90,24 +91,36 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.y = 0;
 	camera.w = w;
 	camera.h = h;
-	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
 	botoes[BOTAO_STATUS].Inicializar(janela->renderer, "Status", 50, 75, fonte, cor);
 	botoes[BOTAO_INVENTARIO].Inicializar(janela->renderer, "Inventario", 50, 175, fonte, cor);
 	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, 375, fonte, cor);
 	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, 450, fonte, cor);
 	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, 525, fonte, cor);
-	TTF_CloseFont(fonte);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
+	Atributos a = jogador->PegaAtributos();
+	status.str("");
+	status << "HP/HPMax = " << a.hpatual << "/" << a.hp
+		<< "\nMP/MPMax = " << a.mpatual << "/" << a.mp
+		<< "\nHPRegen/MPRegen = " << a.hpregen << "/" << a.mpregen 
+		<< "\nForca = " << a.forca
+		<< "\nDefesa = " << a.defesa
+		<< "\nMagia = " << a.magia;
+	txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, 600);
 	estado = ESTADO_INGAME;
+	invselecionado = 0;	
 }
 
 void Ingame::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
 	//printf("%d\t", deltaTime);
+	Atributos a = jogador->PegaAtributos();
+	stringstream newstatus;
+	SDL_Color cor = {0, 0, 0};
 	switch(estado)
 	{
 	case ESTADO_INGAME:
@@ -126,18 +139,35 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			botoes[i].Atualizar();
 		if(Teclas[FW_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
-		if(botoes[BOTAO_INVENTARIO].Pressionado())
+		if(botoes[BOTAO_INVENTARIO].Pressionado()){
 			estado = ESTADO_INVENTARIO;
+			invselecionado = 0;
+		}
 		if(botoes[BOTAO_STATUS].Pressionado())
 			estado = ESTADO_STATUS;
 	break;
 	case ESTADO_STATUS:
-		botoes[BOTAO_VOLTAR].Atualizar();
+		botoes[BOTAO_VOLTAR].Atualizar();		
+		newstatus.str("");
+		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
+				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
+				 << "\nHPRegen/MPRegen = " << a.hpregen << "/" << a.mpregen 
+				 << "\nForca = " << a.forca
+				 << "\nDefesa = " << a.defesa
+				 << "\nMagia = " << a.magia;
+		if(newstatus.str() != status.str()){
+			status.str(newstatus.str());
+			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, 600);
+		}
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
 	case ESTADO_INVENTARIO:
 		botoes[BOTAO_VOLTAR].Atualizar();
+		for(int i = 0; i < 10; i++){
+			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0)
+				invselecionado = i;
+		}
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
@@ -149,10 +179,29 @@ void Ingame::Atualizar(Uint32 deltaTime){
 void Ingame::Renderizar(){
 	mapa.Renderizar(janela->renderer, &camera);
 	gerenteAtor.Renderizar(&camera);
+	Atributos a = jogador->PegaAtributos();
+	SDL_Rect hpbar = { 16, 16, (int)((double)a.hpatual/(double)a.hp*100.0), 16};
+	SDL_Rect mpbar = { 16, 36, (int)((double)a.mpatual/(double)a.mp*100.0), 16};
+	SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(janela->renderer, &hpbar);
+	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
+	SDL_RenderFillRect(janela->renderer, &mpbar);
+	hpbar.w = 101;
+	hpbar.x = 15;
+	mpbar.w = 101;
+	mpbar.x = 15;
+	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
+	SDL_RenderDrawRect(janela->renderer, &hpbar);
+	SDL_RenderDrawRect(janela->renderer, &mpbar);
 	if(estado != ESTADO_INGAME)
 	{
-		filtro.Renderizar(janela->renderer, 0.0, 0.0);
+		//filtro.Renderizar(janela->renderer, 0.0, 0.0);
+		SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
+		SDL_Rect rect = {0, 0, 800, 600};
+		SDL_RenderFillRect(janela->renderer, &rect);
 	}
+	
+	Item** inventario;
 	switch(estado)
 	{
 	case ESTADO_INGAME:
@@ -162,9 +211,30 @@ void Ingame::Renderizar(){
 			botoes[i].Renderizar(janela->renderer);
 		break;
 	case ESTADO_INVENTARIO:
+		inventario = jogador->PegaInventario();
+		for(int i = 0; i < 10; i++){
+			if(inventario[i] != 0){
+				inventario[i]->PegaIcone().Renderizar(janela->renderer, 100.0, 50.0+i*45.0);
+				inventario[i]->PegaTxtNome().Renderizar(janela->renderer, 150.0, 50.0+i*45.0);
+				if(i == invselecionado)
+					inventario[i]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
+			}				
+		}
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	case ESTADO_STATUS:
+		txtstatus.Renderizar(janela->renderer, 50.0, 50.0);
+		inventario = jogador->PegaEquipamentos();
+		if(inventario[EQUIP_CABECA])
+			inventario[EQUIP_CABECA]->PegaIcone().Renderizar(janela->renderer, 600.0, 100.0);
+		if(inventario[EQUIP_ARMA])
+			inventario[EQUIP_ARMA]->PegaIcone().Renderizar(janela->renderer, 550.0, 150.0);
+		if(inventario[EQUIP_TRONCO])
+			inventario[EQUIP_TRONCO]->PegaIcone().Renderizar(janela->renderer, 600.0, 150.0);
+		if(inventario[EQUIP_MAOS])
+			inventario[EQUIP_MAOS]->PegaIcone().Renderizar(janela->renderer, 650.0, 150.0);
+		if(inventario[EQUIP_PES])
+			inventario[EQUIP_PES]->PegaIcone().Renderizar(janela->renderer, 600.0, 200.0);
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	default:
@@ -172,13 +242,14 @@ void Ingame::Renderizar(){
 	}
 }
 
-void Ingame::Finalizar(){
+void Ingame::Finalizar(){	
+	TTF_CloseFont(fonte);
 }
 
 Tela* Ingame::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
 		return 0;
-	if(botoes[BOTAO_MENUINICIAL].Pressionado())
+	if(botoes[BOTAO_MENUINICIAL].Pressionado() || !jogador->EstaNoJogo())
 		return new MenuInicial();
 	return this;
 }

@@ -1,10 +1,10 @@
-#ifndef _HABILIDADE_H_
-#define _HABILIDADE_H_
+#ifndef _SLASH_H_
+#define _SLASH_H_
 
 #include "Ator.h"
 #include "Sprite.h"
 
-class Habilidade : public Ator
+class Slash : public Ator
 {
 private:
 	Sprite sprite;
@@ -13,7 +13,7 @@ private:
 	bool vivo;
 
 public:
-	Habilidade(GerenteAtor& _gerente, double _x, double _y, double _direcao);
+	Slash(GerenteAtor& _gerente, double _x, double _y, double _direcao);
 	
 	virtual SDL_Rect PegaBoundingBox();
 	

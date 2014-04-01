@@ -1,32 +1,22 @@
-#ifndef _JOGADOR_H_
-#define _JOGADOR_H_
-
-enum { EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES};
+#ifndef _EXPLOSION_H_
+#define _EXPLOSION_H_
 
 #include "Ator.h"
 #include "Sprite.h"
-#include "Item.h"
 
-class Jogador : public Ator
+class Explosion : public Ator
 {
 private:
 	Sprite sprite;
 	double x, y, direcao;
-	unsigned int indice, skill;
-	Item* inventario[10];
-	Item* equipamentos[5];
-	Atributos atributos;
-	Uint32 time;
+	unsigned int indice, tempodevida;
+	bool vivo;
 
 public:
-	Jogador(GerenteAtor& _gerente);
+	Explosion(GerenteAtor& _gerente, double _x, double _y, double _direcao);
 	
 	virtual SDL_Rect PegaBoundingBox();
-
-	Item** PegaInventario();
-	Item** PegaEquipamentos();
-	Atributos& PegaAtributos();
-
+	
 	virtual bool EstaNoJogo();
 	virtual unsigned int PegaTipo();
 
@@ -38,4 +28,6 @@ public:
 	virtual void Renderizar(SDL_Rect* camera);
 	virtual void Finalizar();
 };
+
 #endif
+

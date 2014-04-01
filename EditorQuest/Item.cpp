@@ -6,8 +6,10 @@ Item::Item()
 	: nome(""), descricao("")
 {
 	atributos.hp = 0;
+	atributos.hpatual = 0;
 	atributos.hpregen = 0;
 	atributos.mp = 0;
+	atributos.mpatual = 0;
 	atributos.mpregen = 0;
 	atributos.forca = 0;
 	atributos.defesa = 0;
@@ -21,6 +23,7 @@ Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* 
 	SDL_Color cor = {0, 0, 0};
 	icone.CriaTexturaDaImagem(renderer, _icone);
 	txtdesc.CriaTexturaDoTexto(renderer, descricao.c_str(), fonte, cor);
+	txtnome.CriaTexturaDoTexto(renderer, nome.c_str(), fonte, cor);
 	TTF_CloseFont(fonte);
 }
 
