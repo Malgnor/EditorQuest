@@ -2,6 +2,7 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
+#include "Dummy.h"
 
 EnergyBall::EnergyBall(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
 {
@@ -25,7 +26,11 @@ bool EnergyBall::EstaNoJogo(){
 }
 
 void EnergyBall::Colidiu(Ator* ator){
-
+	if(ator->PegaTipo() == ATOR_INIMIGO)
+	{
+		Dummy* atingido = (Dummy*)ator;
+		atingido->FoiAtingido();
+	}
 }
 
 void EnergyBall::ColidiuMapa(cMap* tile, SDL_Rect* colisao){

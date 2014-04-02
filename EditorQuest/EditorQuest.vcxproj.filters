@@ -90,6 +90,9 @@
     <ClCompile Include="Slash.cpp">
       <Filter>Source Files\Atores</Filter>
     </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files\Atores</Filter>
     </ClInclude>
     <ClInclude Include="Slash.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
       <Filter>Header Files\Atores</Filter>
     </ClInclude>
   </ItemGroup>

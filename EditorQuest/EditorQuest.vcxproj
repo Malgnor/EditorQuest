@@ -84,6 +84,7 @@
     <ClCompile Include="Ator.cpp" />
     <ClCompile Include="Botao.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
+    <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="Ator.h" />
     <ClInclude Include="Botao.h" />
     <ClInclude Include="DebugJanelas.h" />
+    <ClInclude Include="Dummy.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />

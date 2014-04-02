@@ -2,6 +2,7 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
+#include "Dummy.h"
 
 Explosion::Explosion(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
 {
@@ -16,6 +17,7 @@ SDL_Rect Explosion::PegaBoundingBox(){
 	ret.y = (int)y;
 	return ret;
 }
+
 unsigned int Explosion::PegaTipo(){
 	return ATOR_HABILIDADE;
 }
@@ -25,6 +27,11 @@ bool Explosion::EstaNoJogo(){
 }
 
 void Explosion::Colidiu(Ator* ator){
+	if(ator->PegaTipo() == ATOR_INIMIGO)
+	{
+		Dummy* atingido = (Dummy*)ator;
+		atingido->FoiAtingido();
+	}
 
 }
 

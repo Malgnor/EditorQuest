@@ -67,8 +67,8 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 	//Checa colisão com o mapa
 	if(atores.size() < 1)
 		return;
+	SDL_Rect rcolisao;
 	if(mapa != 0){
-		SDL_Rect rcolisao;
 		cMap* tiles = mapa->PegaColisao();
 		for(Ator* ator : atores)
 		{
@@ -101,7 +101,7 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 			{
 				continue;
 			}
-			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), 0) == SDL_TRUE){
+			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), &rcolisao) == SDL_TRUE){
 				atores[i]->Colidiu(atores[j]);
 				atores[j]->Colidiu(atores[i]);
 			}
@@ -159,6 +159,7 @@ Ator* GerenteAtor::PegaAtormaisProximo(double x, double y, unsigned int tipo){
 		}
 	return ret;
 }
+
 /*
 Ator* GerenteAtor::PegaPrimeiroAtornaLista(unsigned int tipo){
 	if(!atores.empty())
@@ -172,6 +173,7 @@ Ator* GerenteAtor::PegaPrimeiroAtornaLista(unsigned int tipo){
 	return 0;
 }
 */
+
 GerenteAtor::~GerenteAtor()
 {
 	for (Ator* ator : atores) 

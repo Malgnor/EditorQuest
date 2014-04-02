@@ -2,6 +2,7 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
+#include "Dummy.h"
 
 Slash::Slash(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
 {
@@ -25,6 +26,11 @@ bool Slash::EstaNoJogo(){
 }
 
 void Slash::Colidiu(Ator* ator){
+	if(ator->PegaTipo() == ATOR_INIMIGO)
+	{
+		Dummy* atingido = (Dummy*)ator;
+		atingido->FoiAtingido();
+	}
 
 }
 
