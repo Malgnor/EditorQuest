@@ -109,7 +109,7 @@ void Jogador::Inicializar(){
 	time = 0;
 	for(int i = 0; i < 10; i++)
 		inventario[i] = 0;
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < EQUIP_QTD; i++)
 		equipamentos[i] = 0;
 	inventario[0] = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", atributos, EQUIP_ARMA);
 	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
@@ -123,7 +123,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	FW_Mouse* Mouse = PegaMouse();
 	Atributos novos = {100, atributos.hpatual, 1, 100, atributos.mpatual, 2, 5, 5, 5};
 	atributos = novos;
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < EQUIP_QTD; i++){
 		if(equipamentos[i]){
 			Atributos a = equipamentos[i]->PegaAtributos();
 			atributos.hp += a.hp;
@@ -220,7 +220,7 @@ void Jogador::Finalizar(){
 		delete inventario[i];
 		inventario[i] = 0;
 	}
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < EQUIP_QTD; i++){
 		delete equipamentos[i];
 		equipamentos[i] = 0;
 	}

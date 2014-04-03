@@ -29,7 +29,7 @@ public:
 	virtual void Inicializar() = 0;
 	virtual void Atualizar(Uint32 deltaTime, SDL_Rect* camera) = 0;
 	void Renderizar(SDL_Rect* camera);
-	void Finalizar();
+	virtual void Finalizar() = 0;
 
 };
 

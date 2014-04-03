@@ -2,6 +2,7 @@
 #include "Dummy.h"
 #include "janela.h"
 #include "MenuInicial.h"
+#include "Equipamento.h"
 #include <fstream>
 #include <iostream>
 
@@ -94,11 +95,13 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.h = h;
 	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	botoes[BOTAO_STATUS].Inicializar(janela->renderer, "Status", 50, 75, fonte, cor);
-	botoes[BOTAO_INVENTARIO].Inicializar(janela->renderer, "Inventario", 50, 175, fonte, cor);
-	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, 375, fonte, cor);
-	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, 450, fonte, cor);
-	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, 525, fonte, cor);
+	botoes[BOTAO_STATUS].Inicializar(janela->renderer, "Status", 50, h/10.0, fonte, cor);
+	botoes[BOTAO_INVENTARIO].Inicializar(janela->renderer, "Inventario", 50, h/10.0*2.0, fonte, cor);
+	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, h/10.0*6.0, fonte, cor);
+	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, h/10.0*7.0, fonte, cor);
+	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, h/10.0*9.0, fonte, cor);
+	botoes[BOTAO_USAR].Inicializar(janela->renderer, "Usar", w/10.0*8.25, h/10.0*9.0, fonte, cor);
+	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "Remover", w/10.0*7.75, h/10.0*9.0, fonte, cor);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
@@ -110,7 +113,7 @@ void Ingame::Inicializar(Janela* _janela){
 		<< "\nForca = " << a.forca
 		<< "\nDefesa = " << a.defesa
 		<< "\nMagia = " << a.magia;
-	txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, 600);
+	txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, w);
 	skills[0].CriaTexturaDaImagem(janela->renderer, "resources/imgs/1.png");
 	skills[1].CriaTexturaDaImagem(janela->renderer, "resources/imgs/2.png");
 	skills[2].CriaTexturaDaImagem(janela->renderer, "resources/imgs/3.png");
@@ -125,15 +128,20 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	Atributos a = jogador->PegaAtributos();
 	stringstream newstatus;
 	SDL_Color cor = {0, 0, 0};
+	Item** inventario;
 	switch(estado)
 	{
 	case ESTADO_INGAME:
 		camera.x = jogador->PegaBoundingBox().x - camera.w/2;
 		camera.y = jogador->PegaBoundingBox().y - camera.h/2;
-		if(camera.x < 0) camera.x = 0;
-		else if(camera.x > 32*32-camera.w) camera.x = 32*32-camera.w;
-		if(camera.y < 0) camera.y = 0;
-		else if(camera.y > 32*32-camera.h) camera.y = 32*32-camera.h;
+		if(camera.x < 0)
+			camera.x = 0;
+		else if(camera.x > 32*32-camera.w)
+			camera.x = 32*32-camera.w;
+		if(camera.y < 0)
+			camera.y = 0;
+		else if(camera.y > 32*32-camera.h)
+			camera.y = 32*32-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		if(Teclas[FW_ESPACO].pressionado)
 			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y));
@@ -141,7 +149,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			estado = ESTADO_PAUSADO;
 		break;
 	case ESTADO_PAUSADO:
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < BOTAO_QTD; i++)
 			botoes[i].Atualizar();
 		if(Teclas[FW_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
@@ -149,11 +157,14 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			estado = ESTADO_INVENTARIO;
 			invselecionado = 0;
 		}
-		if(botoes[BOTAO_STATUS].Pressionado())
+		if(botoes[BOTAO_STATUS].Pressionado()){
 			estado = ESTADO_STATUS;
+			invselecionado = 0;
+		}
 	break;
 	case ESTADO_STATUS:
 		botoes[BOTAO_VOLTAR].Atualizar();		
+		botoes[BOTAO_USAR2].Atualizar();		
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -163,17 +174,33 @@ void Ingame::Atualizar(Uint32 deltaTime){
 				 << "\nMagia = " << a.magia;
 		if(newstatus.str() != status.str()){
 			status.str(newstatus.str());
-			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, 600);
+			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
 		}
+		inventario = (Item**)jogador->PegaEquipamentos();
+		if(inventario[EQUIP_CABECA] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 100 && Mouse->y < 132 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_CABECA;
+		if(inventario[EQUIP_ARMA] && Mouse->x > 550 && Mouse->x < 582 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_ARMA;
+		if(inventario[EQUIP_TRONCO] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_TRONCO;
+		if(inventario[EQUIP_MAOS] && Mouse->x > 650 && Mouse->x < 682 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_MAOS;
+		if(inventario[EQUIP_PES] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 200 && Mouse->y < 232 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_PES;
+		if(botoes[BOTAO_USAR2].Pressionado() && jogador->PegaEquipamentos()[invselecionado])
+			jogador->PegaEquipamentos()[invselecionado]->Usar(jogador);
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
 	case ESTADO_INVENTARIO:
+		botoes[BOTAO_USAR].Atualizar();		
 		botoes[BOTAO_VOLTAR].Atualizar();
 		for(int i = 0; i < 10; i++){
-			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0)
+			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0 && Mouse->botoes[FW_MESQUERDO].ativo)
 				invselecionado = i;
 		}
+		if(botoes[BOTAO_USAR].Pressionado() && jogador->PegaInventario()[invselecionado])
+			jogador->PegaInventario()[invselecionado]->Usar(jogador);
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
@@ -227,11 +254,13 @@ void Ingame::Renderizar(){
 					inventario[i]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
 			}				
 		}
+		if(inventario[invselecionado])
+			botoes[BOTAO_USAR].Renderizar(janela->renderer);
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	case ESTADO_STATUS:
 		txtstatus.Renderizar(janela->renderer, 50.0, 50.0);
-		inventario = jogador->PegaEquipamentos();
+		inventario = (Item**)jogador->PegaEquipamentos();
 		if(inventario[EQUIP_CABECA])
 			inventario[EQUIP_CABECA]->PegaIcone().Renderizar(janela->renderer, 600.0, 100.0);
 		if(inventario[EQUIP_ARMA])
@@ -242,6 +271,10 @@ void Ingame::Renderizar(){
 			inventario[EQUIP_MAOS]->PegaIcone().Renderizar(janela->renderer, 650.0, 150.0);
 		if(inventario[EQUIP_PES])
 			inventario[EQUIP_PES]->PegaIcone().Renderizar(janela->renderer, 600.0, 200.0);
+		if(inventario[invselecionado]){
+			inventario[invselecionado]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
+			botoes[BOTAO_USAR2].Renderizar(janela->renderer);
+		}
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	default:

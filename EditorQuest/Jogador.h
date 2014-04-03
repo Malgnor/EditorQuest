@@ -1,11 +1,10 @@
 #ifndef _JOGADOR_H_
 #define _JOGADOR_H_
 
-enum { EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES};
-
 #include "Ator.h"
 #include "Sprite.h"
 #include "Item.h"
+enum {EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES, EQUIP_QTD};
 class Equipamento;
 
 class Jogador : public Ator
@@ -15,7 +14,7 @@ private:
 	double x, y, direcao;
 	unsigned int indice, skill;
 	Item* inventario[10];
-	Equipamento* equipamentos[5];
+	Equipamento* equipamentos[EQUIP_QTD];
 	Atributos atributos;
 	Uint32 time;
 	friend class Item;

@@ -45,7 +45,7 @@ public:
 	void SetaIcone(SDL_Surface* icone);
 	void SetaPosicao(int x, int y);
 	void SetaTamanho(int w, int h);
-	//void ModoJanela();
+	void ModoJanela();
 	void ModoTelaCheia();
 };
 

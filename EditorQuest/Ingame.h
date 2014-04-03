@@ -13,12 +13,12 @@ class Ingame : public Tela
 {
 private:
 	enum { ESTADO_INGAME, ESTADO_PAUSADO, ESTADO_STATUS, ESTADO_INVENTARIO };
-	enum { BOTAO_SAIR, BOTAO_VOLTAR, BOTAO_MENUINICIAL, BOTAO_STATUS, BOTAO_INVENTARIO};
+	enum { BOTAO_SAIR, BOTAO_VOLTAR, BOTAO_MENUINICIAL, BOTAO_STATUS, BOTAO_INVENTARIO, BOTAO_USAR, BOTAO_USAR2, BOTAO_QTD};
 	GerenteAtor gerenteAtor;
 	SDL_Rect camera;
 	Mapa mapa;
 	Jogador* jogador;
-	Botao botoes[5];
+	Botao botoes[BOTAO_QTD];
 	TTF_Font* fonte;
 	std::stringstream status;
 	Sprite filtro, txtstatus, skills[3];

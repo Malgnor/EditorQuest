@@ -16,6 +16,8 @@ struct Atributos{
 	int magia;
 };
 
+class Jogador;
+
 enum {ITEM_EQUIPAMENTO, ITEM_CONSUMIVEL};
 
 class Item{

@@ -168,12 +168,12 @@ void Janela::SetaPosicao(int x, int y){
 void Janela::SetaTamanho(int w, int h){
 	SDL_SetWindowSize(window, w, h);
 }
-/*
-void Janela::ModoJanela(){
 
+void Janela::ModoJanela(){
+	SDL_SetWindowFullscreen(window, 0);
 }
-*/
+
 void Janela::ModoTelaCheia(){
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
