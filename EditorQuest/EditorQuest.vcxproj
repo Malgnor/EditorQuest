@@ -85,6 +85,7 @@
     <ClCompile Include="Botao.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
     <ClCompile Include="Dummy.cpp" />
+    <ClCompile Include="Equipamento.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="EnergyBall.cpp" />
     <ClCompile Include="Ingame.cpp" />
+    <ClCompile Include="Inimigo.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Jogador.cpp" />
@@ -107,6 +109,7 @@
     <ClInclude Include="Botao.h" />
     <ClInclude Include="DebugJanelas.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="Equipamento.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
@@ -115,6 +118,7 @@
     <ClInclude Include="globaldef.h" />
     <ClInclude Include="EnergyBall.h" />
     <ClInclude Include="Ingame.h" />
+    <ClInclude Include="Inimigo.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Janela.h" />
     <ClInclude Include="Jogador.h" />

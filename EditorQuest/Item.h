@@ -16,19 +16,26 @@ struct Atributos{
 	int magia;
 };
 
+enum {ITEM_EQUIPAMENTO, ITEM_CONSUMIVEL};
+
 class Item{
-private:
+protected:
 	std::string nome;
 	std::string descricao;
 	Sprite icone, txtnome, txtdesc;
 	Atributos atributos;
+	unsigned int tipo;
 
 public:
 	Item();
-	Item(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos _atributos);
+	Item(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos , unsigned int _tipo);
+
+	virtual bool Usar(Jogador* jogador) = 0;
+
 	std::string PegaNome();
 	std::string PegaDescricao();
 	Atributos PegaAtributos();
+	unsigned int PegaTipo();
 	Sprite& PegaIcone();
 	Sprite& PegaTxtNome();
 	Sprite& PegaTxtDesc();

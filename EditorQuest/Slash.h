@@ -3,17 +3,19 @@
 
 #include "Ator.h"
 #include "Sprite.h"
+class Jogador;
 
 class Slash : public Ator
 {
 private:
 	Sprite sprite;
-	double x, y, direcao;
+	double x, y, direcao, direcao2;
 	unsigned int indice, tempodevida;
 	bool vivo;
+	Jogador* jogador;
 
 public:
-	Slash(GerenteAtor& _gerente, double _x, double _y, double _direcao);
+	Slash(GerenteAtor& _gerente, Jogador* _jogador);
 	
 	virtual SDL_Rect PegaBoundingBox();
 	

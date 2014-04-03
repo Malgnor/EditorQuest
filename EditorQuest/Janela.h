@@ -16,6 +16,7 @@ private:
 public:	
 	SDL_Renderer* renderer;
 	FW_Entrada entrada;
+
 	Janela(Tela* telainicial);
 	void Inicializar(Tela* telainicial);
 	void ProcessarEventos(SDL_Event& evento);
@@ -44,6 +45,8 @@ public:
 	void SetaIcone(SDL_Surface* icone);
 	void SetaPosicao(int x, int y);
 	void SetaTamanho(int w, int h);
+	//void ModoJanela();
+	void ModoTelaCheia();
 };
 
 #endif

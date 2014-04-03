@@ -6,6 +6,7 @@ enum { EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES};
 #include "Ator.h"
 #include "Sprite.h"
 #include "Item.h"
+class Equipamento;
 
 class Jogador : public Ator
 {
@@ -14,9 +15,10 @@ private:
 	double x, y, direcao;
 	unsigned int indice, skill;
 	Item* inventario[10];
-	Item* equipamentos[5];
+	Equipamento* equipamentos[5];
 	Atributos atributos;
 	Uint32 time;
+	friend class Item;
 
 public:
 	Jogador(GerenteAtor& _gerente);
@@ -24,9 +26,10 @@ public:
 	virtual SDL_Rect PegaBoundingBox();
 
 	Item** PegaInventario();
-	Item** PegaEquipamentos();
+	Equipamento** PegaEquipamentos();
 	Atributos& PegaAtributos();
 	unsigned int PegaSkillSelecionada();
+	double PegaDirecao();
 
 	virtual bool EstaNoJogo();
 	virtual unsigned int PegaTipo();

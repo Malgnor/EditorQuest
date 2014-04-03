@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Atores">
       <UniqueIdentifier>{813cfd0d-c407-4bde-b54c-2817452eacd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Itens">
+      <UniqueIdentifier>{0d35dc24-2588-4101-a021-98adfc2d9e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Itens">
+      <UniqueIdentifier>{767e5982-e123-4862-85d5-3fe78b35e1b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -78,9 +84,6 @@
     <ClCompile Include="Botao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EnergyBall.cpp">
       <Filter>Source Files\Atores</Filter>
     </ClCompile>
@@ -92,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="Dummy.cpp">
       <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Itens</Filter>
+    </ClCompile>
+    <ClCompile Include="Inimigo.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Equipamento.cpp">
+      <Filter>Source Files\Itens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +155,6 @@
     <ClInclude Include="Botao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EnergyBall.h">
       <Filter>Header Files\Atores</Filter>
     </ClInclude>
@@ -157,6 +166,15 @@
     </ClInclude>
     <ClInclude Include="Dummy.h">
       <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Itens</Filter>
+    </ClInclude>
+    <ClInclude Include="Inimigo.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipamento.h">
+      <Filter>Header Files\Itens</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

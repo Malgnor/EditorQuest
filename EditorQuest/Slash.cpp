@@ -3,12 +3,11 @@
 #include "GerenteAtor.h"
 #include "SDL.h"
 #include "Dummy.h"
+#include "Jogador.h"
 
-Slash::Slash(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
+Slash::Slash(GerenteAtor& _gerente, Jogador* _jogador) : Ator(_gerente)
 {
-	x = _x+cos(_direcao*M_PI/180.0)*24.0;
-	y = _y+sin(_direcao*M_PI/180.0)*24.0;
-	direcao = _direcao;
+	jogador = _jogador;
 }
 	
 SDL_Rect Slash::PegaBoundingBox(){
@@ -50,22 +49,29 @@ void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Slash::Inicializar(){
-	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/slash.png");
+	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/imgs/slashh.png", 0, 0, 255, 255, 255);
 	indice = tempodevida = 0;
 	vivo = true;
+	direcao = jogador->PegaDirecao();
+	x = jogador->PegaBoundingBox().x+16.0+cos(direcao*M_PI/180.0)*16.0;
+	y = jogador->PegaBoundingBox().y+sin(direcao*M_PI/180.0)*16.0;
+	direcao2 = -45.0;
 }
 
 void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
-	//x += cos(direcao)*500.0/SEG*deltaTime;
-	//y += sin(direcao)*500.0/SEG*deltaTime;
-	//printf("%f %f %f\n", direcao, cos(direcao), sin(direcao));
+	direcao2 += deltaTime*0.18;
+	direcao = jogador->PegaDirecao();
+	x = jogador->PegaBoundingBox().x+16.0+cos(direcao*M_PI/180.0)*16.0;
+	y = jogador->PegaBoundingBox().y+sin(direcao*M_PI/180.0)*16.0;
+	//printf("%f %f %f %f %f %f\n", direcao, x, y, cos(direcao*M_PI/180.0), sin(direcao*M_PI/180.0));
 	if(tempodevida >= 0.5*SEG)
 		vivo = false;
 }
 
 void Slash::Renderizar(SDL_Rect* camera){
-	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, 0, 0, direcao);
+	SDL_Point centro = {0, 16};
+	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, 0, 0, direcao+direcao2, 1.0, 1.0, &centro);
 }
 
 void Slash::Finalizar(){

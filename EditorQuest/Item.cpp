@@ -3,7 +3,7 @@
 using namespace std;
 
 Item::Item()
-	: nome(""), descricao("")
+	: nome(""), descricao(""), tipo(0)
 {
 	atributos.hp = 0;
 	atributos.hpatual = 0;
@@ -16,8 +16,8 @@ Item::Item()
 	atributos.magia = 0;
 }
 
-Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* _icone, Atributos _atributos)
-	: nome(_nome), descricao(_descricao), atributos(_atributos)
+Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* _icone, Atributos _atributos, unsigned int _tipo)
+	: nome(_nome), descricao(_descricao), atributos(_atributos), tipo(_tipo)
 {
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
@@ -37,6 +37,10 @@ string Item::PegaDescricao(){
 
 Atributos Item::PegaAtributos(){
 	return atributos;
+}
+
+unsigned int Item::PegaTipo(){
+	return tipo;
 }
 
 Sprite& Item::PegaIcone(){

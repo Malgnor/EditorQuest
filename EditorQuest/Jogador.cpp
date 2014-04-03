@@ -5,6 +5,7 @@
 #include "EnergyBall.h"
 #include "Explosion.h"
 #include "Slash.h"
+#include "Equipamento.h"
 
 Jogador::Jogador(GerenteAtor& _gerente) : Ator(_gerente)
 {
@@ -15,7 +16,7 @@ Item** Jogador::PegaInventario(){
 	return inventario;
 }
 
-Item** Jogador::PegaEquipamentos(){
+Equipamento** Jogador::PegaEquipamentos(){
 	return equipamentos;
 }
 
@@ -25,6 +26,10 @@ Atributos& Jogador::PegaAtributos(){
 
 unsigned int Jogador::PegaSkillSelecionada(){
 	return skill;
+}
+
+double Jogador::PegaDirecao(){
+	return direcao;
 }
 
 SDL_Rect Jogador::PegaBoundingBox(){
@@ -106,9 +111,11 @@ void Jogador::Inicializar(){
 		inventario[i] = 0;
 	for(int i = 0; i < 5; i++)
 		equipamentos[i] = 0;
-	inventario[2] = new Item(gerente.janela->renderer, "Item 0", "Descricao 0", "resources/imgs/botao.png", atributos);
-	inventario[0] = new Item(gerente.janela->renderer, "Item 1", "Descricao 1", "resources/imgs/energyball.png", atributos);
-	inventario[5] = new Item(gerente.janela->renderer, "Item 2", "Descricao 2", "resources/imgs/botaop.png", atributos);
+	inventario[0] = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", atributos, EQUIP_ARMA);
+	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
+	inventario[4] = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", atributos, EQUIP_TRONCO);
+	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_MAOS);
+	inventario[8] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
@@ -147,6 +154,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		atributos.mpatual++;
 	if(Teclas[FW_ESQUERDA].ativo)
 		atributos.mpatual--;
+	/*
 	if(Teclas[FW_1].pressionado)
 		if(!equipamentos[EQUIP_ARMA])
 			equipamentos[EQUIP_ARMA] = new Item(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", novos);
@@ -162,6 +170,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	if(Teclas[FW_5].pressionado)
 		if(!equipamentos[EQUIP_PES])
 			equipamentos[EQUIP_PES] = new Item(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", novos);
+	*/
 	if(Teclas[FW_W].ativo)
 		y-=(300.0/SEG*deltaTime);
 	else if(Teclas[FW_S].ativo)
@@ -179,7 +188,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		switch (skill)
 		{
 		case 0:
-			gerente.Adicionar(new Slash(gerente, x, y, direcao));
+			gerente.Adicionar(new Slash(gerente, this));
 			break;
 		case 1:
 			if(atributos.mpatual >= 10){
@@ -194,7 +203,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 			}
 			break;
 		default:
-			gerente.Adicionar(new Slash(gerente, x, y, direcao));
+			gerente.Adicionar(new Slash(gerente, this));
 			break;
 		}
 	}
