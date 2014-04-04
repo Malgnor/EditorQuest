@@ -13,7 +13,8 @@ bool Equipamento::Usar(Jogador* jogador){
 				continue;
 			inventario[i] = this;
 			equipamentos[slot] = 0;
-			equipado = false;
+			equipado = false;				
+			jogador->AtualizarAtributos();
 			return true;
 		}
 	} else {
@@ -23,7 +24,8 @@ bool Equipamento::Usar(Jogador* jogador){
 					continue;
 				inventario[i] = (Item*)equipamentos[slot];
 				equipamentos[slot] = this;
-				equipado = true;
+				equipado = true;				
+				jogador->AtualizarAtributos();
 				return true;
 			}
 		} else {
@@ -32,7 +34,8 @@ bool Equipamento::Usar(Jogador* jogador){
 					continue;
 				inventario[i] = 0;
 				equipamentos[slot] = this;
-				equipado = true;
+				equipado = true;				
+				jogador->AtualizarAtributos();
 				return true;
 			}
 		}

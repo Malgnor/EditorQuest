@@ -24,6 +24,8 @@ public:
 	
 	virtual SDL_Rect PegaBoundingBox();
 
+	void AtualizarAtributos();
+
 	Item** PegaInventario();
 	Equipamento** PegaEquipamentos();
 	Atributos& PegaAtributos();

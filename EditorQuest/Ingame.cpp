@@ -150,7 +150,18 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_PAUSADO:
 		for(int i = 0; i < BOTAO_QTD; i++)
-			botoes[i].Atualizar();
+			botoes[i].Atualizar();				
+		newstatus.str("");
+		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
+				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
+				 << "\nHPRegen/MPRegen = " << a.hpregen << "/" << a.mpregen 
+				 << "\nForca = " << a.forca
+				 << "\nDefesa = " << a.defesa
+				 << "\nMagia = " << a.magia;
+		if(newstatus.str() != status.str()){
+			status.str(newstatus.str());
+			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
+		}
 		if(Teclas[FW_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		if(botoes[BOTAO_INVENTARIO].Pressionado()){
@@ -164,7 +175,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	break;
 	case ESTADO_STATUS:
 		botoes[BOTAO_VOLTAR].Atualizar();		
-		botoes[BOTAO_USAR2].Atualizar();		
+		botoes[BOTAO_USAR2].Atualizar();
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -194,7 +205,18 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_INVENTARIO:
 		botoes[BOTAO_USAR].Atualizar();		
-		botoes[BOTAO_VOLTAR].Atualizar();
+		botoes[BOTAO_VOLTAR].Atualizar();			
+		newstatus.str("");
+		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
+				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
+				 << "\nHPRegen/MPRegen = " << a.hpregen << "/" << a.mpregen 
+				 << "\nForca = " << a.forca
+				 << "\nDefesa = " << a.defesa
+				 << "\nMagia = " << a.magia;
+		if(newstatus.str() != status.str()){
+			status.str(newstatus.str());
+			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
+		}
 		for(int i = 0; i < 10; i++){
 			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0 && Mouse->botoes[FW_MESQUERDO].ativo)
 				invselecionado = i;
@@ -215,6 +237,7 @@ void Ingame::Renderizar(){
 	Atributos a = jogador->PegaAtributos();
 	SDL_Rect hpbar = { 16, 16, (int)((double)a.hpatual/(double)a.hp*100.0), 16};
 	SDL_Rect mpbar = { 16, 36, (int)((double)a.mpatual/(double)a.mp*100.0), 16};
+	SDL_Rect selectrect;
 	SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(janela->renderer, &hpbar);
 	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
@@ -254,8 +277,15 @@ void Ingame::Renderizar(){
 					inventario[i]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
 			}				
 		}
-		if(inventario[invselecionado])
+		if(inventario[invselecionado]){
 			botoes[BOTAO_USAR].Renderizar(janela->renderer);
+			SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
+			selectrect.x = 99;
+			selectrect.y = 49+invselecionado*45;
+			selectrect.w = 602;
+			selectrect.h = 42;
+			SDL_RenderDrawRect(janela->renderer, &selectrect);
+		}
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
 	case ESTADO_STATUS:
@@ -274,6 +304,33 @@ void Ingame::Renderizar(){
 		if(inventario[invselecionado]){
 			inventario[invselecionado]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
 			botoes[BOTAO_USAR2].Renderizar(janela->renderer);
+			SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
+			switch (invselecionado)
+			{
+			case EQUIP_CABECA:
+				selectrect.x = 599;
+				selectrect.y = 99;
+				break;
+			case EQUIP_ARMA:
+				selectrect.x = 549;
+				selectrect.y = 149;
+				break;
+			case EQUIP_TRONCO:
+				selectrect.x = 599;
+				selectrect.y = 149;
+				break;
+			case EQUIP_MAOS:
+				selectrect.x = 649;
+				selectrect.y = 149;
+				break;
+			case EQUIP_PES:
+				selectrect.x = 599;
+				selectrect.y = 199;
+				break;
+			}
+			selectrect.w = 34;
+			selectrect.h = 34;
+			SDL_RenderDrawRect(janela->renderer, &selectrect);
 		}
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;

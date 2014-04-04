@@ -12,6 +12,23 @@ Jogador::Jogador(GerenteAtor& _gerente) : Ator(_gerente)
 
 }
 
+void Jogador::AtualizarAtributos(){
+	Atributos novos = {100, atributos.hpatual, 1, 100, atributos.mpatual, 2, 5, 5, 5};
+	atributos = novos;
+	for(int i = 0; i < EQUIP_QTD; i++){
+		if(equipamentos[i]){
+			Atributos a = equipamentos[i]->PegaAtributos();
+			atributos.hp += a.hp;
+			atributos.hpregen += a.hpregen;
+			atributos.mp += a.mp;
+			atributos.mpregen += a.mpregen;
+			atributos.forca += a.forca;
+			atributos.defesa += a.defesa;
+			atributos.magia += a.magia;
+		}
+	}
+}
+
 Item** Jogador::PegaInventario(){
 	return inventario;
 }
@@ -121,21 +138,7 @@ void Jogador::Inicializar(){
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
-	Atributos novos = {100, atributos.hpatual, 1, 100, atributos.mpatual, 2, 5, 5, 5};
-	atributos = novos;
-	for(int i = 0; i < EQUIP_QTD; i++){
-		if(equipamentos[i]){
-			Atributos a = equipamentos[i]->PegaAtributos();
-			atributos.hp += a.hp;
-			atributos.hpregen += a.hpregen;
-			atributos.mp += a.mp;
-			atributos.mpregen += a.mpregen;
-			atributos.forca += a.forca;
-			atributos.defesa += a.defesa;
-			atributos.magia += a.magia;
-		}
-	}
-	time += deltaTime;
+		time += deltaTime;
 	if(time >= 1000){
 		time -= 1000;
 		atributos.hpatual += atributos.hpregen;
