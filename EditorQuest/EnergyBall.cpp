@@ -8,7 +8,7 @@ EnergyBall::EnergyBall(GerenteAtor& _gerente, double _x, double _y, double _dire
 {
 	x = _x;
 	y = _y;
-	direcao = _direcao*M_PI/180.0;
+	direcao = _direcao;
 }
 	
 SDL_Rect EnergyBall::PegaBoundingBox(){
@@ -29,7 +29,7 @@ void EnergyBall::Colidiu(Ator* ator){
 	if(ator->PegaTipo() == ATOR_INIMIGO)
 	{
 		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido();
+		atingido->FoiAtingido(10, 1);
 	}
 }
 

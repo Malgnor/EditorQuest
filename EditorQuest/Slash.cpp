@@ -28,16 +28,16 @@ void Slash::Colidiu(Ator* ator){
 	if(ator->PegaTipo() == ATOR_INIMIGO)
 	{
 		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido();
+		atingido->FoiAtingido(10, 0);
 	}
 
 }
 
 void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
+	/*
 	switch (tile->id)
 	{
 	case 1:
-		vivo = false;
 		break;
 	case 3:
 		break;
@@ -46,6 +46,7 @@ void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 	default:
 		break;
 	}
+	*/
 }
 
 void Slash::Inicializar(){
@@ -53,17 +54,17 @@ void Slash::Inicializar(){
 	indice = tempodevida = 0;
 	vivo = true;
 	direcao = jogador->PegaDirecao();
-	x = jogador->PegaBoundingBox().x+16.0+cos(direcao*M_PI/180.0)*16.0;
-	y = jogador->PegaBoundingBox().y+sin(direcao*M_PI/180.0)*16.0;
-	direcao2 = -45.0;
+	x = jogador->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
+	y = jogador->PegaBoundingBox().y+sin(direcao)*16.0;
+	direcao2 = -M_PI/4.0;
 }
 
 void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
-	direcao2 += deltaTime*0.18;
+	direcao2 += deltaTime*((M_PI/2.0)/500.0);
 	direcao = jogador->PegaDirecao();
-	x = jogador->PegaBoundingBox().x+16.0+cos(direcao*M_PI/180.0)*16.0;
-	y = jogador->PegaBoundingBox().y+sin(direcao*M_PI/180.0)*16.0;
+	x = jogador->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
+	y = jogador->PegaBoundingBox().y+sin(direcao)*16.0;
 	//printf("%f %f %f %f %f %f\n", direcao, x, y, cos(direcao*M_PI/180.0), sin(direcao*M_PI/180.0));
 	if(tempodevida >= 0.5*SEG)
 		vivo = false;

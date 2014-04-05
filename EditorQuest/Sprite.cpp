@@ -359,6 +359,8 @@ void Sprite::Renderizar(SDL_Renderer *renderer, double posX, double posY, unsign
 		src.y = 0;
 	}
 
+	angulo = angulo*180.0/M_PI;
+
 	//Render to screen
 	SDL_RenderCopyEx(renderer, textura, &src, &renderQuad, angulo, centro, flip );
 }

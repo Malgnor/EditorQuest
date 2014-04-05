@@ -8,7 +8,7 @@ Explosion::Explosion(GerenteAtor& _gerente, double _x, double _y, double _direca
 {
 	x = _x-32.0;
 	y = _y-32.0;
-	direcao = _direcao*M_PI/180.0;
+	direcao = _direcao;
 }
 	
 SDL_Rect Explosion::PegaBoundingBox(){
@@ -30,7 +30,7 @@ void Explosion::Colidiu(Ator* ator){
 	if(ator->PegaTipo() == ATOR_INIMIGO)
 	{
 		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido();
+		atingido->FoiAtingido(25, 1);
 	}
 
 }

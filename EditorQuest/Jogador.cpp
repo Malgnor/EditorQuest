@@ -182,7 +182,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		x-=(300.0/SEG*deltaTime);
 	else if(Teclas[FW_D].ativo)
 		x+=(300.0/SEG*deltaTime);
-	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16)*180.0/M_PI;
+	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16);
 	if(Mouse->wy){
 		skill = (++skill)%3;
 		printf("%d\n", skill);

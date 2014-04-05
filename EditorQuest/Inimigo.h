@@ -5,18 +5,24 @@
 #include "Sprite.h"
 #include "Item.h"
 
+class Jogador;
+class Mapa;
+
 class Inimigo :
 	public Ator
 {
-private:
+protected:
+	Jogador* jogador;
+	Mapa* mapa;
 	Sprite sprite;
-	double x, y, direcao;
+	double x, y, direcao, visao;
 	unsigned int indice;
 	Atributos atributos;
 	Uint32 time;
 
 public:
-	Inimigo(GerenteAtor& _gerente);
+	Inimigo(GerenteAtor& _gerente, Jogador* _jogador, Mapa* _mapa);
+
 	SDL_Rect PegaBoundingBox();
 	unsigned int PegaTipo();
 	Atributos& PegaAtributos();
@@ -25,10 +31,13 @@ public:
 
 	void Colidiu(Ator* ator);
 	void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
+	bool TemVisaoDoJogador();
+	
+	void Renderizar(SDL_Rect* camera);
 
+	virtual void FoiAtingido(int dano, unsigned int tipo) = 0;
 	virtual void Inicializar() = 0;
 	virtual void Atualizar(Uint32 deltaTime, SDL_Rect* camera) = 0;
-	void Renderizar(SDL_Rect* camera);
 	virtual void Finalizar() = 0;
 
 };

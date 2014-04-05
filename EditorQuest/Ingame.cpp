@@ -144,7 +144,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			camera.y = 32*32-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		if(Teclas[FW_ESPACO].pressionado)
-			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y));
+			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		break;
