@@ -26,6 +26,7 @@ public:
 	SDL_Rect PegaBoundingBox();
 	unsigned int PegaTipo();
 	Atributos& PegaAtributos();
+	double PegaDirecao();
 
 	bool EstaNoJogo();
 

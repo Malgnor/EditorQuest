@@ -1,28 +1,16 @@
 #ifndef _SLASH_H_
 #define _SLASH_H_
 
-#include "Ator.h"
-#include "Sprite.h"
-class Jogador;
+#include "Habilidades.h"
 
-class Slash : public Ator
+class Slash : public Habilidades
 {
 private:
-	Sprite sprite;
-	double x, y, direcao, direcao2;
-	unsigned int indice, tempodevida;
-	bool vivo;
-	Jogador* jogador;
+	double direcao2;
 
 public:
-	Slash(GerenteAtor& _gerente, Jogador* _jogador);
+	Slash(GerenteAtor& _gerente, Ator* _origem, int dano);
 	
-	virtual SDL_Rect PegaBoundingBox();
-	
-	virtual bool EstaNoJogo();
-	virtual unsigned int PegaTipo();
-
-	virtual void Colidiu(Ator* ator);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

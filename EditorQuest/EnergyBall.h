@@ -1,26 +1,14 @@
 #ifndef _ENERGYBALL_H_
 #define _ENERGYBALL_H_
 
-#include "Ator.h"
-#include "Sprite.h"
+#include "Habilidades.h"
 
-class EnergyBall : public Ator
+class EnergyBall : public Habilidades
 {
-private:
-	Sprite sprite;
-	double x, y, direcao;
-	unsigned int indice, tempodevida;
-	bool vivo;
 
 public:
-	EnergyBall(GerenteAtor& _gerente, double _x, double _y, double _direcao);
+	EnergyBall(GerenteAtor& _gerente, Ator* _origem, int _dano);
 	
-	virtual SDL_Rect PegaBoundingBox();
-	
-	virtual bool EstaNoJogo();
-	virtual unsigned int PegaTipo();
-
-	virtual void Colidiu(Ator* ator);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

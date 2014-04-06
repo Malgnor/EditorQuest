@@ -24,6 +24,10 @@ unsigned int Inimigo::PegaTipo(){
 	return ATOR_INIMIGO;
 }
 
+double Inimigo::PegaDirecao(){
+	return direcao;
+}
+
 bool Inimigo::EstaNoJogo(){
 	return atributos.hpatual > 0;
 }
@@ -85,8 +89,8 @@ bool Inimigo::TemVisaoDoJogador(){
 		unsigned int qtd = mapa->PegaQtdColisao();
 		for(unsigned int i = 0; i < qtd; i++){
 			if(tiles[i].id == 1){
-				int x1 = x+16;
-				int y1 = y+16;
+				int x1 = (int)x+16;
+				int y1 = (int)y+16;
 				int x2 = jogador->PegaBoundingBox().x+16;
 				int y2 = jogador->PegaBoundingBox().y+16;
 				if(SDL_IntersectRectAndLine(&tiles[i].rect, &x1, &y1, &x2, &y2) == SDL_TRUE){

@@ -23,6 +23,7 @@ public:
 	
 	virtual SDL_Rect PegaBoundingBox() = 0;
 	virtual unsigned int PegaTipo() = 0;
+	virtual double PegaDirecao() = 0;
 	
 	virtual bool EstaNoJogo() = 0;
 

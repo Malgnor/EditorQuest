@@ -5,32 +5,8 @@
 #include "Dummy.h"
 #include "Jogador.h"
 
-Slash::Slash(GerenteAtor& _gerente, Jogador* _jogador) : Ator(_gerente)
+Slash::Slash(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_gerente, _origem, _dano)
 {
-	jogador = _jogador;
-}
-	
-SDL_Rect Slash::PegaBoundingBox(){
-	SDL_Rect ret = sprite.PegaDimensao();
-	ret.x = (int)x;
-	ret.y = (int)y;
-	return ret;
-}
-unsigned int Slash::PegaTipo(){
-	return ATOR_HABILIDADE;
-}
-	
-bool Slash::EstaNoJogo(){
-	return vivo;
-}
-
-void Slash::Colidiu(Ator* ator){
-	if(ator->PegaTipo() == ATOR_INIMIGO)
-	{
-		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido(10, 0);
-	}
-
 }
 
 void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
@@ -51,20 +27,21 @@ void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 
 void Slash::Inicializar(){
 	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/imgs/slashh.png", 0, 0, 255, 255, 255);
-	indice = tempodevida = 0;
+	tempodevida = 0;
+	tipo = DANO_FISICO;
 	vivo = true;
-	direcao = jogador->PegaDirecao();
-	x = jogador->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
-	y = jogador->PegaBoundingBox().y+sin(direcao)*16.0;
+	direcao = origem->PegaDirecao();
+	x = origem->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
+	y = origem->PegaBoundingBox().y+sin(direcao)*16.0;
 	direcao2 = -M_PI/4.0;
 }
 
 void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
 	direcao2 += deltaTime*((M_PI/2.0)/500.0);
-	direcao = jogador->PegaDirecao();
-	x = jogador->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
-	y = jogador->PegaBoundingBox().y+sin(direcao)*16.0;
+	direcao = origem->PegaDirecao();
+	x = origem->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
+	y = origem->PegaBoundingBox().y+sin(direcao)*16.0;
 	//printf("%f %f %f %f %f %f\n", direcao, x, y, cos(direcao*M_PI/180.0), sin(direcao*M_PI/180.0));
 	if(tempodevida >= 0.5*SEG)
 		vivo = false;

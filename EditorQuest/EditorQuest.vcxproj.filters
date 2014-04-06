@@ -105,6 +105,9 @@
     <ClCompile Include="Equipamento.cpp">
       <Filter>Source Files\Itens</Filter>
     </ClCompile>
+    <ClCompile Include="Habilidades.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Equipamento.h">
       <Filter>Header Files\Itens</Filter>
+    </ClInclude>
+    <ClInclude Include="Habilidades.h">
+      <Filter>Header Files\Atores</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

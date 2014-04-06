@@ -29,6 +29,13 @@ void Jogador::AtualizarAtributos(){
 	}
 }
 
+void Jogador::FoiAtingido(int dano, unsigned int tipo){
+	if(tipo == 0)
+		atributos.hpatual -= dano - atributos.defesa/2;
+	else if(tipo == 1)
+		atributos.hpatual -= dano - atributos.magia/2;
+}
+
 Item** Jogador::PegaInventario(){
 	return inventario;
 }
@@ -191,22 +198,22 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		switch (skill)
 		{
 		case 0:
-			gerente.Adicionar(new Slash(gerente, this));
+			gerente.Adicionar(new Slash(gerente, this, 75));
 			break;
 		case 1:
 			if(atributos.mpatual >= 10){
-				gerente.Adicionar(new EnergyBall(gerente, x, y, direcao));
+				gerente.Adicionar(new EnergyBall(gerente, this, atributos.magia));
 				atributos.mpatual -= 10;
 			}
 			break;
 		case 2:
 			if(atributos.mpatual >= 25){
-				gerente.Adicionar(new Explosion(gerente, Mouse->x+(double)camera->x, Mouse->y+(double)camera->y, direcao));
+				gerente.Adicionar(new Explosion(gerente, this, atributos.magia*2));
 				atributos.mpatual -= 25;
 			}
 			break;
 		default:
-			gerente.Adicionar(new Slash(gerente, this));
+			gerente.Adicionar(new Slash(gerente, this, 75));
 			break;
 		}
 	}

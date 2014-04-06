@@ -4,35 +4,8 @@
 #include "SDL.h"
 #include "Dummy.h"
 
-Explosion::Explosion(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
+Explosion::Explosion(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_gerente, _origem, _dano)
 {
-	x = _x-32.0;
-	y = _y-32.0;
-	direcao = _direcao;
-}
-	
-SDL_Rect Explosion::PegaBoundingBox(){
-	SDL_Rect ret = sprite.PegaDimensao();
-	ret.x = (int)x;
-	ret.y = (int)y;
-	return ret;
-}
-
-unsigned int Explosion::PegaTipo(){
-	return ATOR_HABILIDADE;
-}
-	
-bool Explosion::EstaNoJogo(){
-	return vivo;
-}
-
-void Explosion::Colidiu(Ator* ator){
-	if(ator->PegaTipo() == ATOR_INIMIGO)
-	{
-		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido(25, 1);
-	}
-
 }
 
 void Explosion::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
@@ -51,15 +24,19 @@ void Explosion::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Explosion::Inicializar(){
-	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");
-	indice = tempodevida = 0;
+	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");	
+	x = origem->PegaBoundingBox().x+16;
+	y = origem->PegaBoundingBox().y+16;
+	direcao = origem->PegaDirecao();
+	tipo = DANO_MAGICO;
+	tempodevida = 0;
 	vivo = true;
 }
 
 void Explosion::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
-	//x += cos(direcao)*500.0/SEG*deltaTime;
-	//y += sin(direcao)*500.0/SEG*deltaTime;
+	x += cos(direcao)*400.0/SEG*deltaTime;
+	y += sin(direcao)*400.0/SEG*deltaTime;
 	//printf("%f %f %f\n", direcao, cos(direcao), sin(direcao));
 	if(tempodevida >= 1*SEG)
 		vivo = false;

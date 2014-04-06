@@ -4,33 +4,8 @@
 #include "SDL.h"
 #include "Dummy.h"
 
-EnergyBall::EnergyBall(GerenteAtor& _gerente, double _x, double _y, double _direcao) : Ator(_gerente)
+EnergyBall::EnergyBall(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_gerente, _origem, _dano)
 {
-	x = _x;
-	y = _y;
-	direcao = _direcao;
-}
-	
-SDL_Rect EnergyBall::PegaBoundingBox(){
-	SDL_Rect ret = sprite.PegaDimensao();
-	ret.x = (int)x;
-	ret.y = (int)y;
-	return ret;
-}
-unsigned int EnergyBall::PegaTipo(){
-	return ATOR_HABILIDADE;
-}
-	
-bool EnergyBall::EstaNoJogo(){
-	return vivo;
-}
-
-void EnergyBall::Colidiu(Ator* ator){
-	if(ator->PegaTipo() == ATOR_INIMIGO)
-	{
-		Dummy* atingido = (Dummy*)ator;
-		atingido->FoiAtingido(10, 1);
-	}
 }
 
 void EnergyBall::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
@@ -50,7 +25,11 @@ void EnergyBall::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 
 void EnergyBall::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/energyball.png");
-	indice = tempodevida = 0;
+	x = origem->PegaBoundingBox().x+16;
+	y = origem->PegaBoundingBox().y+16;
+	direcao = origem->PegaDirecao();
+	tipo = DANO_MAGICO;
+	tempodevida = 0;
 	vivo = true;
 }
 

@@ -26,11 +26,13 @@ public:
 
 	void AtualizarAtributos();
 
+	void FoiAtingido(int dano, unsigned int tipo);
+
 	Item** PegaInventario();
 	Equipamento** PegaEquipamentos();
 	Atributos& PegaAtributos();
 	unsigned int PegaSkillSelecionada();
-	double PegaDirecao();
+	virtual double PegaDirecao();
 
 	virtual bool EstaNoJogo();
 	virtual unsigned int PegaTipo();
