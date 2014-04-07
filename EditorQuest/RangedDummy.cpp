@@ -1,22 +1,22 @@
-#include "Dummy.h"
+#include "RangedDummy.h"
 #include "GerenteAtor.h"
 #include "Jogador.h"
-#include "Slash.h"
+#include "EnergyBall.h"
 
-Dummy::Dummy(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
+RangedDummy::RangedDummy(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {
 	x = _x;
 	y = _y;
 }
 
-void Dummy::FoiAtingido(int dano, unsigned int tipo){
+void RangedDummy::FoiAtingido(int dano, unsigned int tipo){
 	atributos.hpatual -= dano;
 }
 
-void Dummy::Inicializar(){
+void RangedDummy::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/torre.png", 32);	
 	direcao = 0.0;
-	visao = 200.0;
+	visao = 300.0;
 	time = 0;
 	indice = 1;
 	atributos.hpatual = atributos.hp = 100;
@@ -28,7 +28,7 @@ void Dummy::Inicializar(){
 	atributos.magia = 5;
 }		
 
-void Dummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
+void RangedDummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	time += deltaTime;
 	if(TemVisaoDoJogador()){
 		double x1 = jogador->PegaBoundingBox().x;
@@ -36,17 +36,20 @@ void Dummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		double dx = x1 - x;
 		double dy = y1 - y;
 		double dd = sqrt(dx*dx+dy*dy);
-		if(dd > 24)
-			direcao = atan2(y1-y, x1-x);
-		if (dd < 55 && time >= 1000){
-			time = 0;
-			gerente.Adicionar(new Slash(gerente, this, 10));
+		if(dd > 100){
+			x += cos(direcao)*0.15*deltaTime;
+			y += sin(direcao)*0.15*deltaTime;
 		}
+		if (dd < 250 && time >= 1500){
+			time = 0;
+			gerente.Adicionar(new EnergyBall(gerente, this, 10));
+		}
+	} else {
+		x += cos(direcao)*0.15*deltaTime;
+		y += sin(direcao)*0.15*deltaTime;
 	}
-	x += cos(direcao)*0.15*deltaTime;
-	y += sin(direcao)*0.15*deltaTime;
 }	
 
-void Dummy::Finalizar(){
+void RangedDummy::Finalizar(){
 
 }

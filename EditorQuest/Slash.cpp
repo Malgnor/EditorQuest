@@ -37,6 +37,8 @@ void Slash::Inicializar(){
 }
 
 void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
+	if(!origem->EstaNoJogo())
+		vivo = false;
 	tempodevida += deltaTime;
 	direcao2 += deltaTime*((M_PI/2.0)/500.0);
 	direcao = origem->PegaDirecao();

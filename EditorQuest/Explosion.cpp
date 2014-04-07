@@ -25,8 +25,8 @@ void Explosion::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 
 void Explosion::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");	
-	x = origem->PegaBoundingBox().x+16;
-	y = origem->PegaBoundingBox().y+16;
+	x = origem->PegaBoundingBox().x;
+	y = origem->PegaBoundingBox().y;
 	direcao = origem->PegaDirecao();
 	tipo = DANO_MAGICO;
 	tempodevida = 0;
@@ -34,6 +34,8 @@ void Explosion::Inicializar(){
 }
 
 void Explosion::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
+	if(!origem->EstaNoJogo())
+		vivo = false;
 	tempodevida += deltaTime;
 	x += cos(direcao)*400.0/SEG*deltaTime;
 	y += sin(direcao)*400.0/SEG*deltaTime;

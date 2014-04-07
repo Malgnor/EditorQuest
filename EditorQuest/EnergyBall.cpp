@@ -25,8 +25,8 @@ void EnergyBall::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 
 void EnergyBall::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/energyball.png");
-	x = origem->PegaBoundingBox().x+16;
-	y = origem->PegaBoundingBox().y+16;
+	x = origem->PegaBoundingBox().x;
+	y = origem->PegaBoundingBox().y;
 	direcao = origem->PegaDirecao();
 	tipo = DANO_MAGICO;
 	tempodevida = 0;
@@ -34,6 +34,8 @@ void EnergyBall::Inicializar(){
 }
 
 void EnergyBall::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
+	if(!origem->EstaNoJogo())
+		vivo = false;
 	tempodevida += deltaTime;
 	x += cos(direcao)*500.0/SEG*deltaTime;
 	y += sin(direcao)*500.0/SEG*deltaTime;

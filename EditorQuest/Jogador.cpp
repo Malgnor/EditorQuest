@@ -150,12 +150,13 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		time -= 1000;
 		atributos.hpatual += atributos.hpregen;
 		atributos.mpatual += atributos.mpregen;
-		if(atributos.hpatual > atributos.hp)
-			atributos.hpatual = atributos.hp;
-		if(atributos.mpatual > atributos.mp)
-			atributos.mpatual = atributos.mp;
 	}
+	if(atributos.hpatual > atributos.hp)
+		atributos.hpatual = atributos.hp;
+	if(atributos.mpatual > atributos.mp)
+		atributos.mpatual = atributos.mp;
 	// SEG = 1000.0
+	/*
 	if(Teclas[FW_CIMA].ativo)
 		atributos.hpatual++;
 	if(Teclas[FW_BAIXO].ativo)
@@ -164,7 +165,6 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		atributos.mpatual++;
 	if(Teclas[FW_ESQUERDA].ativo)
 		atributos.mpatual--;
-	/*
 	if(Teclas[FW_1].pressionado)
 		if(!equipamentos[EQUIP_ARMA])
 			equipamentos[EQUIP_ARMA] = new Item(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", novos);

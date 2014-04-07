@@ -1,5 +1,6 @@
 #include "Ingame.h"
 #include "Dummy.h"
+#include "RangedDummy.h"
 #include "janela.h"
 #include "MenuInicial.h"
 #include "Equipamento.h"
@@ -143,8 +144,10 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		else if(camera.y > 32*32-camera.h)
 			camera.y = 32*32-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
-		if(Teclas[FW_ESPACO].pressionado)
+		if(Teclas[FW_Z].pressionado)
 			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
+		if(Teclas[FW_X].pressionado)
+			gerenteAtor.Adicionar(new RangedDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		break;

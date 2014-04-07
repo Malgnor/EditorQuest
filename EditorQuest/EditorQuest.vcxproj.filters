@@ -37,6 +37,18 @@
     <Filter Include="Header Files\Itens">
       <UniqueIdentifier>{767e5982-e123-4862-85d5-3fe78b35e1b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Atores\Inimigos">
+      <UniqueIdentifier>{00f30f03-50b9-4e1e-b51c-fc76aa5cd751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Atores\Habilidades">
+      <UniqueIdentifier>{4117d9c2-c0a2-492f-a2e5-159e544b39bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Atores\Inimigos">
+      <UniqueIdentifier>{2580eedc-6dee-47e3-a8b2-55e625f66372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Atores\Habilidades">
+      <UniqueIdentifier>{1e4e644f-2734-46f1-b2c5-80bc4eff39c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -84,29 +96,32 @@
     <ClCompile Include="Botao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnergyBall.cpp">
-      <Filter>Source Files\Atores</Filter>
-    </ClCompile>
-    <ClCompile Include="Explosion.cpp">
-      <Filter>Source Files\Atores</Filter>
-    </ClCompile>
-    <ClCompile Include="Slash.cpp">
-      <Filter>Source Files\Atores</Filter>
-    </ClCompile>
-    <ClCompile Include="Dummy.cpp">
-      <Filter>Source Files\Atores</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files\Itens</Filter>
-    </ClCompile>
-    <ClCompile Include="Inimigo.cpp">
-      <Filter>Source Files\Atores</Filter>
     </ClCompile>
     <ClCompile Include="Equipamento.cpp">
       <Filter>Source Files\Itens</Filter>
     </ClCompile>
+    <ClCompile Include="Inimigo.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
+    <ClCompile Include="EnergyBall.cpp">
+      <Filter>Source Files\Atores\Habilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Source Files\Atores\Habilidades</Filter>
+    </ClCompile>
     <ClCompile Include="Habilidades.cpp">
-      <Filter>Source Files\Atores</Filter>
+      <Filter>Source Files\Atores\Habilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Slash.cpp">
+      <Filter>Source Files\Atores\Habilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="RangedDummy.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,29 +173,32 @@
     <ClInclude Include="Botao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnergyBall.h">
-      <Filter>Header Files\Atores</Filter>
-    </ClInclude>
-    <ClInclude Include="Explosion.h">
-      <Filter>Header Files\Atores</Filter>
-    </ClInclude>
-    <ClInclude Include="Slash.h">
-      <Filter>Header Files\Atores</Filter>
-    </ClInclude>
-    <ClInclude Include="Dummy.h">
-      <Filter>Header Files\Atores</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Header Files\Itens</Filter>
-    </ClInclude>
-    <ClInclude Include="Inimigo.h">
-      <Filter>Header Files\Atores</Filter>
     </ClInclude>
     <ClInclude Include="Equipamento.h">
       <Filter>Header Files\Itens</Filter>
     </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Inimigo.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Slash.h">
+      <Filter>Header Files\Atores\Habilidades</Filter>
+    </ClInclude>
     <ClInclude Include="Habilidades.h">
-      <Filter>Header Files\Atores</Filter>
+      <Filter>Header Files\Atores\Habilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Header Files\Atores\Habilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyBall.h">
+      <Filter>Header Files\Atores\Habilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedDummy.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
