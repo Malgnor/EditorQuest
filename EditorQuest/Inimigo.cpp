@@ -67,13 +67,10 @@ void Inimigo::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 			}
 			direcao += M_PI/10.0;
 		}
-		indice = 1;
 		break;
 	case 3:
-		indice = 2;
 		break;
 	case 4:
-		indice = 3;
 		break;
 	default:
 		break;
@@ -105,4 +102,11 @@ bool Inimigo::TemVisaoDoJogador(){
 
 void Inimigo::Renderizar(SDL_Rect* camera){
 	sprite.Renderizar(gerente.janela->renderer, x - (double)camera->x, y - (double)camera->y, indice, 0, direcao);
+	SDL_Rect hpbar = { (int)x-camera->x+4, (int)y-8-camera->y, (int)((double)atributos.hpatual/(double)atributos.hp*24.0), 5};
+	SDL_SetRenderDrawColor(gerente.janela->renderer, 0, 255, 0, 255);
+	SDL_RenderFillRect(gerente.janela->renderer, &hpbar);
+	hpbar.w = 26;
+	hpbar.x = (int)x-1-camera->x+4;
+	SDL_SetRenderDrawColor(gerente.janela->renderer, 0, 0, 0, 255);
+	SDL_RenderDrawRect(gerente.janela->renderer, &hpbar);
 }

@@ -26,7 +26,11 @@ void Jogador::AtualizarAtributos(){
 			atributos.defesa += a.defesa;
 			atributos.magia += a.magia;
 		}
-	}
+	}	
+	if(atributos.hpatual > atributos.hp)
+		atributos.hpatual = atributos.hp;
+	if(atributos.mpatual > atributos.mp)
+		atributos.mpatual = atributos.mp;
 }
 
 void Jogador::FoiAtingido(int dano, unsigned int tipo){

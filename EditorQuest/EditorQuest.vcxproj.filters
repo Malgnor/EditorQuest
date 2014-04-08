@@ -123,6 +123,9 @@
     <ClCompile Include="RangedDummy.cpp">
       <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
+    <ClCompile Include="HybridDummy.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -198,6 +201,9 @@
       <Filter>Header Files\Atores\Habilidades</Filter>
     </ClInclude>
     <ClInclude Include="RangedDummy.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="HybridDummy.h">
       <Filter>Header Files\Atores\Inimigos</Filter>
     </ClInclude>
   </ItemGroup>

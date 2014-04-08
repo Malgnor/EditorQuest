@@ -1,6 +1,7 @@
 #include "Ingame.h"
 #include "Dummy.h"
 #include "RangedDummy.h"
+#include "HybridDummy.h"
 #include "janela.h"
 #include "MenuInicial.h"
 #include "Equipamento.h"
@@ -148,6 +149,8 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_X].pressionado)
 			gerenteAtor.Adicionar(new RangedDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
+		if(Teclas[FW_C].pressionado)
+			gerenteAtor.Adicionar(new HybridDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		break;
@@ -245,9 +248,9 @@ void Ingame::Renderizar(){
 	SDL_RenderFillRect(janela->renderer, &hpbar);
 	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
 	SDL_RenderFillRect(janela->renderer, &mpbar);
-	hpbar.w = 101;
+	hpbar.w = 102;
 	hpbar.x = 15;
-	mpbar.w = 101;
+	mpbar.w = 102;
 	mpbar.x = 15;
 	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
 	SDL_RenderDrawRect(janela->renderer, &hpbar);

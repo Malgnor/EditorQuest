@@ -93,6 +93,7 @@
     <ClCompile Include="GerenteJanela.cpp" />
     <ClCompile Include="EnergyBall.cpp" />
     <ClCompile Include="Habilidades.cpp" />
+    <ClCompile Include="HybridDummy.cpp" />
     <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="Inimigo.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="globaldef.h" />
     <ClInclude Include="EnergyBall.h" />
     <ClInclude Include="Habilidades.h" />
+    <ClInclude Include="HybridDummy.h" />
     <ClInclude Include="Ingame.h" />
     <ClInclude Include="Inimigo.h" />
     <ClInclude Include="Item.h" />

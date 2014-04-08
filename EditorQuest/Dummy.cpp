@@ -36,15 +36,19 @@ void Dummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		double dx = x1 - x;
 		double dy = y1 - y;
 		double dd = sqrt(dx*dx+dy*dy);
-		if(dd > 24)
-			direcao = atan2(y1-y, x1-x);
+		direcao = atan2(y1-y, x1-x);
+		if(dd > 40){			
+			x += cos(direcao)*0.15*deltaTime;
+			y += sin(direcao)*0.15*deltaTime;
+		}
 		if (dd < 55 && time >= 1000){
 			time = 0;
 			gerente.Adicionar(new Slash(gerente, this, 10));
 		}
+	} else {
+		x += cos(direcao)*0.15*deltaTime;
+		y += sin(direcao)*0.15*deltaTime;
 	}
-	x += cos(direcao)*0.15*deltaTime;
-	y += sin(direcao)*0.15*deltaTime;
 }	
 
 void Dummy::Finalizar(){
