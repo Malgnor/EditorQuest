@@ -102,8 +102,9 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, h/10.0*6.0, fonte, cor);
 	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, h/10.0*7.0, fonte, cor);
 	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, h/10.0*9.0, fonte, cor);
-	botoes[BOTAO_USAR].Inicializar(janela->renderer, "Usar", w/10.0*8.25, h/10.0*9.0, fonte, cor);
+	botoes[BOTAO_USAR].Inicializar(janela->renderer, "Usar", w/10.0*8.25, h/10.0*8.5, fonte, cor);
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "Remover", w/10.0*7.75, h/10.0*9.0, fonte, cor);
+	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "Destruir", w/10.0*7.75, h/10.0*9.25, fonte, cor);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
@@ -204,14 +205,16 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			invselecionado = EQUIP_MAOS;
 		if(inventario[EQUIP_PES] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 200 && Mouse->y < 232 && Mouse->botoes[FW_MESQUERDO].ativo)
 			invselecionado = EQUIP_PES;
-		if(botoes[BOTAO_USAR2].Pressionado() && jogador->PegaEquipamentos()[invselecionado])
-			jogador->PegaEquipamentos()[invselecionado]->Usar(jogador);
+		if(botoes[BOTAO_USAR2].Pressionado() && inventario[invselecionado])
+			inventario[invselecionado]->Usar(jogador);
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
 	case ESTADO_INVENTARIO:
+		inventario = jogador->PegaInventario();
 		botoes[BOTAO_USAR].Atualizar();		
-		botoes[BOTAO_VOLTAR].Atualizar();			
+		botoes[BOTAO_VOLTAR].Atualizar();		
+		botoes[BOTAO_DESTRUIR].Atualizar();		
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -227,8 +230,12 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0 && Mouse->botoes[FW_MESQUERDO].ativo)
 				invselecionado = i;
 		}
-		if(botoes[BOTAO_USAR].Pressionado() && jogador->PegaInventario()[invselecionado])
-			jogador->PegaInventario()[invselecionado]->Usar(jogador);
+		if(botoes[BOTAO_USAR].Pressionado() && inventario[invselecionado])
+			inventario[invselecionado]->Usar(jogador);
+		if(botoes[BOTAO_DESTRUIR].Pressionado() && inventario[invselecionado]){
+			delete inventario[invselecionado];
+			inventario[invselecionado] = 0;
+		}
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
@@ -285,6 +292,7 @@ void Ingame::Renderizar(){
 		}
 		if(inventario[invselecionado]){
 			botoes[BOTAO_USAR].Renderizar(janela->renderer);
+			botoes[BOTAO_DESTRUIR].Renderizar(janela->renderer);
 			SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
 			selectrect.x = 99;
 			selectrect.y = 49+invselecionado*45;

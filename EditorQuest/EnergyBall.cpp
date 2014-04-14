@@ -37,10 +37,10 @@ void EnergyBall::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	if(!origem->EstaNoJogo())
 		vivo = false;
 	tempodevida += deltaTime;
-	x += cos(direcao)*500.0/SEG*deltaTime;
-	y += sin(direcao)*500.0/SEG*deltaTime;
+	x += cos(direcao)*0.5*deltaTime;
+	y += sin(direcao)*0.5*deltaTime;
 	//printf("%f %f %f\n", direcao, cos(direcao), sin(direcao));
-	if(tempodevida >= 10*SEG)
+	if(tempodevida >= 1500)
 		vivo = false;
 }
 

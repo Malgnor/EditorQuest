@@ -27,7 +27,7 @@ public:
 	unsigned int PegaTipo();
 	double PegaDirecao();
 
-	void Colidiu(Ator* ator);
+	virtual void Colidiu(Ator* ator);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao) = 0;
 
 	virtual void Inicializar() = 0;		

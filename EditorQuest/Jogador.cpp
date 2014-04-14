@@ -143,7 +143,7 @@ void Jogador::Inicializar(){
 	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
 	inventario[4] = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", atributos, EQUIP_TRONCO);
 	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_MAOS);
-	inventario[8] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
+	inventario[9] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
@@ -159,7 +159,6 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		atributos.hpatual = atributos.hp;
 	if(atributos.mpatual > atributos.mp)
 		atributos.mpatual = atributos.mp;
-	// SEG = 1000.0
 	/*
 	if(Teclas[FW_CIMA].ativo)
 		atributos.hpatual++;
@@ -186,13 +185,13 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 			equipamentos[EQUIP_PES] = new Item(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", novos);
 	*/
 	if(Teclas[FW_W].ativo)
-		y-=(300.0/SEG*deltaTime);
+		y-=(0.3*deltaTime);
 	else if(Teclas[FW_S].ativo)
-		y+=(300.0/SEG*deltaTime);
+		y+=(0.3*deltaTime);
 	if(Teclas[FW_A].ativo)
-		x-=(300.0/SEG*deltaTime);
+		x-=(0.3*deltaTime);
 	else if(Teclas[FW_D].ativo)
-		x+=(300.0/SEG*deltaTime);
+		x+=(0.3*deltaTime);
 	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16);
 	if(Mouse->wy){
 		skill = (++skill)%3;

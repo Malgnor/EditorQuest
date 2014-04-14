@@ -5,9 +5,13 @@
 
 class Explosion : public Habilidades
 {
+private:
+	bool explo;
 public:
 	Explosion(GerenteAtor& _gerente, Ator* _origem, int _dano);
-	
+
+	void Colidiu(Ator* ator);
+
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

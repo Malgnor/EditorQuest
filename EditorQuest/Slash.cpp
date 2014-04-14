@@ -45,7 +45,7 @@ void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	x = origem->PegaBoundingBox().x+16.0+cos(direcao)*16.0;
 	y = origem->PegaBoundingBox().y+sin(direcao)*16.0;
 	//printf("%f %f %f %f %f %f\n", direcao, x, y, cos(direcao*M_PI/180.0), sin(direcao*M_PI/180.0));
-	if(tempodevida >= 0.5*SEG)
+	if(tempodevida >= 500)
 		vivo = false;
 }
 

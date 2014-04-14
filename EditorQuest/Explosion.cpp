@@ -2,17 +2,64 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
-#include "Dummy.h"
+#include "Jogador.h"
+#include "Inimigo.h"
 
 Explosion::Explosion(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_gerente, _origem, _dano)
 {
+}
+
+void Explosion::Colidiu(Ator* ator){
+	if(ator->PegaTipo() != origem->PegaTipo()){
+		if(ator->PegaTipo() == ATOR_INIMIGO){			
+			if(!explo){
+				explo = true;
+				tempodevida = 0;
+				sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");
+				x -= 16;
+				y -= 16;
+			}
+			if(!atingidos.empty()){
+				for(Ator* a : atingidos){
+					if(a == ator)
+						return;
+				}
+			}
+			atingidos.push_back(ator);
+			Inimigo* atingido = (Inimigo*)ator;
+			atingido->FoiAtingido(dano, tipo);
+		} else if(ator->PegaTipo() == ATOR_JOGADOR){	
+			if(!explo){
+				explo = true;
+				tempodevida = 0;
+				sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");
+				x -= 16;
+				y -= 16;
+			}
+			if(!atingidos.empty()){
+				for(Ator* a : atingidos){
+					if(a == ator)
+						return;
+				}
+			}
+			atingidos.push_back(ator);
+			Jogador* atingido = (Jogador*)ator;
+			atingido->FoiAtingido(dano, tipo);
+		}
+	}
 }
 
 void Explosion::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 	switch (tile->id)
 	{
 	case 1:
-		//vivo = false;
+		if(!explo){
+			explo = true;
+			tempodevida = 0;
+			sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");
+			x -= 16;
+			y -= 16;
+		}
 		break;
 	case 3:
 		break;
@@ -24,24 +71,37 @@ void Explosion::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Explosion::Inicializar(){
-	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");	
+	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/energysmall.png");	
 	x = origem->PegaBoundingBox().x;
 	y = origem->PegaBoundingBox().y;
 	direcao = origem->PegaDirecao();
 	tipo = DANO_MAGICO;
 	tempodevida = 0;
 	vivo = true;
+	explo = false;
 }
 
 void Explosion::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	if(!origem->EstaNoJogo())
 		vivo = false;
 	tempodevida += deltaTime;
-	x += cos(direcao)*400.0/SEG*deltaTime;
-	y += sin(direcao)*400.0/SEG*deltaTime;
+	if(!explo){
+		x += cos(direcao)*0.4*deltaTime;
+		y += sin(direcao)*0.4*deltaTime;
+	}
 	//printf("%f %f %f\n", direcao, cos(direcao), sin(direcao));
-	if(tempodevida >= 1*SEG)
-		vivo = false;
+	if(explo){
+		if(tempodevida >= 500)
+			vivo = false;
+	} else {		
+		if(tempodevida >= 750){
+			x -= 16;
+			y -= 16;
+			tempodevida = 0;
+			explo = true;
+			sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/explosion.png");
+		}
+	}
 }
 
 void Explosion::Renderizar(SDL_Rect* camera){

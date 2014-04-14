@@ -19,8 +19,6 @@
 	#define amask 0xff000000
 #endif
 
-#define SEG 1000.0
-
 //#define DEBUG
 
 #endif
