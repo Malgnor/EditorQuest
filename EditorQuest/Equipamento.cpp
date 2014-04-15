@@ -23,6 +23,7 @@ bool Equipamento::Usar(Jogador* jogador){
 				if(inventario[i] != (Item*)this)
 					continue;
 				inventario[i] = (Item*)equipamentos[slot];
+				equipamentos[slot]->equipado = false;
 				equipamentos[slot] = this;
 				equipado = true;				
 				jogador->AtualizarAtributos();

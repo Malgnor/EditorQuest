@@ -27,7 +27,7 @@ double Habilidades::PegaDirecao(){
 
 void Habilidades::Colidiu(Ator* ator){
 	if(ator->PegaTipo() != origem->PegaTipo()){
-		if(ator->PegaTipo() == ATOR_INIMIGO){
+		if(ator->PegaTipo() == ATOR_INIMIGO && origem->PegaTipo() != ATOR_ARMADILHA){
 			if(!atingidos.empty()){
 				for(Ator* a : atingidos){
 					if(a == ator)

@@ -9,6 +9,13 @@ Slash::Slash(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_ger
 {
 }
 
+SDL_Rect Slash::PegaBoundingBox(){
+	SDL_Rect ret = sprite.PegaDimensao();
+	ret.x = (int)(origem->PegaBoundingBox().x+cos(direcao)*32.0);
+	ret.y = (int)(origem->PegaBoundingBox().y+sin(direcao)*32.0);
+	return ret;
+}
+
 void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 	/*
 	switch (tile->id)
@@ -50,6 +57,18 @@ void Slash::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 }
 
 void Slash::Renderizar(SDL_Rect* camera){
+	/*
+	SDL_Rect a = PegaBoundingBox();
+	a.x = (int)x-camera->x;
+	a.y = (int)y-camera->y;
+	SDL_SetRenderDrawColor(gerente.janela->renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(gerente.janela->renderer, &a);
+	direcao = origem->PegaDirecao();
+	a.x = (int)origem->PegaBoundingBox().x+cos(direcao)*32.0-camera->x;
+	a.y = (int)origem->PegaBoundingBox().y+sin(direcao)*32.0-camera->y;
+	SDL_SetRenderDrawColor(gerente.janela->renderer, 0, 0, 255, 255);
+	SDL_RenderFillRect(gerente.janela->renderer, &a);
+	*/
 	SDL_Point centro = {0, 16};
 	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, 0, 0, direcao+direcao2, 1.0, 1.0, &centro);
 }

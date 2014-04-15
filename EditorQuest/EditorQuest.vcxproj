@@ -81,12 +81,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Armadilha.cpp" />
     <ClCompile Include="Ator.cpp" />
     <ClCompile Include="Botao.cpp" />
+    <ClCompile Include="Consumavel.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
+    <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="Equipamento.cpp" />
+    <ClCompile Include="Espinhos.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="Flecha.cpp" />
     <ClCompile Include="FW_Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteAtor.cpp" />
@@ -108,12 +113,17 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Armadilha.h" />
     <ClInclude Include="Ator.h" />
     <ClInclude Include="Botao.h" />
+    <ClInclude Include="Consumavel.h" />
     <ClInclude Include="DebugJanelas.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Equipamento.h" />
+    <ClInclude Include="Espinhos.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="Flecha.h" />
     <ClInclude Include="FW_Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteAtor.h" />

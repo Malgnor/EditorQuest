@@ -4,6 +4,7 @@
 #include "Ator.h"
 #include "Sprite.h"
 #include "Item.h"
+
 enum {EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES, EQUIP_QTD};
 class Equipamento;
 

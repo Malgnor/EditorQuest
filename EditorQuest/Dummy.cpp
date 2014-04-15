@@ -2,6 +2,10 @@
 #include "GerenteAtor.h"
 #include "Jogador.h"
 #include "Slash.h"
+#include "DropItem.h"
+#include "Item.h"
+#include "Equipamento.h"
+#include "Consumavel.h"
 
 Dummy::Dummy(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {
@@ -52,5 +56,38 @@ void Dummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 }	
 
 void Dummy::Finalizar(){
-
+	Item* item = 0;
+	Atributos temp = atributos;
+	switch (rand()%8)
+	{
+	case 0:
+		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", temp, EQUIP_ARMA);
+		break;
+	case 1:
+		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", temp, EQUIP_CABECA);
+		break;
+	case 2:
+		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", temp, EQUIP_TRONCO);
+		break;
+	case 3:
+		item = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", temp, EQUIP_MAOS);
+		break;
+	case 4:
+		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", temp, EQUIP_PES);
+		break;
+	case 5:
+		temp.hp = 50;
+		item = new Consumavel(gerente.janela->renderer, "Pocao de HP", "Uma pocao de vida", "resources/imgs/php.png", temp, POCAO_HP);
+		break;
+	case 6:
+		temp.mp = 75;
+		item = new Consumavel(gerente.janela->renderer, "Pocao de MP", "Uma pocao de mana", "resources/imgs/pmp.png", temp, POCAO_MP);
+		break;
+	case 7:
+		temp.hp = 50;
+		temp.mp = 50;
+		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida", "Uma pocao de vida e mana", "resources/imgs/phpmp.png", temp, POCAO_HPMP);
+		break;
+	}
+	gerente.Adicionar(new DropItem(gerente, item, x, y));
 }

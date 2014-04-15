@@ -21,7 +21,7 @@ protected:
 public:
 	Habilidades(GerenteAtor& _gerente, Ator* _origem, int _dano);
 	
-	SDL_Rect PegaBoundingBox();
+	virtual SDL_Rect PegaBoundingBox();
 	
 	bool EstaNoJogo();
 	unsigned int PegaTipo();

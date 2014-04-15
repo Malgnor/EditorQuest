@@ -1,17 +1,13 @@
-#ifndef _SLASH_H_
-#define _SLASH_H_
+#ifndef _FLECHA_H_
+#define _FLECHA_H_
 
 #include "Habilidades.h"
 
-class Slash : public Habilidades
+class Flecha : public Habilidades
 {
-private:
-	double direcao2;
 
 public:
-	Slash(GerenteAtor& _gerente, Ator* _origem, int dano);
-
-	SDL_Rect PegaBoundingBox();
+	Flecha(GerenteAtor& _gerente, Ator* _origem, int _dano);
 	
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 

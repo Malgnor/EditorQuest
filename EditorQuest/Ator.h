@@ -11,14 +11,13 @@
 class GerenteAtor;
 struct cMap;
 
-enum {ATOR_SEMCOLISAO, ATOR_JOGADOR, ATOR_HABILIDADE, ATOR_INIMIGO, ATOR_ARMADILHA};
+enum {ATOR_SEMCOLISAO, ATOR_JOGADOR, ATOR_HABILIDADE, ATOR_INIMIGO, ATOR_ARMADILHA, ATOR_ITEM};
 
 class Ator
 {
-protected:
+public:		
 	GerenteAtor& gerente;
 
-public:		
 	Ator(GerenteAtor& _gerente);
 	
 	virtual SDL_Rect PegaBoundingBox() = 0;

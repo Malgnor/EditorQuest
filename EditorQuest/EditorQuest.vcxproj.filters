@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Atores\Habilidades">
       <UniqueIdentifier>{1e4e644f-2734-46f1-b2c5-80bc4eff39c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Atores\Armadilhas">
+      <UniqueIdentifier>{707ddc73-ab3f-466e-bfc5-1c85a630d259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Atores\Armadilhas">
+      <UniqueIdentifier>{38894a75-b3a2-419a-b377-c85677d03275}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -125,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="HybridDummy.cpp">
       <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
+    <ClCompile Include="DropItem.cpp">
+      <Filter>Source Files\Atores</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumavel.cpp">
+      <Filter>Source Files\Itens</Filter>
+    </ClCompile>
+    <ClCompile Include="Armadilha.cpp">
+      <Filter>Source Files\Atores\Armadilhas</Filter>
+    </ClCompile>
+    <ClCompile Include="Flecha.cpp">
+      <Filter>Source Files\Atores\Armadilhas</Filter>
+    </ClCompile>
+    <ClCompile Include="Espinhos.cpp">
+      <Filter>Source Files\Atores\Armadilhas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +226,21 @@
     </ClInclude>
     <ClInclude Include="HybridDummy.h">
       <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="Consumavel.h">
+      <Filter>Header Files\Itens</Filter>
+    </ClInclude>
+    <ClInclude Include="Armadilha.h">
+      <Filter>Header Files\Atores\Armadilhas</Filter>
+    </ClInclude>
+    <ClInclude Include="Flecha.h">
+      <Filter>Header Files\Atores\Armadilhas</Filter>
+    </ClInclude>
+    <ClInclude Include="Espinhos.h">
+      <Filter>Header Files\Atores\Armadilhas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

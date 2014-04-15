@@ -72,7 +72,7 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 		cMap* tiles = mapa->PegaColisao();
 		for(Ator* ator : atores)
 		{
-			if(ator->PegaTipo() == ATOR_SEMCOLISAO)
+			if(ator->PegaTipo() == ATOR_ARMADILHA)
 			{
 				continue;
 			}
@@ -91,13 +91,13 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 		return;
 	for(unsigned int i = 0; i < atores.size() - 1; i++)
 	{
-		if(atores[i]->PegaTipo() == ATOR_SEMCOLISAO)
+		if(atores[i]->PegaTipo() == ATOR_ARMADILHA)
 		{
 			continue;
 		}
 		for(unsigned int j = i + 1; j < atores.size(); j++)
 		{
-			if(atores[j]->PegaTipo() == ATOR_SEMCOLISAO)
+			if(atores[j]->PegaTipo() == ATOR_ARMADILHA)
 			{
 				continue;
 			}

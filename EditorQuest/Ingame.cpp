@@ -5,6 +5,7 @@
 #include "janela.h"
 #include "MenuInicial.h"
 #include "Equipamento.h"
+#include "Armadilha.h"
 #include <fstream>
 #include <iostream>
 
@@ -108,6 +109,13 @@ void Ingame::Inicializar(Janela* _janela){
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*2, 64.0, 0.0, ARMADILHA_ESPINHOS));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*3, 64.0, 0.0, ARMADILHA_ESPINHOS));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*4, 64.0, 0.0, ARMADILHA_ESPINHOS));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*5, 64.0, 0.0, ARMADILHA_ESPINHOS));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*6, 64.0, 0.0, ARMADILHA_ESPINHOS));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 64.0, 96.0, 0.0, ARMADILHA_FLECHA));
+	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*7, 64.0, -M_PI/2.0, ARMADILHA_FLECHA));
 	Atributos a = jogador->PegaAtributos();
 	status.str("");
 	status << "HP/HPMax = " << a.hpatual << "/" << a.hp
