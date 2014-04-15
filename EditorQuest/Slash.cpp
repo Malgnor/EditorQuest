@@ -33,7 +33,7 @@ void Slash::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Slash::Inicializar(){
-	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/imgs/slashh.png", 0, 0, 255, 255, 255);
+	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/slash.png");
 	tempodevida = 0;
 	tipo = DANO_FISICO;
 	vivo = true;

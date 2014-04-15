@@ -139,11 +139,13 @@ void Jogador::Inicializar(){
 		inventario[i] = 0;
 	for(int i = 0; i < EQUIP_QTD; i++)
 		equipamentos[i] = 0;
+	/*
 	inventario[0] = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", atributos, EQUIP_ARMA);
 	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
 	inventario[4] = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", atributos, EQUIP_TRONCO);
 	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_MAOS);
 	inventario[9] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
+	*/
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
