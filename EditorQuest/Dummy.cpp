@@ -57,22 +57,57 @@ void Dummy::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 
 void Dummy::Finalizar(){
 	Item* item = 0;
-	Atributos temp = atributos;
-	switch (rand()%8)
+	Atributos temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	switch (rand()%11)
 	{
 	case 0:
+		temp.hpatual = temp.hp = 100;
+		temp.hpregen = 1;
+		temp.mpatual = temp.mp = 100;
+		temp.mpregen = 2;
+		temp.forca = 5;
+		temp.defesa = 5;
+		temp.magia = 5;
 		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", temp, EQUIP_ARMA);
 		break;
 	case 1:
+		temp.hpatual = temp.hp = 100;
+		temp.hpregen = 1;
+		temp.mpatual = temp.mp = 100;
+		temp.mpregen = 2;
+		temp.forca = 5;
+		temp.defesa = 5;
+		temp.magia = 5;
 		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", temp, EQUIP_CABECA);
 		break;
 	case 2:
+		temp.hpatual = temp.hp = 100;
+		temp.hpregen = 1;
+		temp.mpatual = temp.mp = 100;
+		temp.mpregen = 2;
+		temp.forca = 5;
+		temp.defesa = 5;
+		temp.magia = 5;
 		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", temp, EQUIP_TRONCO);
 		break;
 	case 3:
+		temp.hpatual = temp.hp = 100;
+		temp.hpregen = 1;
+		temp.mpatual = temp.mp = 100;
+		temp.mpregen = 2;
+		temp.forca = 5;
+		temp.defesa = 5;
+		temp.magia = 5;
 		item = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", temp, EQUIP_MAOS);
 		break;
 	case 4:
+		temp.hpatual = temp.hp = 100;
+		temp.hpregen = 1;
+		temp.mpatual = temp.mp = 100;
+		temp.mpregen = 2;
+		temp.forca = 5;
+		temp.defesa = 5;
+		temp.magia = 5;
 		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", temp, EQUIP_PES);
 		break;
 	case 5:
@@ -87,6 +122,19 @@ void Dummy::Finalizar(){
 		temp.hp = 50;
 		temp.mp = 50;
 		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida", "Uma pocao de vida e mana", "resources/imgs/phpmp.png", temp, POCAO_HPMP);
+		break;
+	case 8:
+		temp.hp = 50;
+		item = new Consumavel(gerente.janela->renderer, "Pocao de HP+", "Uma pocao % de vida", "resources/imgs/php.png", temp, POCAO_RHP);
+		break;
+	case 9:
+		temp.mp = 75;
+		item = new Consumavel(gerente.janela->renderer, "Pocao de MP+", "Uma pocao % de mana", "resources/imgs/pmp.png", temp, POCAO_RMP);
+		break;
+	case 10:
+		temp.hp = 50;
+		temp.mp = 50;
+		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida+", "Uma pocao % de vida e mana", "resources/imgs/phpmp.png", temp, POCAO_RHPMP);
 		break;
 	}
 	gerente.Adicionar(new DropItem(gerente, item, x, y));

@@ -1,4 +1,5 @@
 #include "Item.h"
+#include <sstream>
 
 using namespace std;
 
@@ -22,8 +23,25 @@ Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* 
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
 	icone.CriaTexturaDaImagem(renderer, _icone);
-	txtdesc.CriaTexturaDoTexto(renderer, descricao.c_str(), fonte, cor);
 	txtnome.CriaTexturaDoTexto(renderer, nome.c_str(), fonte, cor);
+	TTF_CloseFont(fonte);
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
+	stringstream status;
+	status.str("");
+	status << descricao;
+		if(atributos.hp)
+	status << "\nHP += " << atributos.hp;
+		if(atributos.mp)
+	status << "\nMP += " << atributos.mp;
+		if(atributos.hpregen || atributos.mpregen)
+	status << "\nHPRegen/MPRegen += " << atributos.hpregen << "/" << atributos.mpregen;
+		if(atributos.forca)
+	status << "\nForca += " << atributos.forca;
+		if(atributos.defesa)
+	status << "\nDefesa += " << atributos.defesa;
+		if(atributos.magia)
+	status << "\nMagia += " << atributos.magia;
+	txtdesc.CriaTexturaDoTextoC(renderer, status.str().c_str(), fonte, cor, 500);	
 	TTF_CloseFont(fonte);
 }
 

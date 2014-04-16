@@ -38,7 +38,7 @@ void Flecha::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	tempodevida += deltaTime;
 	x += cos(direcao)*0.5*deltaTime;
 	y += sin(direcao)*0.5*deltaTime;
-	if(tempodevida >= 1500)
+	if(tempodevida >= 5000)
 		vivo = false;
 }
 

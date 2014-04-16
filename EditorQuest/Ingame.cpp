@@ -103,9 +103,9 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "Menu Inicial", 50, h/10.0*6.0, fonte, cor);
 	botoes[BOTAO_SAIR].Inicializar(janela->renderer, "Sair do jogo", 50, h/10.0*7.0, fonte, cor);
 	botoes[BOTAO_VOLTAR].Inicializar(janela->renderer, "Voltar", 50, h/10.0*9.0, fonte, cor);
-	botoes[BOTAO_USAR].Inicializar(janela->renderer, "Usar", w/10.0*8.25, h/10.0*8.5, fonte, cor);
+	botoes[BOTAO_USAR].Inicializar(janela->renderer, "Usar", w/10.0*8.25, h/10.0*9.0, fonte, cor);
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "Remover", w/10.0*7.75, h/10.0*9.0, fonte, cor);
-	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "Destruir", w/10.0*7.75, h/10.0*9.25, fonte, cor);
+	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "Destruir", w/10.0*5.0, h/10.0*9.00, fonte, cor);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
@@ -253,6 +253,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 }
 
 void Ingame::Renderizar(){
+	FW_Mouse* Mouse = PegaMouse();
 	mapa.Renderizar(janela->renderer, &camera);
 	gerenteAtor.Renderizar(&camera);
 	Atributos a = jogador->PegaAtributos();
@@ -295,7 +296,7 @@ void Ingame::Renderizar(){
 				inventario[i]->PegaIcone().Renderizar(janela->renderer, 100.0, 50.0+i*45.0);
 				inventario[i]->PegaTxtNome().Renderizar(janela->renderer, 150.0, 50.0+i*45.0);
 				if(i == invselecionado)
-					inventario[i]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
+					inventario[i]->PegaTxtDesc().Renderizar(janela->renderer, (double)Mouse->x+16.0, (double)Mouse->y);
 			}				
 		}
 		if(inventario[invselecionado]){
@@ -324,7 +325,7 @@ void Ingame::Renderizar(){
 		if(inventario[EQUIP_PES])
 			inventario[EQUIP_PES]->PegaIcone().Renderizar(janela->renderer, 600.0, 200.0);
 		if(inventario[invselecionado]){
-			inventario[invselecionado]->PegaTxtDesc().Renderizar(janela->renderer, 225.0, 525.0);
+			inventario[invselecionado]->PegaTxtDesc().Renderizar(janela->renderer, (double)Mouse->x+16.0, (double)Mouse->y);
 			botoes[BOTAO_USAR2].Renderizar(janela->renderer);
 			SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
 			switch (invselecionado)

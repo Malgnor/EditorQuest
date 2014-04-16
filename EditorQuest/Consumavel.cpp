@@ -41,13 +41,15 @@ bool Consumavel::Usar(Jogador* jogador)
 	jogador->AtualizarAtributos();
 	atributos.hp = atributos.mp = 0;
 	tipopocao = POCAO_FRASCO;
-	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
+	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	SDL_Color cor = {0, 0, 0};
 	SDL_Renderer* renderer = jogador->gerente.janela->renderer;
 	nome = "Frasco";
 	descricao = "Um frasco vazio";
 	icone.CriaTexturaDaImagem(renderer, "resources/imgs/frasco.png");
 	txtdesc.CriaTexturaDoTexto(renderer, descricao.c_str(), fonte, cor);
+	TTF_CloseFont(fonte);
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	txtnome.CriaTexturaDoTexto(renderer, nome.c_str(), fonte, cor);
 	TTF_CloseFont(fonte);
 	return true;
