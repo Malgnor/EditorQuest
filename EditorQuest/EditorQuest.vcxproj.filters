@@ -141,6 +141,9 @@
     <ClCompile Include="Armadilha.cpp">
       <Filter>Source Files\Atores</Filter>
     </ClCompile>
+    <ClCompile Include="BotaoPersonalizado.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Armadilha.h">
       <Filter>Header Files\Atores</Filter>
+    </ClInclude>
+    <ClInclude Include="BotaoPersonalizado.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

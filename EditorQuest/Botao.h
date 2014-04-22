@@ -7,16 +7,16 @@
 
 class Botao
 {
-private:
+protected:
 	Sprite sprite[2];
 	double x, y;
 	std::string texto;
 	bool pressionado;
 	bool hover;
 public:
-	void Inicializar(SDL_Renderer* renderer, char* _texto, double _x, double _y, TTF_Font* fonte, SDL_Color cor);
-	void Atualizar();
-	void Renderizar(SDL_Renderer* renderer);
+	virtual void Inicializar(SDL_Renderer* renderer, char* _texto, double _x, double _y, TTF_Font* fonte, SDL_Color cor);
+	virtual void Atualizar();
+	virtual void Renderizar(SDL_Renderer* renderer);
 	bool Pressionado();
 };
 

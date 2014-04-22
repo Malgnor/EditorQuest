@@ -84,6 +84,7 @@
     <ClCompile Include="Armadilha.cpp" />
     <ClCompile Include="Ator.cpp" />
     <ClCompile Include="Botao.cpp" />
+    <ClCompile Include="BotaoPersonalizado.cpp" />
     <ClCompile Include="Consumavel.cpp" />
     <ClCompile Include="DebugJanelas.cpp" />
     <ClCompile Include="DropItem.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Armadilha.h" />
     <ClInclude Include="Ator.h" />
     <ClInclude Include="Botao.h" />
+    <ClInclude Include="BotaoPersonalizado.h" />
     <ClInclude Include="Consumavel.h" />
     <ClInclude Include="DebugJanelas.h" />
     <ClInclude Include="DropItem.h" />

@@ -17,8 +17,9 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->Mostrar();
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	jogar.Inicializar(janela->renderer, "Jogar", w/2.0, h/10.0*2.0, fonte, cor);
-	sair.Inicializar(janela->renderer, "Sair", w/2.0, h/10.0*8.0, fonte, cor);
+	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", 350.0, h/10.0*4.0);
+	sair.Inicializar(janela->renderer, "resources/botoes/Sair do jogo.png", 350.0, h/10.0*8.0);
+	titulo.CriaTexturaDaImagem(janela->renderer, "resources/imgs/Walachia.png");
 	TTF_CloseFont(fonte);
 }
 
@@ -38,6 +39,7 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 }
 
 void MenuInicial::Renderizar(){
+	titulo.Renderizar(janela->renderer, ((800.0-(double)titulo.PegaDimensao().w)/2.0), 25);
 	jogar.Renderizar(janela->renderer);
 	sair.Renderizar(janela->renderer);
 }
