@@ -107,8 +107,11 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "resources/botoes/Remover.png", w/10.0*7.0, h/10.0*8.75);
 	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "resources/botoes/Destruir.png", w/10.0*5.0, h/10.0*8.75);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
+	gameover.CriaTexturaDaImagem(janela->renderer, "resources/imgs/gameover.png");
+	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
+	gerenteAtor.Adicionar(boss = new HybridDummy(gerenteAtor, 800, 600, jogador, &mapa));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*2, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*3, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*4, 64.0, 0.0, ARMADILHA_ESPINHOS));
@@ -162,6 +165,10 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			gerenteAtor.Adicionar(new HybridDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
+		if(!jogador->EstaNoJogo())
+			estado = ESTADO_LOSE;
+		if(!boss->EstaNoJogo())
+			estado = ESTADO_WIN;
 		break;
 	case ESTADO_PAUSADO:
 		for(int i = 0; i < BOTAO_QTD; i++)
@@ -247,7 +254,9 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		if(botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		break;
-	default:
+	case ESTADO_WIN:
+	case ESTADO_LOSE:
+		botoes[BOTAO_MENUINICIAL].Atualizar();
 		break;
 	}
 }
@@ -357,7 +366,13 @@ void Ingame::Renderizar(){
 		}
 		botoes[BOTAO_VOLTAR].Renderizar(janela->renderer);
 		break;
-	default:
+	case ESTADO_LOSE:
+		gameover.Renderizar(janela->renderer, (800.0-(double)gameover.PegaDimensao().w)/2.0, 50.0);
+		botoes[BOTAO_MENUINICIAL].Renderizar(janela->renderer);
+		break;
+	case ESTADO_WIN:
+		victory.Renderizar(janela->renderer, (800.0-(double)gameover.PegaDimensao().w)/2.0, 50.0);
+		botoes[BOTAO_MENUINICIAL].Renderizar(janela->renderer);
 		break;
 	}
 }
@@ -369,7 +384,7 @@ void Ingame::Finalizar(){
 Tela* Ingame::ProximaTela(){
 	if(PegaTecla()[FW_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
 		return 0;
-	if(botoes[BOTAO_MENUINICIAL].Pressionado() || !jogador->EstaNoJogo())
+	if(botoes[BOTAO_MENUINICIAL].Pressionado())
 		return new MenuInicial();
 	return this;
 }

@@ -23,7 +23,7 @@ private:
 	BotaoPersonalizado botoes[BOTAO_QTD];
 	TTF_Font* fonte;
 	std::stringstream status;
-	Sprite filtro, txtstatus, skills[3];
+	Sprite filtro, txtstatus, skills[3], gameover, victory;
 	unsigned int estado, invselecionado;
 
 public:
