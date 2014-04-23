@@ -2,7 +2,6 @@
 #include "GerenteJanela.h"
 #include "Janela.h"
 #include "MenuInicial.h"
-#include "DebugJanelas.h"
 
 SDLApp::SDLApp(){
 	this->Inicializar();
@@ -41,9 +40,6 @@ int SDLApp::Executar(){
 	}
 
 	new Janela(new MenuInicial());
-#ifdef DEBUG
-	new Janela(new DebugJanelas());
-#endif
 
 	bool sair = false;
 	SDL_Event event;

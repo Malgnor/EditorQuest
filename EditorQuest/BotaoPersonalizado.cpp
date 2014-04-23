@@ -5,7 +5,7 @@ void BotaoPersonalizado::Inicializar(SDL_Renderer* renderer, char* _texto, doubl
 	x = _x;
 	y = _y;
 	pressionado = hover = false;
-	sprite[0].CriaTexturaDaImagem(renderer, _texto);
+	sprite[0].CriaTexturaDaImagem(renderer, _texto, 0);
 }
 
 void BotaoPersonalizado::Renderizar(SDL_Renderer* renderer){

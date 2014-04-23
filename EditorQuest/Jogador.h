@@ -5,7 +5,7 @@
 #include "Sprite.h"
 #include "Item.h"
 
-enum {EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_MAOS, EQUIP_PES, EQUIP_QTD};
+enum {EQUIP_ARMA, EQUIP_CABECA, EQUIP_TRONCO, EQUIP_PERNAS, EQUIP_PES, EQUIP_QTD};
 class Equipamento;
 
 class Jogador : public Ator
@@ -13,11 +13,12 @@ class Jogador : public Ator
 private:
 	Sprite sprite;
 	double x, y, direcao;
-	unsigned int indice, skill;
+	unsigned int indicex, indicey, skill;
 	Item* inventario[10];
 	Equipamento* equipamentos[EQUIP_QTD];
 	Atributos atributos;
-	Uint32 time;
+	Uint32 time, animtime;
+	bool andando;
 	friend class Item;
 
 public:
@@ -27,7 +28,7 @@ public:
 
 	void AtualizarAtributos();
 
-	void FoiAtingido(int dano, unsigned int tipo);
+	void FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao);
 
 	Item** PegaInventario();
 	Equipamento** PegaEquipamentos();
@@ -38,7 +39,7 @@ public:
 	virtual bool EstaNoJogo();
 	virtual unsigned int PegaTipo();
 
-	virtual void Colidiu(Ator* ator);
+	virtual void Colidiu(Ator* ator, SDL_Rect* colisao);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

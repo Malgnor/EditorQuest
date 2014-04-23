@@ -23,7 +23,7 @@ public:
 	
 	virtual bool EstaNoJogo();
 
-	virtual void Colidiu(Ator* ator);
+	virtual void Colidiu(Ator* ator, SDL_Rect* colisao);
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

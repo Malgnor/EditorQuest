@@ -27,7 +27,7 @@ bool Armadilha::EstaNoJogo(){
 	return true;
 }
 
-void Armadilha::Colidiu(Ator* ator){
+void Armadilha::Colidiu(Ator* ator, SDL_Rect* colisao){
 
 }
 

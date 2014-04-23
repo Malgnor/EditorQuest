@@ -33,11 +33,15 @@ void Jogador::AtualizarAtributos(){
 		atributos.mpatual = atributos.mp;
 }
 
-void Jogador::FoiAtingido(int dano, unsigned int tipo){
+void Jogador::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
 	if(tipo == 0)
-		atributos.hpatual -= dano - atributos.defesa/2;
+		if(dano - atributos.defesa/2 > 0){
+			atributos.hpatual -= dano - atributos.defesa/2;
+		}
 	else if(tipo == 1)
-		atributos.hpatual -= dano - atributos.magia/2;
+		if(dano - atributos.magia/2 > 0){
+			atributos.hpatual -= dano - atributos.magia/2;
+		}
 }
 
 Item** Jogador::PegaInventario(){
@@ -61,9 +65,10 @@ double Jogador::PegaDirecao(){
 }
 
 SDL_Rect Jogador::PegaBoundingBox(){
-	SDL_Rect ret = sprite.PegaDimensao();
-	ret.x = (int)x;
-	ret.y = (int)y;
+	//SDL_Rect ret = sprite.PegaDimensao();
+	//ret.x = (int)x;
+	//ret.y = (int)y;
+	SDL_Rect ret = {(int)x+1, (int)y+16, 32, 32};
 	return ret;
 }
 
@@ -75,7 +80,7 @@ bool Jogador::EstaNoJogo(){
 	return atributos.hpatual > 0;
 }
 
-void Jogador::Colidiu(Ator* ator){
+void Jogador::Colidiu(Ator* ator, SDL_Rect* colisao){
 
 }
 
@@ -108,13 +113,10 @@ void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 				x -= colisao->w;
 			}
 		}
-		indice = 1;
 		break;
 	case 3:
-		indice = 2;
 		break;
 	case 4:
-		indice = 3;
 		break;
 	default:
 		break;
@@ -122,11 +124,12 @@ void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Jogador::Inicializar(){
-	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/imgs/torre.png", 32);
+	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/sprites/vlad.png", 33, 48, 0xff, 0xff, 0xff);
 	x = 400.0;
 	y = 300.0;
+	andando = false;
 	direcao = 0.0;
-	indice = skill = 0;
+	indicex = indicey = skill = 0;
 	atributos.hpatual = atributos.hp = 100;
 	atributos.hpregen = 1;
 	atributos.mpatual = atributos.mp = 100;
@@ -134,7 +137,7 @@ void Jogador::Inicializar(){
 	atributos.forca = 5;
 	atributos.defesa = 5;
 	atributos.magia = 5;
-	time = 0;
+	time = animtime = 0;
 	for(int i = 0; i < 10; i++)
 		inventario[i] = 0;
 	for(int i = 0; i < EQUIP_QTD; i++)
@@ -143,7 +146,7 @@ void Jogador::Inicializar(){
 	inventario[0] = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", atributos, EQUIP_ARMA);
 	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
 	inventario[4] = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", atributos, EQUIP_TRONCO);
-	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_MAOS);
+	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_PERNAS);
 	inventario[9] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
 	*/
 }
@@ -151,7 +154,7 @@ void Jogador::Inicializar(){
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
-		time += deltaTime;
+	time += deltaTime;
 	if(time >= 1000){
 		time -= 1000;
 		atributos.hpatual += atributos.hpregen;
@@ -180,20 +183,40 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		if(!equipamentos[EQUIP_TRONCO])
 			equipamentos[EQUIP_TRONCO] = new Item(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", novos);
 	if(Teclas[FW_4].pressionado)
-		if(!equipamentos[EQUIP_MAOS])
-			equipamentos[EQUIP_MAOS] = new Item(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", novos);
+		if(!equipamentos[EQUIP_PERNAS])
+			equipamentos[EQUIP_PERNAS] = new Item(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", novos);
 	if(Teclas[FW_5].pressionado)
 		if(!equipamentos[EQUIP_PES])
 			equipamentos[EQUIP_PES] = new Item(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", novos);
 	*/
-	if(Teclas[FW_W].ativo)
+	if(Teclas[FW_W].ativo){
 		y-=(0.3*deltaTime);
-	else if(Teclas[FW_S].ativo)
+		indicey = 3;
+		andando = true;
+	}
+	else if(Teclas[FW_S].ativo){
 		y+=(0.3*deltaTime);
-	if(Teclas[FW_A].ativo)
+		indicey = 0;
+		andando = true;
+	}
+	if(Teclas[FW_A].ativo){
 		x-=(0.3*deltaTime);
-	else if(Teclas[FW_D].ativo)
+		indicey = 1;
+		andando = true;
+	}
+	else if(Teclas[FW_D].ativo){
 		x+=(0.3*deltaTime);
+		indicey = 2;
+		andando = true;
+	}	
+	if(andando){
+		animtime += deltaTime;
+		if(animtime >= 200){
+			animtime -= 200;
+			indicex = (indicex+1)%4;
+		}
+	}
+	andando = false;
 	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16);
 	if(Mouse->wy){
 		skill = (++skill)%3;
@@ -223,11 +246,10 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		}
 	}
 	//printf("%f %d %d\n", direcao, Mouse->x, Mouse->y);
-	indice = 0;
 }
 
 void Jogador::Renderizar(SDL_Rect* camera){
-	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, indice, 0, direcao);
+	sprite.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, indicex, indicey);
 }
 
 void Jogador::Finalizar(){	

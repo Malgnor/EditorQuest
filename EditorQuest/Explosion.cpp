@@ -9,7 +9,7 @@ Explosion::Explosion(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilida
 {
 }
 
-void Explosion::Colidiu(Ator* ator){
+void Explosion::Colidiu(Ator* ator, SDL_Rect* colisao){
 	if(ator->PegaTipo() != origem->PegaTipo()){
 		if(ator->PegaTipo() == ATOR_INIMIGO){			
 			if(!explo){
@@ -27,7 +27,7 @@ void Explosion::Colidiu(Ator* ator){
 			}
 			atingidos.push_back(ator);
 			Inimigo* atingido = (Inimigo*)ator;
-			atingido->FoiAtingido(dano, tipo);
+			atingido->FoiAtingido(dano, tipo, colisao);
 		} else if(ator->PegaTipo() == ATOR_JOGADOR){	
 			if(!explo){
 				explo = true;
@@ -44,7 +44,7 @@ void Explosion::Colidiu(Ator* ator){
 			}
 			atingidos.push_back(ator);
 			Jogador* atingido = (Jogador*)ator;
-			atingido->FoiAtingido(dano, tipo);
+			atingido->FoiAtingido(dano, tipo, colisao);
 		}
 	}
 }

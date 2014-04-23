@@ -4,7 +4,7 @@
 
 void MenuInicial::Inicializar(Janela* _janela){
 	janela = _janela;
-	janela->SetaTitulo("Editor's Quest - Menu Inicial");
+	janela->SetaTitulo("Walachia - Menu Inicial");
 	int w, h;
 	janela->PegaTamanho(w, h);
 	if( w != 800 && h != 600){
@@ -17,8 +17,8 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->Mostrar();
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", 350.0, h/10.0*4.0);
-	sair.Inicializar(janela->renderer, "resources/botoes/Sair do jogo.png", 350.0, h/10.0*8.0);
+	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", 329.0, h/10.0*4.0);
+	sair.Inicializar(janela->renderer, "resources/botoes/Sair do jogo.png", 269.0, h/10.0*8.0);
 	titulo.CriaTexturaDaImagem(janela->renderer, "resources/imgs/Walachia.png");
 	TTF_CloseFont(fonte);
 }
@@ -26,14 +26,6 @@ void MenuInicial::Inicializar(Janela* _janela){
 void MenuInicial::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
-	if(Teclas[FW_1].pressionado)
-		janela->SetaCorFundo(255, 255, 255);
-	if(Teclas[FW_2].pressionado)
-		janela->SetaCorFundo(0, 255, 255);
-	if(Teclas[FW_3].pressionado)
-		janela->SetaCorFundo(255, 0, 255);
-	if(Teclas[FW_4].pressionado)
-		janela->SetaCorFundo(255, 255, 0);
 	jogar.Atualizar();
 	sair.Atualizar();
 }

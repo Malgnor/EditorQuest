@@ -26,7 +26,7 @@ public:
 	
 	virtual bool EstaNoJogo() = 0;
 
-	virtual void Colidiu(Ator* ator) = 0;
+	virtual void Colidiu(Ator* ator, SDL_Rect* colisao) = 0;
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao) = 0;
 
 	virtual void Inicializar() = 0;		

@@ -1,17 +1,18 @@
-#ifndef _EXPLOSION_H_
-#define _EXPLOSION_H_
+#ifndef _CLAW_H_
+#define _CLAW_H_
 
 #include "Habilidades.h"
 
-class Explosion : public Habilidades
+class Claw : public Habilidades
 {
 private:
-	bool explo;
+	double direcao2;
+
 public:
-	Explosion(GerenteAtor& _gerente, Ator* _origem, int _dano);
+	Claw(GerenteAtor& _gerente, Ator* _origem, int dano);
 
-	void Colidiu(Ator* ator, SDL_Rect* colisao);
-
+	SDL_Rect PegaBoundingBox();
+	
 	virtual void ColidiuMapa(cMap* tile, SDL_Rect* colisao);
 
 	virtual void Inicializar();		

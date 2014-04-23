@@ -32,7 +32,7 @@ bool Inimigo::EstaNoJogo(){
 	return atributos.hpatual > 0;
 }
 
-void Inimigo::Colidiu(Ator* ator){
+void Inimigo::Colidiu(Ator* ator, SDL_Rect* colisao){
 
 }
 
@@ -101,7 +101,7 @@ bool Inimigo::TemVisaoDoJogador(){
 }
 
 void Inimigo::Renderizar(SDL_Rect* camera){
-	sprite.Renderizar(gerente.janela->renderer, x - (double)camera->x, y - (double)camera->y, indice, 0, direcao);
+	sprite.Renderizar(gerente.janela->renderer, x - (double)camera->x, y - (double)camera->y, 0, 0, direcao);
 	SDL_Rect hpbar = { (int)x-camera->x+4, (int)y-8-camera->y, (int)((double)atributos.hpatual/(double)atributos.hp*24.0), 5};
 	SDL_SetRenderDrawColor(gerente.janela->renderer, 0, 255, 0, 255);
 	SDL_RenderFillRect(gerente.janela->renderer, &hpbar);

@@ -1,7 +1,7 @@
 #include "Ingame.h"
-#include "Dummy.h"
-#include "RangedDummy.h"
-#include "HybridDummy.h"
+#include "Lobisomem.h"
+#include "Crowley.h"
+#include "Lucifer.h"
 #include "janela.h"
 #include "MenuInicial.h"
 #include "Equipamento.h"
@@ -13,8 +13,8 @@ using namespace std;
 
 void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
-	janela->SetaTitulo("Editor's Quest - Ingame");
-	janela->SetaCorFundo(0, 0, 0);
+	janela->SetaTitulo("Walachia - Ingame");
+	janela->SetaCorFundo(255, 255, 255);
 	/*	
 	unsigned int map[32][32] = { 
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -111,7 +111,7 @@ void Ingame::Inicializar(Janela* _janela){
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
-	gerenteAtor.Adicionar(boss = new HybridDummy(gerenteAtor, 800, 600, jogador, &mapa));
+	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 800, 600, jogador, &mapa));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*2, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*3, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*4, 64.0, 0.0, ARMADILHA_ESPINHOS));
@@ -138,7 +138,6 @@ void Ingame::Inicializar(Janela* _janela){
 void Ingame::Atualizar(Uint32 deltaTime){
 	FW_Botao* Teclas = PegaTecla();
 	FW_Mouse* Mouse = PegaMouse();
-	//printf("%d\t", deltaTime);
 	Atributos a = jogador->PegaAtributos();
 	stringstream newstatus;
 	SDL_Color cor = {0, 0, 0};
@@ -158,11 +157,11 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			camera.y = 32*32-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		if(Teclas[FW_Z].pressionado)
-			gerenteAtor.Adicionar(new Dummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
+			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_X].pressionado)
-			gerenteAtor.Adicionar(new RangedDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
+			gerenteAtor.Adicionar(new Crowley(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_C].pressionado)
-			gerenteAtor.Adicionar(new HybridDummy(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
+			gerenteAtor.Adicionar(new Lucifer(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
 		if(Teclas[FW_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		if(!jogador->EstaNoJogo())
@@ -216,8 +215,8 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			invselecionado = EQUIP_ARMA;
 		if(inventario[EQUIP_TRONCO] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
 			invselecionado = EQUIP_TRONCO;
-		if(inventario[EQUIP_MAOS] && Mouse->x > 650 && Mouse->x < 682 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
-			invselecionado = EQUIP_MAOS;
+		if(inventario[EQUIP_PERNAS] && Mouse->x > 650 && Mouse->x < 682 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+			invselecionado = EQUIP_PERNAS;
 		if(inventario[EQUIP_PES] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 200 && Mouse->y < 232 && Mouse->botoes[FW_MESQUERDO].ativo)
 			invselecionado = EQUIP_PES;
 		if(botoes[BOTAO_USAR2].Pressionado() && inventario[invselecionado])
@@ -263,24 +262,12 @@ void Ingame::Atualizar(Uint32 deltaTime){
 
 void Ingame::Renderizar(){
 	FW_Mouse* Mouse = PegaMouse();
-	mapa.Renderizar(janela->renderer, &camera);
-	gerenteAtor.Renderizar(&camera);
 	Atributos a = jogador->PegaAtributos();
 	SDL_Rect hpbar = { 16, 16, (int)((double)a.hpatual/(double)a.hp*100.0), 16};
 	SDL_Rect mpbar = { 16, 36, (int)((double)a.mpatual/(double)a.mp*100.0), 16};
 	SDL_Rect selectrect;
-	SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
-	SDL_RenderFillRect(janela->renderer, &hpbar);
-	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
-	SDL_RenderFillRect(janela->renderer, &mpbar);
-	hpbar.w = 102;
-	hpbar.x = 15;
-	mpbar.w = 102;
-	mpbar.x = 15;
-	SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
-	SDL_RenderDrawRect(janela->renderer, &hpbar);
-	SDL_RenderDrawRect(janela->renderer, &mpbar);
-	skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, 400.0, 550.0);
+	Item** inventario;
+	/*
 	if(estado != ESTADO_INGAME)
 	{
 		//filtro.Renderizar(janela->renderer, 0.0, 0.0);
@@ -288,11 +275,24 @@ void Ingame::Renderizar(){
 		SDL_Rect rect = {0, 0, 800, 600};
 		SDL_RenderFillRect(janela->renderer, &rect);
 	}
-	
-	Item** inventario;
+	*/
 	switch(estado)
 	{
-	case ESTADO_INGAME:
+	case ESTADO_INGAME:		
+		mapa.Renderizar(janela->renderer, &camera);
+		gerenteAtor.Renderizar(&camera);
+		SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(janela->renderer, &hpbar);
+		SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
+		SDL_RenderFillRect(janela->renderer, &mpbar);
+		hpbar.w = 102;
+		hpbar.x = 15;
+		mpbar.w = 102;
+		mpbar.x = 15;
+		SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
+		SDL_RenderDrawRect(janela->renderer, &hpbar);
+		SDL_RenderDrawRect(janela->renderer, &mpbar);
+		skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, 400.0, 550.0, 0, 0, -M_PI/2.0);
 		break;
 	case ESTADO_PAUSADO:		
 		for(int i = 0; i < 5; i++)
@@ -329,8 +329,8 @@ void Ingame::Renderizar(){
 			inventario[EQUIP_ARMA]->PegaIcone().Renderizar(janela->renderer, 550.0, 150.0);
 		if(inventario[EQUIP_TRONCO])
 			inventario[EQUIP_TRONCO]->PegaIcone().Renderizar(janela->renderer, 600.0, 150.0);
-		if(inventario[EQUIP_MAOS])
-			inventario[EQUIP_MAOS]->PegaIcone().Renderizar(janela->renderer, 650.0, 150.0);
+		if(inventario[EQUIP_PERNAS])
+			inventario[EQUIP_PERNAS]->PegaIcone().Renderizar(janela->renderer, 650.0, 150.0);
 		if(inventario[EQUIP_PES])
 			inventario[EQUIP_PES]->PegaIcone().Renderizar(janela->renderer, 600.0, 200.0);
 		if(inventario[invselecionado]){
@@ -351,7 +351,7 @@ void Ingame::Renderizar(){
 				selectrect.x = 599;
 				selectrect.y = 149;
 				break;
-			case EQUIP_MAOS:
+			case EQUIP_PERNAS:
 				selectrect.x = 649;
 				selectrect.y = 149;
 				break;

@@ -102,8 +102,8 @@ void GerenteAtor::Atualizar(Uint32 deltaTime, Mapa* mapa, SDL_Rect* camera)
 				continue;
 			}
 			if(SDL_IntersectRect(&atores[i]->PegaBoundingBox(), &atores[j]->PegaBoundingBox(), &rcolisao) == SDL_TRUE){
-				atores[i]->Colidiu(atores[j]);
-				atores[j]->Colidiu(atores[i]);
+				atores[i]->Colidiu(atores[j], &rcolisao);
+				atores[j]->Colidiu(atores[i], &rcolisao);
 			}
 		}
 	}

@@ -25,7 +25,7 @@ double Habilidades::PegaDirecao(){
 	return direcao;
 }
 
-void Habilidades::Colidiu(Ator* ator){
+void Habilidades::Colidiu(Ator* ator, SDL_Rect* colisao){
 	if(ator->PegaTipo() != origem->PegaTipo()){
 		if(ator->PegaTipo() == ATOR_INIMIGO && origem->PegaTipo() != ATOR_ARMADILHA){
 			if(!atingidos.empty()){
@@ -36,7 +36,7 @@ void Habilidades::Colidiu(Ator* ator){
 			}
 			atingidos.push_back(ator);
 			Inimigo* atingido = (Inimigo*)ator;
-			atingido->FoiAtingido(dano, tipo);
+			atingido->FoiAtingido(dano, tipo, colisao);
 		} else if(ator->PegaTipo() == ATOR_JOGADOR){
 			if(!atingidos.empty()){
 				for(Ator* a : atingidos){
@@ -46,7 +46,7 @@ void Habilidades::Colidiu(Ator* ator){
 			}
 			atingidos.push_back(ator);
 			Jogador* atingido = (Jogador*)ator;
-			atingido->FoiAtingido(dano, tipo);
+			atingido->FoiAtingido(dano, tipo, colisao);
 		}
 	}
 }

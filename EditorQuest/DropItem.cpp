@@ -30,7 +30,7 @@ double DropItem::PegaDirecao(){
 	return 0.0;
 }
 
-void DropItem::Colidiu(Ator* ator){
+void DropItem::Colidiu(Ator* ator, SDL_Rect* colisao){
 	if(item)
 		if(ator->PegaTipo() == ATOR_JOGADOR){
 			Item** inventario = ((Jogador*)ator)->PegaInventario();

@@ -2,7 +2,7 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "SDL.h"
-#include "Dummy.h"
+#include "Lobisomem.h"
 
 EnergyBall::EnergyBall(GerenteAtor& _gerente, Ator* _origem, int _dano) : Habilidades(_gerente, _origem, _dano)
 {

@@ -72,9 +72,6 @@
     <ClCompile Include="MenuInicial.cpp">
       <Filter>Source Files\Telas</Filter>
     </ClCompile>
-    <ClCompile Include="DebugJanelas.cpp">
-      <Filter>Source Files\Telas</Filter>
-    </ClCompile>
     <ClCompile Include="FW_Entrada.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
     <ClCompile Include="Inimigo.cpp">
       <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
-    <ClCompile Include="Dummy.cpp">
-      <Filter>Source Files\Atores\Inimigos</Filter>
-    </ClCompile>
     <ClCompile Include="EnergyBall.cpp">
       <Filter>Source Files\Atores\Habilidades</Filter>
     </ClCompile>
@@ -119,12 +113,6 @@
     </ClCompile>
     <ClCompile Include="Slash.cpp">
       <Filter>Source Files\Atores\Habilidades</Filter>
-    </ClCompile>
-    <ClCompile Include="RangedDummy.cpp">
-      <Filter>Source Files\Atores\Inimigos</Filter>
-    </ClCompile>
-    <ClCompile Include="HybridDummy.cpp">
-      <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
     <ClCompile Include="DropItem.cpp">
       <Filter>Source Files\Atores</Filter>
@@ -143,6 +131,18 @@
     </ClCompile>
     <ClCompile Include="BotaoPersonalizado.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Claw.cpp">
+      <Filter>Source Files\Atores\Habilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobisomem.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Lucifer.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Crowley.cpp">
+      <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,9 +168,6 @@
       <Filter>Header Files\Telas</Filter>
     </ClInclude>
     <ClInclude Include="MenuInicial.h">
-      <Filter>Header Files\Telas</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugJanelas.h">
       <Filter>Header Files\Telas</Filter>
     </ClInclude>
     <ClInclude Include="FW_Entrada.h">
@@ -200,9 +197,6 @@
     <ClInclude Include="Equipamento.h">
       <Filter>Header Files\Itens</Filter>
     </ClInclude>
-    <ClInclude Include="Dummy.h">
-      <Filter>Header Files\Atores\Inimigos</Filter>
-    </ClInclude>
     <ClInclude Include="Inimigo.h">
       <Filter>Header Files\Atores\Inimigos</Filter>
     </ClInclude>
@@ -217,12 +211,6 @@
     </ClInclude>
     <ClInclude Include="EnergyBall.h">
       <Filter>Header Files\Atores\Habilidades</Filter>
-    </ClInclude>
-    <ClInclude Include="RangedDummy.h">
-      <Filter>Header Files\Atores\Inimigos</Filter>
-    </ClInclude>
-    <ClInclude Include="HybridDummy.h">
-      <Filter>Header Files\Atores\Inimigos</Filter>
     </ClInclude>
     <ClInclude Include="DropItem.h">
       <Filter>Header Files\Atores</Filter>
@@ -241,6 +229,18 @@
     </ClInclude>
     <ClInclude Include="BotaoPersonalizado.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Claw.h">
+      <Filter>Header Files\Atores\Habilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobisomem.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Lucifer.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Crowley.h">
+      <Filter>Header Files\Atores\Inimigos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
