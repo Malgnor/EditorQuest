@@ -36,10 +36,10 @@ public:
 	
 	virtual void Renderizar(SDL_Rect* camera);
 
-	virtual void FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao) = 0;
+	virtual void FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao);
 	virtual void Inicializar() = 0;
 	virtual void Atualizar(Uint32 deltaTime, SDL_Rect* camera) = 0;
-	virtual void Finalizar() = 0;
+	virtual void Finalizar();
 
 };
 

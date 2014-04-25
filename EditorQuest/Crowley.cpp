@@ -14,12 +14,6 @@ SDL_Rect Crowley::PegaBoundingBox(){
 	return ret;
 }
 
-void Crowley::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
-	atributos.hpatual -= dano;	
-	x -= cos(direcao)*32;
-	y -= sin(direcao)*32;
-}
-
 void Crowley::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/sprites/crowley.png", 33, 48);	
 	direcao = 0.0;
@@ -86,8 +80,4 @@ void Crowley::Renderizar(SDL_Rect* camera){
 	hpbar.x = (int)x-1-camera->x+4;
 	SDL_SetRenderDrawColor(gerente.janela->renderer, 0, 0, 0, 255);
 	SDL_RenderDrawRect(gerente.janela->renderer, &hpbar);
-}
-
-void Crowley::Finalizar(){
-
 }

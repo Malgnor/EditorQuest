@@ -34,14 +34,12 @@ void Jogador::AtualizarAtributos(){
 }
 
 void Jogador::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
-	if(tipo == 0)
-		if(dano - atributos.defesa/2 > 0){
-			atributos.hpatual -= dano - atributos.defesa/2;
-		}
-	else if(tipo == 1)
-		if(dano - atributos.magia/2 > 0){
-			atributos.hpatual -= dano - atributos.magia/2;
-		}
+	if(tipo == 0){
+		atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.defesa/100.0)))));
+	}
+	else if(tipo == 1){
+		atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.magia/100.0)))));
+	}
 }
 
 Item** Jogador::PegaInventario(){
@@ -114,19 +112,13 @@ void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 			}
 		}
 		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	default:
-		break;
 	}
 }
 
 void Jogador::Inicializar(){
 	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/sprites/vlad.png", 33, 48, 0xff, 0xff, 0xff);
-	x = 400.0;
-	y = 300.0;
+	x = 160.0;
+	y = 160.0;
 	andando = false;
 	direcao = 0.0;
 	indicex = indicey = skill = 0;
@@ -142,13 +134,6 @@ void Jogador::Inicializar(){
 		inventario[i] = 0;
 	for(int i = 0; i < EQUIP_QTD; i++)
 		equipamentos[i] = 0;
-	/*
-	inventario[0] = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", atributos, EQUIP_ARMA);
-	inventario[2] = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", atributos, EQUIP_CABECA);
-	inventario[4] = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", atributos, EQUIP_TRONCO);
-	inventario[6] = new Equipamento(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", atributos, EQUIP_PERNAS);
-	inventario[9] = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", atributos, EQUIP_PES);
-	*/
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
@@ -164,31 +149,12 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		atributos.hpatual = atributos.hp;
 	if(atributos.mpatual > atributos.mp)
 		atributos.mpatual = atributos.mp;
-	/*
-	if(Teclas[FW_CIMA].ativo)
-		atributos.hpatual++;
-	if(Teclas[FW_BAIXO].ativo)
-		atributos.hpatual--;
-	if(Teclas[FW_DIREITA].ativo)
-		atributos.mpatual++;
-	if(Teclas[FW_ESQUERDA].ativo)
-		atributos.mpatual--;
 	if(Teclas[FW_1].pressionado)
-		if(!equipamentos[EQUIP_ARMA])
-			equipamentos[EQUIP_ARMA] = new Item(gerente.janela->renderer, "Arma", "Uma arma", "resources/imgs/A.png", novos);
+		skill = 0;
 	if(Teclas[FW_2].pressionado)
-		if(!equipamentos[EQUIP_CABECA])
-			equipamentos[EQUIP_CABECA] = new Item(gerente.janela->renderer, "Capacete", "Um capacete", "resources/imgs/C.png", novos);
+		skill = 1;
 	if(Teclas[FW_3].pressionado)
-		if(!equipamentos[EQUIP_TRONCO])
-			equipamentos[EQUIP_TRONCO] = new Item(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/imgs/T.png", novos);
-	if(Teclas[FW_4].pressionado)
-		if(!equipamentos[EQUIP_PERNAS])
-			equipamentos[EQUIP_PERNAS] = new Item(gerente.janela->renderer, "Luvas", "Um par de luvas", "resources/imgs/M.png", novos);
-	if(Teclas[FW_5].pressionado)
-		if(!equipamentos[EQUIP_PES])
-			equipamentos[EQUIP_PES] = new Item(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/imgs/P.png", novos);
-	*/
+		skill = 2;
 	if(Teclas[FW_W].ativo){
 		y-=(0.3*deltaTime);
 		indicey = 3;
@@ -218,6 +184,29 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	}
 	andando = false;
 	direcao = atan2(Mouse->y-(y-(double)camera->y)-16,Mouse->x-(x-(double)camera->x)-16);
+	//printf("%f\t", direcao);
+	if(indicey == 2){ //Direita
+		if(direcao < -M_PI/4)
+			direcao = -M_PI/4;
+		else if (direcao > M_PI/4)
+			direcao = M_PI/4;
+	} else if (indicey == 0){ //Baixo
+		if(direcao < M_PI/4)
+			direcao = M_PI/4;
+		else if (direcao > M_PI/4*3)
+			direcao = M_PI/4*3;
+	} else if (indicey == 1){ //Esquerda
+		if(direcao < M_PI/4*3 && direcao >= 0)
+			direcao = M_PI/4*3;
+		else if (direcao > -M_PI/4*3 && direcao < 0)
+			direcao = -M_PI/4*3;
+	} else { //Cima
+		if (direcao > -M_PI/4)
+			direcao = -M_PI/4;
+		else if (direcao < -M_PI/4*3)
+			direcao = -M_PI/4*3;
+	}
+	//printf("%f\n", direcao);
 	if(Mouse->wy){
 		skill = (++skill)%3;
 		printf("%d\n", skill);
@@ -226,26 +215,22 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		switch (skill)
 		{
 		case 0:
-			gerente.Adicionar(new Slash(gerente, this, 75));
+			gerente.Adicionar(new Slash(gerente, this, atributos.forca));
 			break;
 		case 1:
-			if(atributos.mpatual >= 10){
+			if(atributos.mpatual >= 5){
 				gerente.Adicionar(new EnergyBall(gerente, this, atributos.magia));
-				atributos.mpatual -= 10;
+				atributos.mpatual -= 5;
 			}
 			break;
 		case 2:
-			if(atributos.mpatual >= 25){
+			if(atributos.mpatual >= 20){
 				gerente.Adicionar(new Explosion(gerente, this, atributos.magia*2));
-				atributos.mpatual -= 25;
+				atributos.mpatual -= 20;
 			}
-			break;
-		default:
-			gerente.Adicionar(new Slash(gerente, this, 75));
 			break;
 		}
 	}
-	//printf("%f %d %d\n", direcao, Mouse->x, Mouse->y);
 }
 
 void Jogador::Renderizar(SDL_Rect* camera){

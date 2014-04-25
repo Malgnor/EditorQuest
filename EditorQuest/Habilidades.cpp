@@ -36,7 +36,7 @@ void Habilidades::Colidiu(Ator* ator, SDL_Rect* colisao){
 			}
 			atingidos.push_back(ator);
 			Inimigo* atingido = (Inimigo*)ator;
-			atingido->FoiAtingido(dano, tipo, colisao);
+			atingido->FoiAtingido(dano, tipo, &origem->PegaBoundingBox());
 		} else if(ator->PegaTipo() == ATOR_JOGADOR){
 			if(!atingidos.empty()){
 				for(Ator* a : atingidos){

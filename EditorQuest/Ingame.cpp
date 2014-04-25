@@ -50,8 +50,24 @@ void Ingame::Inicializar(Janela* _janela){
 		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	};
+	*/
 	unsigned int altura, largura;
-	altura = largura = 32;
+	altura = 64;
+	largura = 64;
+	unsigned int** map = new unsigned int*[altura];
+	for(unsigned int i = 0; i < altura; i++){
+		map[i] = new unsigned int[largura];
+	}
+	for(unsigned int i = 0; i < altura; i++){
+			for(unsigned int j = 0; j < largura; j++){
+				if( i == 0 || j == 0 || j == largura-1 || i == altura-1)
+					map[i][j] = 0;
+				else if( i == 1 || j == 1 || j == largura-2 || i == altura-2 || (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16))
+					map[i][j] = 1;
+				else
+					map[i][j] = 2;
+			}
+	}
 	ofstream out;
 	out.open("teste.equest", std::ios_base::binary);
 	if(out.is_open())
@@ -67,9 +83,8 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		out.close();
 	}
-	*/
 
-	unsigned int altura, largura;
+//	unsigned int altura, largura;
 	unsigned int** mapp = 0;
 	string buffer;
 	ifstream in;
@@ -111,7 +126,7 @@ void Ingame::Inicializar(Janela* _janela){
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
-	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 800, 600, jogador, &mapa));
+	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*2, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*3, 64.0, 0.0, ARMADILHA_ESPINHOS));
 	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*4, 64.0, 0.0, ARMADILHA_ESPINHOS));
@@ -142,6 +157,9 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	stringstream newstatus;
 	SDL_Color cor = {0, 0, 0};
 	Item** inventario;
+	int altura, largura;
+	largura = mapa.PegaDimensaoAbsoluta().w;
+	altura = mapa.PegaDimensaoAbsoluta().h;
 	switch(estado)
 	{
 	case ESTADO_INGAME:
@@ -149,12 +167,12 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		camera.y = jogador->PegaBoundingBox().y - camera.h/2;
 		if(camera.x < 0)
 			camera.x = 0;
-		else if(camera.x > 32*32-camera.w)
-			camera.x = 32*32-camera.w;
+		else if(camera.x > largura-camera.w)
+			camera.x = largura-camera.w;
 		if(camera.y < 0)
 			camera.y = 0;
-		else if(camera.y > 32*32-camera.h)
-			camera.y = 32*32-camera.h;
+		else if(camera.y > altura-camera.h)
+			camera.y = altura-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		if(Teclas[FW_Z].pressionado)
 			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
