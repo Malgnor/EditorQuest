@@ -50,19 +50,17 @@ void Ingame::Inicializar(Janela* _janela){
 		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	};
-	*/
+	
 	unsigned int altura, largura;
-	altura = 64;
-	largura = 64;
+	altura = 32;
+	largura = 65;
 	unsigned int** map = new unsigned int*[altura];
 	for(unsigned int i = 0; i < altura; i++){
 		map[i] = new unsigned int[largura];
 	}
 	for(unsigned int i = 0; i < altura; i++){
 			for(unsigned int j = 0; j < largura; j++){
-				if( i == 0 || j == 0 || j == largura-1 || i == altura-1)
-					map[i][j] = 0;
-				else if( i == 1 || j == 1 || j == largura-2 || i == altura-2 || (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16))
+				if( i == 0 || j == 0 || j == largura-1 || i == altura-1 || (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16))
 					map[i][j] = 1;
 				else
 					map[i][j] = 2;
@@ -83,8 +81,8 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		out.close();
 	}
-
-//	unsigned int altura, largura;
+	*/
+	unsigned int altura, largura;
 	unsigned int** mapp = 0;
 	string buffer;
 	ifstream in;
@@ -121,19 +119,23 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_USAR].Inicializar(janela->renderer, "resources/botoes/Usar.png", w/10.0*8.25, h/10.0*8.75);
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "resources/botoes/Remover.png", w/10.0*7.0, h/10.0*8.75);
 	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "resources/botoes/Destruir.png", w/10.0*5.0, h/10.0*8.75);
-	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/pause.png");
+	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/filtro.png");
 	gameover.CriaTexturaDaImagem(janela->renderer, "resources/imgs/gameover.png");
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
 	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*2, 64.0, 0.0, ARMADILHA_ESPINHOS));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*3, 64.0, 0.0, ARMADILHA_ESPINHOS));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*4, 64.0, 0.0, ARMADILHA_ESPINHOS));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*5, 64.0, 0.0, ARMADILHA_ESPINHOS));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*6, 64.0, 0.0, ARMADILHA_ESPINHOS));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 64.0, 96.0, 0.0, ARMADILHA_FLECHA));
-	gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0*7, 64.0, M_PI/2.0, ARMADILHA_FLECHA));
+	for(unsigned int i = 0; i < largura/8; i++){
+		for(int j = 0; j < 7; j++){
+			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+32.0*j+256*i, (altura-7)*32.0, 0.0, ARMADILHA_ESPINHOS));
+		}
+		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0+48.0, 0.0, ARMADILHA_FLECHA));
+		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0-32.0, 0.0, ARMADILHA_FLECHA));
+		if(i%2 == 0)
+			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
+		else
+			gerenteAtor.Adicionar(new Crowley(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
+	}
 	Atributos a = jogador->PegaAtributos();
 	status.str("");
 	status << "HP/HPMax = " << a.hpatual << "/" << a.hp
@@ -158,6 +160,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	SDL_Color cor = {0, 0, 0};
 	Item** inventario;
 	int altura, largura;
+	printf("%d\n", deltaTime);
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
 	switch(estado)
@@ -285,20 +288,20 @@ void Ingame::Renderizar(){
 	SDL_Rect mpbar = { 16, 36, (int)((double)a.mpatual/(double)a.mp*100.0), 16};
 	SDL_Rect selectrect;
 	Item** inventario;
-	/*
+	mapa.Renderizar(janela->renderer, &camera);
+	gerenteAtor.Renderizar(&camera);
+	
 	if(estado != ESTADO_INGAME)
 	{
-		//filtro.Renderizar(janela->renderer, 0.0, 0.0);
-		SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
-		SDL_Rect rect = {0, 0, 800, 600};
-		SDL_RenderFillRect(janela->renderer, &rect);
+		filtro.Renderizar(janela->renderer, 0.0, 0.0);
+		//SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
+		//SDL_Rect rect = {0, 0, 800, 600};
+		//SDL_RenderFillRect(janela->renderer, &rect);
 	}
-	*/
+	
 	switch(estado)
 	{
-	case ESTADO_INGAME:		
-		mapa.Renderizar(janela->renderer, &camera);
-		gerenteAtor.Renderizar(&camera);
+	case ESTADO_INGAME:	
 		SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
 		SDL_RenderFillRect(janela->renderer, &hpbar);
 		SDL_SetRenderDrawColor(janela->renderer, 0, 0, 255, 255);
@@ -311,6 +314,11 @@ void Ingame::Renderizar(){
 		SDL_RenderDrawRect(janela->renderer, &hpbar);
 		SDL_RenderDrawRect(janela->renderer, &mpbar);
 		skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, 400.0, 550.0, 0, 0, -M_PI/2.0);
+		hpbar.x = 399;
+		hpbar.y = 549;
+		hpbar.w = 34;
+		hpbar.h = 34;
+		SDL_RenderDrawRect(janela->renderer, &hpbar);
 		break;
 	case ESTADO_PAUSADO:		
 		for(int i = 0; i < 5; i++)

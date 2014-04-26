@@ -2,10 +2,6 @@
 #include "GerenteAtor.h"
 #include "Jogador.h"
 #include "Claw.h"
-#include "DropItem.h"
-#include "Item.h"
-#include "Equipamento.h"
-#include "Consumavel.h"
 
 Lobisomem::Lobisomem(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {

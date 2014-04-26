@@ -13,7 +13,7 @@ Jogador::Jogador(GerenteAtor& _gerente) : Ator(_gerente)
 }
 
 void Jogador::AtualizarAtributos(){
-	Atributos novos = {100, atributos.hpatual, 1, 100, atributos.mpatual, 2, 5, 5, 5};
+	Atributos novos = {200, atributos.hpatual, 2, 200, atributos.mpatual, 4, 25, 50, 50};
 	atributos = novos;
 	for(int i = 0; i < EQUIP_QTD; i++){
 		if(equipamentos[i]){
@@ -122,13 +122,13 @@ void Jogador::Inicializar(){
 	andando = false;
 	direcao = 0.0;
 	indicex = indicey = skill = 0;
-	atributos.hpatual = atributos.hp = 100;
-	atributos.hpregen = 1;
-	atributos.mpatual = atributos.mp = 100;
-	atributos.mpregen = 2;
-	atributos.forca = 5;
-	atributos.defesa = 5;
-	atributos.magia = 5;
+	atributos.hpatual = atributos.hp = 200;
+	atributos.hpregen = 2;
+	atributos.mpatual = atributos.mp = 200;
+	atributos.mpregen = 4;
+	atributos.forca = 25;
+	atributos.defesa = 50;
+	atributos.magia = 50;
 	time = animtime = 0;
 	for(int i = 0; i < 10; i++)
 		inventario[i] = 0;

@@ -71,7 +71,10 @@ void Mapa::Inicializar(SDL_Renderer* renderer, unsigned int **_mapa, unsigned in
 
 void Mapa::Renderizar(SDL_Renderer* renderer, SDL_Rect* camera)
 {
-	sprite.Renderizar(renderer, (double)-camera->x, (double)-camera->y);
+	if(camera)
+		sprite.Renderizar(renderer, (double)-camera->x, (double)-camera->y);
+	else
+		sprite.Renderizar(renderer, 0.0, 0.0);
 }
 
 SDL_Rect Mapa::PegaDimensaoemTiles()

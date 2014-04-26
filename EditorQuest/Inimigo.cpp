@@ -2,8 +2,9 @@
 #include "Mapa.h"
 #include "GerenteAtor.h"
 #include "Jogador.h"
-#include "Equipamento.h"
 #include "DropItem.h"
+#include "Item.h"
+#include "Equipamento.h"
 #include "Consumavel.h"
 
 Inimigo::Inimigo(GerenteAtor& _gerente, Jogador* _jogador, Mapa* _mapa) : Ator(_gerente)
