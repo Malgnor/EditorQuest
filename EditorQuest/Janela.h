@@ -5,6 +5,7 @@
 #include "FW_Entrada.h"
 
 class GerenciadorTelas;
+class GerenteJanela;
 class Tela;
 
 class Janela{
@@ -15,9 +16,10 @@ private:
 
 public:	
 	SDL_Renderer* renderer;
+	GerenteJanela* jGerente;
 	FW_Entrada entrada;
 
-	Janela(Tela* telainicial);
+	Janela(Tela* telainicial, GerenteJanela* _jGerente);
 	void Inicializar(Tela* telainicial);
 	void ProcessarEventos(SDL_Event& evento);
 	void ProcessarEventosW(SDL_Event& evento);

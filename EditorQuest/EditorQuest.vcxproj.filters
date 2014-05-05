@@ -144,6 +144,9 @@
     <ClCompile Include="Crowley.cpp">
       <Filter>Source Files\Atores\Inimigos</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Source Files\Telas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldef.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="Crowley.h">
       <Filter>Header Files\Atores\Inimigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Header Files\Telas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

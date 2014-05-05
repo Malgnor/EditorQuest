@@ -5,6 +5,8 @@
 #include "BotaoPersonalizado.h"
 #include "Mapa.h"
 
+class Editor;
+
 class MenuInicial : public Tela{
 private:
 	BotaoPersonalizado jogar, sair;
@@ -12,6 +14,8 @@ private:
 	Sprite titulo, portal;
 	unsigned int indice;
 	Uint32 time;
+	bool resolucao;
+	Editor* editor;
 
 public:
 	virtual void Inicializar(Janela* _janela);

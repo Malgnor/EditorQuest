@@ -88,6 +88,7 @@
     <ClCompile Include="Claw.cpp" />
     <ClCompile Include="Consumavel.cpp" />
     <ClCompile Include="DropItem.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Lobisomem.cpp" />
     <ClCompile Include="Equipamento.cpp" />
     <ClCompile Include="Espinhos.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Claw.h" />
     <ClInclude Include="Consumavel.h" />
     <ClInclude Include="DropItem.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="Lobisomem.h" />
     <ClInclude Include="Equipamento.h" />
     <ClInclude Include="Espinhos.h" />

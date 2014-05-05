@@ -153,6 +153,9 @@ void FW_Entrada::atualiza(SDL_Event& event)
 				case SDLK_9:
 					processaTecla(&tecla[FW_9],event);
 					break;
+				case SDLK_m:
+					processaTecla(&tecla[FW_M], event);
+					break;
 			}
 			break; //break dos eventos de tipo teclado
 				

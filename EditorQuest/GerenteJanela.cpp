@@ -40,7 +40,7 @@ void GerenteJanela::Finalizar(){
 }
 
 void GerenteJanela::Adicionar(Janela* janela){
-	janelas.push_back(janela);
+	adicionados.push_back(janela);
 	janelafocada = janela;
 }
 
@@ -81,6 +81,12 @@ void GerenteJanela::Atualizar(Uint32 deltaTime){
 	std::vector<Janela*> removidos;
 	std::vector<Janela*> ativos;
 
+	for (Janela* janela : adicionados)
+	{
+		janelas.push_back(janela);
+	}
+
+	adicionados.clear();
 	if(!janelas.empty())
 		for(Janela* j: janelas){
 			if(j->Existe()){
@@ -93,8 +99,10 @@ void GerenteJanela::Atualizar(Uint32 deltaTime){
 	swap(janelas, ativos);
 
 	if(!removidos.empty())
-		for(Janela* j: removidos)
+		for(Janela* j: removidos){
 			delete j;
+			j = 0;
+		}
 }
 
 void GerenteJanela::Renderizar(){

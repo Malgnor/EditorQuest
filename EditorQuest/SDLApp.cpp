@@ -39,13 +39,14 @@ int SDLApp::Executar(){
 		return 1;
 	}
 
-	new Janela(new MenuInicial());
+	GerenteJanela gerente = GerenteJanela::PegaGerenteJanela();
+
+	new Janela(new MenuInicial(), &gerente);
 
 	bool sair = false;
 	SDL_Event event;
 	Uint32 deltaTime = 0;
 	Uint32 ticks = SDL_GetTicks();
-	GerenteJanela gerente = GerenteJanela::PegaGerenteJanela();
 	while(!sair) {
 		//while(SDL_GetTicks() < ticks+(1000/60))
 		//	SDL_Delay(ticks+(1000/60)-SDL_GetTicks());

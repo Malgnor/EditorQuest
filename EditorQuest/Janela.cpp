@@ -3,19 +3,20 @@
 #include "GerenciadorTelas.h"
 #include "Tela.h"
 
-Janela::Janela(Tela* telainicial){	
+Janela::Janela(Tela* telainicial, GerenteJanela* _jGerente){	
 	renderer = 0;
 	window = 0;
 	gerente = 0;
+	jGerente = _jGerente;
 	this->Inicializar(telainicial);
-	GJanela.Adicionar(this);
+	jGerente->Adicionar(this);
 }
 
 Janela::~Janela(){
 }
 
 void Janela::Inicializar(Tela* telainicial){
-	window = SDL_CreateWindow("Undefined", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 256, 256, SDL_WINDOW_HIDDEN);
+	window = SDL_CreateWindow("Undefined", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, 0);
 	if(window == 0){
 		printf( "Falha ao criar Window! SDL Error: %s\n",  SDL_GetError() );
 		this->Finalizar();
@@ -63,7 +64,7 @@ void Janela::ProcessarEventosW(SDL_Event& evento){
 			entrada.reseta();
 			break;
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
-			GJanela.SetaJanelaFocada(this);
+			jGerente->SetaJanelaFocada(this);
 			break;
 		}
 	}

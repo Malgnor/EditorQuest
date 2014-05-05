@@ -15,6 +15,7 @@ void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
 	janela->SetaTitulo("Walachia - Ingame");
 	janela->SetaCorFundo(255, 255, 255);
+
 	/*	
 	unsigned int map[32][32] = { 
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -58,6 +59,7 @@ void Ingame::Inicializar(Janela* _janela){
 	for(unsigned int i = 0; i < altura; i++){
 		map[i] = new unsigned int[largura];
 	}
+
 	for(unsigned int i = 0; i < altura; i++){
 			for(unsigned int j = 0; j < largura; j++){
 				if( i == 0 || j == 0 || j == largura-1 || i == altura-1 || (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16))
@@ -66,6 +68,7 @@ void Ingame::Inicializar(Janela* _janela){
 					map[i][j] = 2;
 			}
 	}
+
 	ofstream out;
 	out.open("teste.equest", std::ios_base::binary);
 	if(out.is_open())
@@ -82,9 +85,9 @@ void Ingame::Inicializar(Janela* _janela){
 		out.close();
 	}
 	*/
+
 	unsigned int altura, largura;
 	unsigned int** mapp = 0;
-	string buffer;
 	ifstream in;
 	in.open("teste.equest", std::ios_base::binary);
 	if(in.is_open())
@@ -102,6 +105,7 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		in.close();
 	}
+
 	mapa.Inicializar(janela->renderer, mapp, altura, largura);	
 	int w, h;
 	janela->PegaTamanho(w, h);
@@ -294,9 +298,6 @@ void Ingame::Renderizar(){
 	if(estado != ESTADO_INGAME)
 	{
 		filtro.Renderizar(janela->renderer, 0.0, 0.0);
-		//SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
-		//SDL_Rect rect = {0, 0, 800, 600};
-		//SDL_RenderFillRect(janela->renderer, &rect);
 	}
 	
 	switch(estado)
@@ -313,9 +314,9 @@ void Ingame::Renderizar(){
 		SDL_SetRenderDrawColor(janela->renderer, 0, 0, 0, 255);
 		SDL_RenderDrawRect(janela->renderer, &hpbar);
 		SDL_RenderDrawRect(janela->renderer, &mpbar);
-		skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, 400.0, 550.0, 0, 0, -M_PI/2.0);
-		hpbar.x = 399;
-		hpbar.y = 549;
+		skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, camera.w/2.0, camera.h-50.0, 0, 0, -M_PI/2.0);
+		hpbar.x = camera.w/2.0-1;
+		hpbar.y = camera.h-51.0;
 		hpbar.w = 34;
 		hpbar.h = 34;
 		SDL_RenderDrawRect(janela->renderer, &hpbar);

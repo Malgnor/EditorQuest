@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 //defines para o indice do objeto teclas
-#define FW_MAX_TECLAS	26
+#define FW_MAX_TECLAS	27
 #define FW_CIMA		0
 #define FW_DIREITA	1
 #define FW_BAIXO	2
@@ -33,6 +33,7 @@
 #define FW_7		23
 #define FW_8		24
 #define FW_9		25
+#define FW_M		26
 
 //defines para o indice do objeto mouse
 #define FW_MDIREITO	0

@@ -3,7 +3,6 @@
 
 #include "globaldef.h"
 #include <vector>
-#define GJanela GerenteJanela::PegaGerenteJanela()
 
 class Janela;
 
@@ -13,11 +12,8 @@ private:
 	static GerenteJanela* self;
 	std::vector<Janela*> janelas;
 	std::vector<Janela*> removidos;
+	std::vector<Janela*> adicionados;
 	Janela* janelafocada;
-
-#ifdef DEBUG
-	friend class DebugJanelas;
-#endif
 
 public:
 	static GerenteJanela& PegaGerenteJanela();
