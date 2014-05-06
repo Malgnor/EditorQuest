@@ -1,6 +1,7 @@
 #include "DropItem.h"
 #include "GerenteAtor.h"
 #include "Jogador.h"
+#include "Mapa.h"
 
 DropItem::DropItem(GerenteAtor& _gerente, Item* _item, double _x, double _y) : Ator(_gerente), item(_item), x(_x), y(_y)
 {
@@ -45,7 +46,36 @@ void DropItem::Colidiu(Ator* ator, SDL_Rect* colisao){
 }
 
 void DropItem::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
-
+	double dx,dy;
+	switch (tile->id)
+	{
+	case 1:
+		if(colisao->w > colisao->h)
+		{
+			dy = (double)(y-tile->rect.y);
+			if( dy > 0)
+			{
+				y += colisao->h;
+			}
+			else
+			{
+				y -= colisao->h;
+			}
+		}
+		else
+		{			
+			dx = (double)(x-tile->rect.x);
+			if( dx > 0)
+			{
+				x += colisao->w;
+			}
+			else
+			{
+				x -= colisao->w;
+			}
+		}
+		break;
+	}
 }
 
 void DropItem::Inicializar(){

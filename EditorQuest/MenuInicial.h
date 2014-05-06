@@ -14,8 +14,8 @@ private:
 	Sprite titulo, portal;
 	unsigned int indice;
 	Uint32 time;
-	bool resolucao;
-	Editor* editor;
+	bool resolucao, editor;
+	bool code[6];
 
 public:
 	virtual void Inicializar(Janela* _janela);

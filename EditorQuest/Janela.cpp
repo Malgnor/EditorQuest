@@ -30,7 +30,7 @@ void Janela::Inicializar(Tela* telainicial){
 	}
 	corfundo.r = corfundo.g = corfundo.b = corfundo.a = 0;
 	SDL_SetRenderDrawColor(renderer, corfundo.r, corfundo.g, corfundo.b, corfundo.a);
-	entrada = FW_Entrada();
+	entrada = Entrada();
 	gerente = new GerenciadorTelas(telainicial, this);
 }
 
@@ -89,9 +89,9 @@ void Janela::Renderizar(){
 }
 
 void Janela::Finalizar(){
-	if((unsigned int)renderer != 0xfeeefeee)
+	//if((unsigned int)renderer != 0xfeeefeee)
 		SDL_DestroyRenderer(renderer);
-	if((unsigned int)window != 0xfeeefeee)
+	//if((unsigned int)window != 0xfeeefeee)
 		SDL_DestroyWindow(window);
 	delete gerente;
 	renderer = 0;

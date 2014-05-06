@@ -39,47 +39,69 @@ void MenuInicial::Inicializar(Janela* _janela){
 	indice = 0;
 	time = 0;
 	resolucao = false;
-	editor = 0;
+	editor = false;
+	for(int i = 0; i < 6; i++)
+		code[i] = false;
 }
 
 void MenuInicial::Atualizar(Uint32 deltaTime){
-	FW_Botao* Teclas = PegaTecla();
-	FW_Mouse* Mouse = PegaMouse();
+	KB_Botao* Teclas = PegaTecla();
+	M_Mouse* Mouse = PegaMouse();
 	time += deltaTime;
-	if(time >= 250){
-		time -= 250;
+	if(time >= 150){
+		time -= 150;
 		indice = (indice+1)%4;
 	}
 	jogar.Atualizar();
 	sair.Atualizar();
-	if (Teclas[FW_1].pressionado)
+	if (Teclas[KB_1].pressionado)
 	{
 		janela->ModoJanela();
 		janela->SetaTamanho(800, 600);
 		resolucao = true;
 	}
-	if (Teclas[FW_2].pressionado)
+	if (Teclas[KB_2].pressionado)
 	{
 		janela->ModoJanela();
 		janela->SetaTamanho(640, 480);
 		resolucao = true;
 	}
-	if (Teclas[FW_3].pressionado)
+	if (Teclas[KB_3].pressionado)
 	{
 		janela->ModoJanela();
 		janela->SetaTamanho(1024, 768);
 		resolucao = true;
 	}
-	if (Teclas[FW_4].pressionado)
+	if (Teclas[KB_4].pressionado)
 	{
 		janela->ModoTelaCheia();
 		resolucao = true;
 	}
-	if (Teclas[FW_M].pressionado && !editor)
-	{
-		editor = new Editor();
-		new Janela(editor, janela->jGerente);
+
+	if(Teclas[KB_E].pressionado)
+		code[0] = true;
+	if(Teclas[KB_D].pressionado)
+		code[1] = true;
+	if(Teclas[KB_I].pressionado)
+		code[2] = true;
+	if(Teclas[KB_T].pressionado)
+		code[3] = true;
+	if(Teclas[KB_O].pressionado)
+		code[4] = true;
+	if(Teclas[KB_R].pressionado)
+		code[5] = true;
+	int c = 0;
+	for(int i = 0; i < 6; i++){
+		if(code[i])
+			c++;
 	}
+
+	if(c == 6 && !editor)
+	{
+		editor = true;
+		new Janela(new Editor(), janela->jGerente);
+	} 
+
 }
 
 void MenuInicial::Renderizar(){
@@ -96,14 +118,12 @@ void MenuInicial::Finalizar(){
 }
 
 Tela* MenuInicial::ProximaTela(){
-	if(PegaTecla()[FW_ENCERRA].pressionado || sair.Pressionado())
+	if(PegaTecla()[KB_ENCERRA].pressionado || sair.Pressionado())
 		return 0;
 	if(jogar.Pressionado())
 		return new Ingame();
 	if (resolucao)
-		return new MenuInicial();
-	
-	
+		return new MenuInicial();	
 	return this;
 }
 	

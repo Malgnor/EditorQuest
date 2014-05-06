@@ -14,7 +14,7 @@ using namespace std;
 void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
 	janela->SetaTitulo("Walachia - Ingame");
-	janela->SetaCorFundo(255, 255, 255);
+	janela->SetaCorFundo(0, 0, 0);
 
 	/*	
 	unsigned int map[32][32] = { 
@@ -157,8 +157,8 @@ void Ingame::Inicializar(Janela* _janela){
 }
 
 void Ingame::Atualizar(Uint32 deltaTime){
-	FW_Botao* Teclas = PegaTecla();
-	FW_Mouse* Mouse = PegaMouse();
+	KB_Botao* Teclas = PegaTecla();
+	M_Mouse* Mouse = PegaMouse();
 	Atributos a = jogador->PegaAtributos();
 	stringstream newstatus;
 	SDL_Color cor = {0, 0, 0};
@@ -181,13 +181,13 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		else if(camera.y > altura-camera.h)
 			camera.y = altura-camera.h;
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
-		if(Teclas[FW_Z].pressionado)
+		if(Teclas[KB_Z].pressionado)
 			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[FW_X].pressionado)
+		if(Teclas[KB_X].pressionado)
 			gerenteAtor.Adicionar(new Crowley(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[FW_C].pressionado)
+		if(Teclas[KB_C].pressionado)
 			gerenteAtor.Adicionar(new Lucifer(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[FW_ESC].pressionado)
+		if(Teclas[KB_ESC].pressionado)
 			estado = ESTADO_PAUSADO;
 		if(!jogador->EstaNoJogo())
 			estado = ESTADO_LOSE;
@@ -208,7 +208,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			status.str(newstatus.str());
 			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
 		}
-		if(Teclas[FW_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
+		if(Teclas[KB_ESC].pressionado || botoes[BOTAO_VOLTAR].Pressionado())
 			estado = ESTADO_INGAME;
 		if(botoes[BOTAO_INVENTARIO].Pressionado()){
 			estado = ESTADO_INVENTARIO;
@@ -234,15 +234,15 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
 		}
 		inventario = (Item**)jogador->PegaEquipamentos();
-		if(inventario[EQUIP_CABECA] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 100 && Mouse->y < 132 && Mouse->botoes[FW_MESQUERDO].ativo)
+		if(inventario[EQUIP_CABECA] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 100 && Mouse->y < 132 && Mouse->botoes[M_ESQUERDO].ativo)
 			invselecionado = EQUIP_CABECA;
-		if(inventario[EQUIP_ARMA] && Mouse->x > 550 && Mouse->x < 582 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+		if(inventario[EQUIP_ARMA] && Mouse->x > 550 && Mouse->x < 582 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[M_ESQUERDO].ativo)
 			invselecionado = EQUIP_ARMA;
-		if(inventario[EQUIP_TRONCO] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+		if(inventario[EQUIP_TRONCO] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[M_ESQUERDO].ativo)
 			invselecionado = EQUIP_TRONCO;
-		if(inventario[EQUIP_PERNAS] && Mouse->x > 650 && Mouse->x < 682 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[FW_MESQUERDO].ativo)
+		if(inventario[EQUIP_PERNAS] && Mouse->x > 650 && Mouse->x < 682 && Mouse->y > 150 && Mouse->y < 182 && Mouse->botoes[M_ESQUERDO].ativo)
 			invselecionado = EQUIP_PERNAS;
-		if(inventario[EQUIP_PES] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 200 && Mouse->y < 232 && Mouse->botoes[FW_MESQUERDO].ativo)
+		if(inventario[EQUIP_PES] && Mouse->x > 600 && Mouse->x < 632 && Mouse->y > 200 && Mouse->y < 232 && Mouse->botoes[M_ESQUERDO].ativo)
 			invselecionado = EQUIP_PES;
 		if(botoes[BOTAO_USAR2].Pressionado() && inventario[invselecionado])
 			inventario[invselecionado]->Usar(jogador);
@@ -266,7 +266,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			txtstatus.CriaTexturaDoTextoC(janela->renderer, status.str().c_str(), fonte, cor, janela->PegaPosicaoeTamanho().w);
 		}
 		for(int i = 0; i < 10; i++){
-			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0 && Mouse->botoes[FW_MESQUERDO].ativo)
+			if(Mouse->x > 100 && Mouse->x < 700 && Mouse->y > 50.0+i*45.0 && Mouse->y < 90.0+i*45.0 && Mouse->botoes[M_ESQUERDO].ativo)
 				invselecionado = i;
 		}
 		if(botoes[BOTAO_USAR].Pressionado() && inventario[invselecionado])
@@ -286,7 +286,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 }
 
 void Ingame::Renderizar(){
-	FW_Mouse* Mouse = PegaMouse();
+	M_Mouse* Mouse = PegaMouse();
 	Atributos a = jogador->PegaAtributos();
 	SDL_Rect hpbar = { 16, 16, (int)((double)a.hpatual/(double)a.hp*100.0), 16};
 	SDL_Rect mpbar = { 16, 36, (int)((double)a.mpatual/(double)a.mp*100.0), 16};
@@ -315,8 +315,8 @@ void Ingame::Renderizar(){
 		SDL_RenderDrawRect(janela->renderer, &hpbar);
 		SDL_RenderDrawRect(janela->renderer, &mpbar);
 		skills[jogador->PegaSkillSelecionada()].Renderizar(janela->renderer, camera.w/2.0, camera.h-50.0, 0, 0, -M_PI/2.0);
-		hpbar.x = camera.w/2.0-1;
-		hpbar.y = camera.h-51.0;
+		hpbar.x = (int)(camera.w/2.0)-1;
+		hpbar.y = camera.h-51;
 		hpbar.w = 34;
 		hpbar.h = 34;
 		SDL_RenderDrawRect(janela->renderer, &hpbar);
@@ -409,7 +409,7 @@ void Ingame::Finalizar(){
 }
 
 Tela* Ingame::ProximaTela(){
-	if(PegaTecla()[FW_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
+	if(PegaTecla()[KB_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
 		return 0;
 	if(botoes[BOTAO_MENUINICIAL].Pressionado())
 		return new MenuInicial();

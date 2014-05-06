@@ -25,7 +25,7 @@ void Editor::Finalizar()
 
 Tela* Editor::ProximaTela()
 {
-	if(PegaTecla()[FW_ENCERRA].pressionado || PegaTecla()[FW_ESC].pressionado)
+	if(PegaTecla()[KB_ENCERRA].pressionado || PegaTecla()[KB_ESC].pressionado)
 		return 0;
 	return this;
 }

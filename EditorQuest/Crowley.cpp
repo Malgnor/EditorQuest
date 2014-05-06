@@ -9,11 +9,6 @@ Crowley::Crowley(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador,
 	y = _y;
 }
 
-SDL_Rect Crowley::PegaBoundingBox(){
-	SDL_Rect ret = {(int)x+1, (int)y+16, 32, 32};
-	return ret;
-}
-
 void Crowley::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/sprites/crowley.png", 33, 48);	
 	direcao = 0.0;

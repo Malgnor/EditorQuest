@@ -94,7 +94,7 @@
     <ClCompile Include="Espinhos.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Flecha.cpp" />
-    <ClCompile Include="FW_Entrada.cpp" />
+    <ClCompile Include="Entrada.cpp" />
     <ClCompile Include="GerenciadorTelas.cpp" />
     <ClCompile Include="GerenteAtor.cpp" />
     <ClCompile Include="GerenteJanela.cpp" />
@@ -128,7 +128,7 @@
     <ClInclude Include="Espinhos.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="Flecha.h" />
-    <ClInclude Include="FW_Entrada.h" />
+    <ClInclude Include="Entrada.h" />
     <ClInclude Include="GerenciadorTelas.h" />
     <ClInclude Include="GerenteAtor.h" />
     <ClInclude Include="GerenteJanela.h" />

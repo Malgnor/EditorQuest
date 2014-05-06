@@ -1,7 +1,7 @@
-#include "FW_Entrada.h"
+#include "Entrada.h"
 
-FW_Entrada::FW_Entrada(){
-	for(int i=0; i<FW_MAX_TECLAS; i++){
+Entrada::Entrada(){
+	for(int i=0; i<KB_MAX_TECLAS; i++){
         tecla[i].pressionado = false;
         tecla[i].liberado = false;
         tecla[i].ativo = false;
@@ -17,18 +17,18 @@ FW_Entrada::FW_Entrada(){
 }
 
 //funções de retorno de entrada, mouse e teclado
-FW_Botao* FW_Entrada::pegaTecla()
+KB_Botao* Entrada::pegaTecla()
 {
 	return tecla;
 }
 
-FW_Mouse* FW_Entrada::pegaMouse()
+M_Mouse* Entrada::pegaMouse()
 {
 	return &mouse;
 }
 
 //funções para atualizar os estados do input
-void FW_Entrada::processaTecla(FW_Botao* tecla,SDL_Event& event)
+void Entrada::processaTecla(KB_Botao* tecla,SDL_Event& event)
 {
 	switch(event.type)
     {
@@ -48,10 +48,10 @@ void FW_Entrada::processaTecla(FW_Botao* tecla,SDL_Event& event)
 
 }
 
-void FW_Entrada::reseta(){
+void Entrada::reseta(){
 	// Remove o pressionamento das teclas do passo anterior
     // Remove o liberamento das teclas do passo anterior
-    for(int i=0;i<FW_MAX_TECLAS;i++){
+    for(int i=0;i<KB_MAX_TECLAS;i++){
         tecla[i].pressionado = false;
         tecla[i].liberado = false;
 	}
@@ -64,14 +64,14 @@ void FW_Entrada::reseta(){
 	mouse.wx = mouse.wy = 0;
 }
 
-void FW_Entrada::atualiza(SDL_Event& event)
+void Entrada::atualiza(SDL_Event& event)
 {	
 	// Trata de acordo com o tipo de evento
 	switch( event.type )
 	{
 		case SDL_QUIT:
-			tecla[FW_ENCERRA].pressionado = true;
-			tecla[FW_ENCERRA].ativo = true;
+			tecla[KB_ENCERRA].pressionado = true;
+			tecla[KB_ENCERRA].ativo = true;
 			break;
 
 		case SDL_KEYDOWN:
@@ -79,82 +79,103 @@ void FW_Entrada::atualiza(SDL_Event& event)
 			switch(event.key.keysym.sym)
 			{
 				case SDLK_UP:
-					processaTecla(&tecla[FW_CIMA],event);
+					processaTecla(&tecla[KB_CIMA],event);
 					break;
 				case SDLK_RIGHT:
-					processaTecla(&tecla[FW_DIREITA],event);
+					processaTecla(&tecla[KB_DIREITA],event);
 					break;
 				case SDLK_DOWN:
-					processaTecla(&tecla[FW_BAIXO],event);
+					processaTecla(&tecla[KB_BAIXO],event);
 					break;
 				case SDLK_LEFT:
-					processaTecla(&tecla[FW_ESQUERDA],event);
+					processaTecla(&tecla[KB_ESQUERDA],event);
 					break;
 				case SDLK_z:
-					processaTecla(&tecla[FW_Z],event);
+					processaTecla(&tecla[KB_Z],event);
 					break;
 				case SDLK_x:
-					processaTecla(&tecla[FW_X],event);
+					processaTecla(&tecla[KB_X],event);
 					break;
 				case SDLK_c:
-					processaTecla(&tecla[FW_C],event);
+					processaTecla(&tecla[KB_C],event);
 					break;
 				case SDLK_a:
-					processaTecla(&tecla[FW_A],event);
+					processaTecla(&tecla[KB_A],event);
 					break;
 				case SDLK_s:
-					processaTecla(&tecla[FW_S],event);
+					processaTecla(&tecla[KB_S],event);
 					break;
 				case SDLK_d:
-					processaTecla(&tecla[FW_D],event);
+					processaTecla(&tecla[KB_D],event);
 					break;
 				case SDLK_w:
-					processaTecla(&tecla[FW_W],event);
+					processaTecla(&tecla[KB_W],event);
 					break;
 				case SDLK_SPACE:
-					processaTecla(&tecla[FW_ESPACO],event);
+					processaTecla(&tecla[KB_ESPACO],event);
 					break;
 				case SDLK_LCTRL:
-					processaTecla(&tecla[FW_CONTROL],event);
+					processaTecla(&tecla[KB_CONTROL],event);
 					break;
 				case SDLK_RETURN:
-					processaTecla(&tecla[FW_ENTER],event);
+					processaTecla(&tecla[KB_ENTER],event);
 					break;
 				case SDLK_ESCAPE:
-					processaTecla(&tecla[FW_ESC],event);
+					processaTecla(&tecla[KB_ESC],event);
 					break;
 				case SDLK_0:
-					processaTecla(&tecla[FW_0],event);
+					processaTecla(&tecla[KB_0],event);
 					break;
 				case SDLK_1:
-					processaTecla(&tecla[FW_1],event);
+					processaTecla(&tecla[KB_1],event);
 					break;
 				case SDLK_2:
-					processaTecla(&tecla[FW_2],event);
+					processaTecla(&tecla[KB_2],event);
 					break;
 				case SDLK_3:
-					processaTecla(&tecla[FW_3],event);
+					processaTecla(&tecla[KB_3],event);
 					break;
 				case SDLK_4:
-					processaTecla(&tecla[FW_4],event);
+					processaTecla(&tecla[KB_4],event);
 					break;
 				case SDLK_5:
-					processaTecla(&tecla[FW_5],event);
+					processaTecla(&tecla[KB_5],event);
 					break;
 				case SDLK_6:
-					processaTecla(&tecla[FW_6],event);
+					processaTecla(&tecla[KB_6],event);
 					break;
 				case SDLK_7:
-					processaTecla(&tecla[FW_7],event);
+					processaTecla(&tecla[KB_7],event);
 					break;
 				case SDLK_8:
-					processaTecla(&tecla[FW_8],event);
+					processaTecla(&tecla[KB_8],event);
 					break;
 				case SDLK_9:
-					processaTecla(&tecla[FW_9],event);
+					processaTecla(&tecla[KB_9],event);
 					break;
 				case SDLK_m:
-					processaTecla(&tecla[FW_M], event);
+					processaTecla(&tecla[KB_M], event);
+					break;
+				case SDLK_e:
+					processaTecla(&tecla[KB_E], event);
+					break;
+				case SDLK_i:
+					processaTecla(&tecla[KB_I], event);
+					break;
+				case SDLK_t:
+					processaTecla(&tecla[KB_T], event);
+					break;
+				case SDLK_o:
+					processaTecla(&tecla[KB_O], event);
+					break;
+				case SDLK_r:
+					processaTecla(&tecla[KB_R], event);
+					break;
+				case SDLK_q:
+					processaTecla(&tecla[KB_Q], event);
+					break;
+				case SDLK_u:
+					processaTecla(&tecla[KB_U], event);
 					break;
 			}
 			break; //break dos eventos de tipo teclado
@@ -175,22 +196,22 @@ void FW_Entrada::atualiza(SDL_Event& event)
 			switch(event.button.button)
 			{
 				case SDL_BUTTON_LEFT:
-					mouse.botoes[FW_MESQUERDO].pressionado=true;
-					mouse.botoes[FW_MESQUERDO].liberado=false;
-					mouse.botoes[FW_MESQUERDO].ativo=true;
-					mouse.botoes[FW_MESQUERDO].repeticao = event.button.clicks;
+					mouse.botoes[M_ESQUERDO].pressionado=true;
+					mouse.botoes[M_ESQUERDO].liberado=false;
+					mouse.botoes[M_ESQUERDO].ativo=true;
+					mouse.botoes[M_ESQUERDO].repeticao = event.button.clicks;
 					break;
 				case SDL_BUTTON_RIGHT:
-					mouse.botoes[FW_MDIREITO].pressionado=true;
-					mouse.botoes[FW_MDIREITO].liberado=false;
-					mouse.botoes[FW_MDIREITO].ativo=true;
-					mouse.botoes[FW_MDIREITO].repeticao = event.button.clicks;
+					mouse.botoes[M_DIREITO].pressionado=true;
+					mouse.botoes[M_DIREITO].liberado=false;
+					mouse.botoes[M_DIREITO].ativo=true;
+					mouse.botoes[M_DIREITO].repeticao = event.button.clicks;
 					break;
 				case SDL_BUTTON_MIDDLE:
-					mouse.botoes[FW_MMEIO].pressionado=true;
-					mouse.botoes[FW_MMEIO].liberado=false;
-					mouse.botoes[FW_MMEIO].ativo=true;
-					mouse.botoes[FW_MMEIO].repeticao = event.button.clicks;
+					mouse.botoes[M_MEIO].pressionado=true;
+					mouse.botoes[M_MEIO].liberado=false;
+					mouse.botoes[M_MEIO].ativo=true;
+					mouse.botoes[M_MEIO].repeticao = event.button.clicks;
 					break;
 			}
 			break; //break dos eventos de mouse button down
@@ -201,28 +222,28 @@ void FW_Entrada::atualiza(SDL_Event& event)
 			switch(event.button.button)
 			{
 				case SDL_BUTTON_LEFT:
-					mouse.botoes[FW_MESQUERDO].ativo=false;
-					mouse.botoes[FW_MESQUERDO].liberado=true;
-					mouse.botoes[FW_MESQUERDO].pressionado=false;
-					mouse.botoes[FW_MESQUERDO].repeticao = 0;
+					mouse.botoes[M_ESQUERDO].ativo=false;
+					mouse.botoes[M_ESQUERDO].liberado=true;
+					mouse.botoes[M_ESQUERDO].pressionado=false;
+					mouse.botoes[M_ESQUERDO].repeticao = 0;
 					break;
 				case SDL_BUTTON_RIGHT:
-					mouse.botoes[FW_MDIREITO].ativo=false;
-					mouse.botoes[FW_MDIREITO].liberado=true;
-					mouse.botoes[FW_MDIREITO].pressionado=false;
-					mouse.botoes[FW_MDIREITO].repeticao = 0;
+					mouse.botoes[M_DIREITO].ativo=false;
+					mouse.botoes[M_DIREITO].liberado=true;
+					mouse.botoes[M_DIREITO].pressionado=false;
+					mouse.botoes[M_DIREITO].repeticao = 0;
 					break;
 				case SDL_BUTTON_MIDDLE:
-					mouse.botoes[FW_MMEIO].ativo=false;
-					mouse.botoes[FW_MMEIO].liberado=true;
-					mouse.botoes[FW_MMEIO].pressionado=false;
-					mouse.botoes[FW_MMEIO].repeticao = 0;
+					mouse.botoes[M_MEIO].ativo=false;
+					mouse.botoes[M_MEIO].liberado=true;
+					mouse.botoes[M_MEIO].pressionado=false;
+					mouse.botoes[M_MEIO].repeticao = 0;
 					break;
 			}
 			break; //break dos eventos de mouse button up
 	}
 	if(event.window.event == SDL_WINDOWEVENT_CLOSE){
-		tecla[FW_ENCERRA].pressionado = true;
-		tecla[FW_ENCERRA].ativo = true;
+		tecla[KB_ENCERRA].pressionado = true;
+		tecla[KB_ENCERRA].ativo = true;
 	}
 }

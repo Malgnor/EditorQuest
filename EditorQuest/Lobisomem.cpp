@@ -9,11 +9,6 @@ Lobisomem::Lobisomem(GerenteAtor& _gerente, double _x, double _y, Jogador* _joga
 	y = _y;
 }
 
-SDL_Rect Lobisomem::PegaBoundingBox(){
-	SDL_Rect ret = {(int)x+14, (int)y+14, 32, 32};
-	return ret;
-}
-
 void Lobisomem::Inicializar(){
 	sprite.CriaTexturaDaImagem(gerente.janela->renderer, "resources/sprites/lobisomem.png", 46, 46);	
 	direcao = 0.0;

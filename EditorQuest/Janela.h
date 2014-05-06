@@ -2,7 +2,7 @@
 #define _JANELA_H_
 
 #include "globaldef.h"
-#include "FW_Entrada.h"
+#include "Entrada.h"
 
 class GerenciadorTelas;
 class GerenteJanela;
@@ -17,7 +17,7 @@ private:
 public:	
 	SDL_Renderer* renderer;
 	GerenteJanela* jGerente;
-	FW_Entrada entrada;
+	Entrada entrada;
 
 	Janela(Tela* telainicial, GerenteJanela* _jGerente);
 	void Inicializar(Tela* telainicial);

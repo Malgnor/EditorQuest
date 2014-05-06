@@ -63,10 +63,10 @@ double Jogador::PegaDirecao(){
 }
 
 SDL_Rect Jogador::PegaBoundingBox(){
-	//SDL_Rect ret = sprite.PegaDimensao();
-	//ret.x = (int)x;
-	//ret.y = (int)y;
-	SDL_Rect ret = {(int)x+1, (int)y+16, 32, 32};
+	SDL_Rect ret = sprite.PegaDimensao();
+	ret.x = (int)x;
+	ret.y = (int)y;
+	//SDL_Rect ret = {(int)x+1, (int)y+16, 32, 32};
 	return ret;
 }
 
@@ -137,8 +137,8 @@ void Jogador::Inicializar(){
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
-	FW_Botao* Teclas = PegaTecla();
-	FW_Mouse* Mouse = PegaMouse();
+	KB_Botao* Teclas = PegaTecla();
+	M_Mouse* Mouse = PegaMouse();
 	time += deltaTime;
 	if(time >= 1000){
 		time -= 1000;
@@ -149,28 +149,28 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		atributos.hpatual = atributos.hp;
 	if(atributos.mpatual > atributos.mp)
 		atributos.mpatual = atributos.mp;
-	if(Teclas[FW_1].pressionado)
+	if(Teclas[KB_1].pressionado)
 		skill = 0;
-	if(Teclas[FW_2].pressionado)
+	if(Teclas[KB_2].pressionado)
 		skill = 1;
-	if(Teclas[FW_3].pressionado)
+	if(Teclas[KB_3].pressionado)
 		skill = 2;
-	if(Teclas[FW_W].ativo){
+	if(Teclas[KB_W].ativo){
 		y-=(0.3*deltaTime);
 		indicey = 3;
 		andando = true;
 	}
-	else if(Teclas[FW_S].ativo){
+	else if(Teclas[KB_S].ativo){
 		y+=(0.3*deltaTime);
 		indicey = 0;
 		andando = true;
 	}
-	if(Teclas[FW_A].ativo){
+	if(Teclas[KB_A].ativo){
 		x-=(0.3*deltaTime);
 		indicey = 1;
 		andando = true;
 	}
-	else if(Teclas[FW_D].ativo){
+	else if(Teclas[KB_D].ativo){
 		x+=(0.3*deltaTime);
 		indicey = 2;
 		andando = true;
@@ -211,7 +211,7 @@ void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 		skill = (++skill)%3;
 		printf("%d\n", skill);
 	}
-	if(Mouse->botoes[FW_MESQUERDO].pressionado){
+	if(Mouse->botoes[M_ESQUERDO].pressionado){
 		switch (skill)
 		{
 		case 0:
