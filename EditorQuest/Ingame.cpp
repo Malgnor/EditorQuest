@@ -247,7 +247,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		if(botoes[BOTAO_USAR2].Pressionado() && inventario[invselecionado])
 			inventario[invselecionado]->Usar(jogador);
 		if(botoes[BOTAO_VOLTAR].Pressionado())
-			estado = ESTADO_INGAME;
+			estado = ESTADO_PAUSADO;
 		break;
 	case ESTADO_INVENTARIO:
 		inventario = jogador->PegaInventario();
@@ -276,7 +276,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			inventario[invselecionado] = 0;
 		}
 		if(botoes[BOTAO_VOLTAR].Pressionado())
-			estado = ESTADO_INGAME;
+			estado = ESTADO_PAUSADO;
 		break;
 	case ESTADO_WIN:
 	case ESTADO_LOSE:

@@ -89,9 +89,9 @@ void Janela::Renderizar(){
 }
 
 void Janela::Finalizar(){
-	//if((unsigned int)renderer != 0xfeeefeee)
+	if((unsigned int)renderer != 0xfeeefeee)
 		SDL_DestroyRenderer(renderer);
-	//if((unsigned int)window != 0xfeeefeee)
+	if((unsigned int)window != 0xfeeefeee)
 		SDL_DestroyWindow(window);
 	delete gerente;
 	renderer = 0;

@@ -115,7 +115,7 @@ void Entrada::atualiza(SDL_Event& event)
 					processaTecla(&tecla[KB_ESPACO],event);
 					break;
 				case SDLK_LCTRL:
-					processaTecla(&tecla[KB_CONTROL],event);
+					processaTecla(&tecla[KB_LCONTROL],event);
 					break;
 				case SDLK_RETURN:
 					processaTecla(&tecla[KB_ENTER],event);
@@ -176,6 +176,12 @@ void Entrada::atualiza(SDL_Event& event)
 					break;
 				case SDLK_u:
 					processaTecla(&tecla[KB_U], event);
+					break;
+				case SDLK_g:
+					processaTecla(&tecla[KB_G], event);
+					break;
+				case SDLK_LALT:
+					processaTecla(&tecla[KB_LALT], event);
 					break;
 			}
 			break; //break dos eventos de tipo teclado

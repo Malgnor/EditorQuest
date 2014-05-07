@@ -88,11 +88,16 @@ void GerenteJanela::Atualizar(Uint32 deltaTime){
 
 	swap(janelas, ativos);
 
-	if(!removidos.empty())
+	if(!removidos.empty()){
 		for(Janela* j: removidos){
 			delete j;
 			j = 0;
 		}
+		if(!janelas.empty())
+			janelafocada = janelas[0];
+		else
+			janelafocada = 0;
+	}
 }
 
 void GerenteJanela::Renderizar(){

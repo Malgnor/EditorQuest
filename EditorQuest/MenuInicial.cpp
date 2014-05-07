@@ -48,8 +48,8 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 	KB_Botao* Teclas = PegaTecla();
 	M_Mouse* Mouse = PegaMouse();
 	time += deltaTime;
-	if(time >= 150){
-		time -= 150;
+	if(time >= 125){
+		time -= 125;
 		indice = (indice+1)%4;
 	}
 	jogar.Atualizar();
@@ -63,16 +63,10 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 	if (Teclas[KB_2].pressionado)
 	{
 		janela->ModoJanela();
-		janela->SetaTamanho(640, 480);
-		resolucao = true;
-	}
-	if (Teclas[KB_3].pressionado)
-	{
-		janela->ModoJanela();
 		janela->SetaTamanho(1024, 768);
 		resolucao = true;
 	}
-	if (Teclas[KB_4].pressionado)
+	if (Teclas[KB_3].pressionado)
 	{
 		janela->ModoTelaCheia();
 		resolucao = true;
@@ -100,6 +94,9 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 	{
 		editor = true;
 		new Janela(new Editor(), janela->jGerente);
+		janela->ModoJanela();
+		janela->SetaTamanho(800, 600);
+		resolucao = true;
 	} 
 
 }
