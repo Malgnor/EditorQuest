@@ -2,6 +2,7 @@
 #define __ENTRADA_H__
 
 #include <SDL.h>
+#include <string>
 
 //defines para o indice do objeto teclas
 enum { KB_CIMA, KB_DIREITA, KB_BAIXO, KB_ESQUERDA, KB_Z, KB_X, KB_C, KB_A, KB_S, KB_D, KB_W, KB_ESPACO, KB_ENTER, KB_LCONTROL, KB_ESC,
@@ -37,12 +38,20 @@ public:
 	M_Mouse* pegaMouse();
 	KB_Botao* pegaTecla();
 
+	std::string& pegaTexto();
+	bool textoUpdate();
+	void ativaInputTexto();
+	void desativaInputTexto();
+	bool toggleInputTexto();
+
 	void reseta();
 	void atualiza(SDL_Event& evento);
-private:
 
+private:
 	KB_Botao tecla[KB_MAX_TECLAS];
 	M_Mouse mouse;
+	static bool textInput, textUpdate;
+	static std::string texto;
 
 	void processaTecla(KB_Botao* tecla, SDL_Event& event);
 };

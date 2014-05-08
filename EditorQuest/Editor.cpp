@@ -8,28 +8,30 @@ void Editor::Inicializar(Janela* _janela)
 {
 	janela = _janela;
 	janela->SetaTitulo("Walachia - Editor");
-	janela->SetaCorFundo(0, 0, 0);	
+	janela->SetaCorFundo(255, 255, 255);	
 	int w, h;
 	janela->PegaTamanho(w, h);
 	bordaHorizontal = 60;
 	bordaLateral = 150;
 	estadoEditor = EDIT_NONE;
+	selecionado = 0;
 	grid = false;
+	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
 	botoes[BTN_MAPA].Inicializar(janela->renderer, "Tile", fonte, cor);
 	botoes[BTN_INIMIGOS].Inicializar(janela->renderer, "Inimigo", fonte, cor);
 	botoes[BTN_ARMADILHAS].Inicializar(janela->renderer, "Armadilha", fonte, cor);
 	botoes[BTN_ITENS].Inicializar(janela->renderer, "Item", fonte, cor);
-	botoes[BTN_CIMA].Inicializar(janela->renderer, "/\\", bordaLateral+(800-bordaLateral)/2, bordaHorizontal+10, fonte, cor);
-	botoes[BTN_BAIXO].Inicializar(janela->renderer, "\\/", bordaLateral+(800-bordaLateral)/2, 550, fonte, cor);
-	botoes[BTN_ESQUERDA].Inicializar(janela->renderer, " < ", bordaLateral+10, bordaHorizontal+(600-bordaHorizontal)/2, fonte, cor);
-	botoes[BTN_DIREITA].Inicializar(janela->renderer, " > ", 700, bordaHorizontal+(600-bordaHorizontal)/2, fonte, cor);
+	botoes[BTN_PROX].Inicializar(janela->renderer, ">", fonte, cor);
+	botoes[BTN_ANT].Inicializar(janela->renderer, "<", fonte, cor);
 	int px = 800;
 	for(int i = 4; i > 0; i--){
 		px -= 10+botoes[i-1].PegaDimensao().w;
 		botoes[i-1].SetaPosicao(px, 10);
 	}
+	botoes[BTN_ANT].SetaPosicao(5, 300);
+	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 300);
 
 	unsigned int altura, largura;
 	unsigned int** mapp = 0;
@@ -71,13 +73,13 @@ void Editor::Atualizar(Uint32 deltaTime)
 		if(estadoEditor != i || i > 3)
 			botoes[i].Atualizar();
 	
-	if(tecla[KB_BAIXO].pressionado || botoes[BTN_BAIXO].Pressed() || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 500 && tecla[KB_LALT].ativo))
+	if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 500 && tecla[KB_LALT].ativo))
 		camera.y+= 32;
-	else if(tecla[KB_CIMA].pressionado || botoes[BTN_CIMA].Pressed() || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 200 && tecla[KB_LALT].ativo))
+	else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 200 && tecla[KB_LALT].ativo))
 		camera.y-= 32;
-	if(tecla[KB_DIREITA].pressionado || botoes[BTN_DIREITA].Pressed() || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 700 && tecla[KB_LALT].ativo))
+	if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 700 && tecla[KB_LALT].ativo))
 		camera.x+= 32;
-	else if(tecla[KB_ESQUERDA].pressionado || botoes[BTN_ESQUERDA].Pressed() || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 200 && tecla[KB_LALT].ativo))
+	else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 200 && tecla[KB_LALT].ativo))
 		camera.x-= 32;
 	if(camera.x < -bordaLateral)
 		camera.x = -bordaLateral;
@@ -90,12 +92,32 @@ void Editor::Atualizar(Uint32 deltaTime)
 
 	if(tecla[KB_G].pressionado)
 		grid = !grid;
+	if(tecla[KB_T].pressionado){
+		janela->entrada.toggleInputTexto();
+	}
+
+	if(janela->entrada.textoUpdate())
+		printf("%s\n", janela->entrada.pegaTexto().c_str());
+
 	for(int i = 0; i < 4; i++)
-		if(botoes[i].Pressionado())
+		if(botoes[i].Pressionado()){
 			estadoEditor = i;
+			selecionado = 0;
+		}
+
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
+		botoes[BTN_ANT].Atualizar();
+		botoes[BTN_PROX].Atualizar();
+		if(botoes[BTN_ANT].Pressionado())
+			selecionado--;
+		else if(botoes[BTN_PROX].Pressionado())
+			selecionado++;
+		if(selecionado > 9)
+			selecionado = 0;
+		else if(selecionado < 0)
+			selecionado = 9;
 		break;
 	case EDIT_INIMIGOS:
 		break;
@@ -112,12 +134,11 @@ void Editor::Renderizar()
 {
 	SDL_Rect rect = {0, 0, 800, bordaHorizontal};
 	M_Mouse* mouse = PegaMouse();
-	int offX, offY;
+	int offX = (camera.x+bordaLateral)%32;
+	int offY = (camera.y+bordaHorizontal)%32;
 	mapa.Renderizar(janela->renderer, &camera);
 	SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
 	if(grid){
-		offX = (camera.x+bordaLateral)%32;
-		offY = (camera.y+bordaHorizontal)%32;
 		for(int y = 0; y < 1+(600-bordaHorizontal)/32; y++){
 			SDL_RenderDrawLine(janela->renderer, bordaLateral, bordaHorizontal-offY+y*32, 800, bordaHorizontal-offY+y*32);
 		}
@@ -136,21 +157,22 @@ void Editor::Renderizar()
 	for(int i = 0; i < 4; i++)
 		if(estadoEditor != i)
 			botoes[i].Renderizar(janela->renderer);
-	for(int i = 0; i < 4; i++)
-		if(botoes[i+4].Hover())
-			botoes[i+4].Renderizar(janela->renderer);
+	int a;
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
+		botoes[BTN_ANT].Renderizar(janela->renderer);
+		botoes[BTN_PROX].Renderizar(janela->renderer);
+		tileset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 300.0, selecionado); 
 		if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-			offX = mouse->x-bordaLateral;
-			offY = mouse->y-bordaHorizontal;
-			rect.x = offX-offX%32-(camera.x+bordaLateral)%32+bordaLateral;
-			rect.y = offY-offY%32-(camera.y+bordaHorizontal)%32+bordaHorizontal;
+			a = mouse->x + offX;
+			rect.x = a-bordaLateral-offX-(a-bordaLateral)%32+bordaLateral;
+			rect.y = mouse->y-bordaHorizontal-offY-(mouse->y-bordaHorizontal)%32+bordaHorizontal;			
 			rect.w = rect.h = 32;
+			tileset.Renderizar(janela->renderer, rect.x, rect.y, selecionado); 
 			SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
 			SDL_RenderDrawRect(janela->renderer, &rect);
-		}
+		}	
 		break;
 	case EDIT_INIMIGOS:
 		break;

@@ -1,5 +1,9 @@
 #include "Entrada.h"
 
+bool Entrada::textInput = false;
+bool Entrada::textUpdate = false;
+std::string Entrada::texto = "";
+
 Entrada::Entrada(){
 	for(int i=0; i<KB_MAX_TECLAS; i++){
         tecla[i].pressionado = false;
@@ -25,6 +29,41 @@ KB_Botao* Entrada::pegaTecla()
 M_Mouse* Entrada::pegaMouse()
 {
 	return &mouse;
+}
+
+std::string& Entrada::pegaTexto(){
+	return texto;
+}
+
+bool Entrada::textoUpdate(){
+	return textUpdate;
+}
+
+void Entrada::ativaInputTexto(){
+	if(!textInput){
+		texto = "";
+		textInput = true;
+		SDL_StartTextInput();
+	}
+}
+
+void Entrada::desativaInputTexto(){
+	if(textInput){
+		textInput = false;
+		SDL_StopTextInput();
+	}
+}
+
+bool Entrada::toggleInputTexto(){	
+	if(textInput){
+		textInput = false;
+		SDL_StopTextInput();
+	} else{
+		texto = "";
+		textInput = true;
+		SDL_StartTextInput();
+	}
+	return textInput;
 }
 
 //funções para atualizar os estados do input
@@ -62,6 +101,7 @@ void Entrada::reseta(){
         mouse.botoes[i].liberado = false;
 	}
 	mouse.wx = mouse.wy = 0;
+	textUpdate = false;
 }
 
 void Entrada::atualiza(SDL_Event& event)
@@ -183,6 +223,12 @@ void Entrada::atualiza(SDL_Event& event)
 				case SDLK_LALT:
 					processaTecla(&tecla[KB_LALT], event);
 					break;
+				case SDLK_BACKSPACE:
+					if(textInput){
+						texto.pop_back();
+						textUpdate = true;
+					}
+					break;
 			}
 			break; //break dos eventos de tipo teclado
 				
@@ -247,6 +293,12 @@ void Entrada::atualiza(SDL_Event& event)
 					break;
 			}
 			break; //break dos eventos de mouse button up
+		case SDL_TEXTINPUT:
+			if(textInput){
+				texto += event.text.text;
+				textUpdate = true;
+			}
+			break;
 	}
 	if(event.window.event == SDL_WINDOWEVENT_CLOSE){
 		tecla[KB_ENCERRA].pressionado = true;
