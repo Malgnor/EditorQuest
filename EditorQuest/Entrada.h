@@ -43,6 +43,7 @@ public:
 	void ativaInputTexto();
 	void desativaInputTexto();
 	bool toggleInputTexto();
+	void SetaTamanhoTexto(unsigned int tamanho);
 
 	void reseta();
 	void atualiza(SDL_Event& evento);
@@ -50,8 +51,9 @@ public:
 private:
 	KB_Botao tecla[KB_MAX_TECLAS];
 	M_Mouse mouse;
-	static bool textInput, textUpdate;
-	static std::string texto;
+	bool textInput, textUpdate;
+	std::string texto;
+	unsigned int textSize;
 
 	void processaTecla(KB_Botao* tecla, SDL_Event& event);
 };

@@ -157,8 +157,11 @@ bool Sprite::CriaTexturaDaImagemC(SDL_Renderer* renderer, const char *imagem, in
 
 bool Sprite::CriaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor){
 	this->Destruir();
-
-	SDL_Surface* surface = TTF_RenderText_Solid(fonte, texto, cor);
+	SDL_Surface* surface;
+	if(*texto != '\0')
+		surface = TTF_RenderText_Solid(fonte, texto, cor);
+	else
+		surface = TTF_RenderText_Solid(fonte, " ", cor);
 	if(surface == 0){
 		printf( "Falha ao criar Surface! SDL Error: %s\n",  SDL_GetError() );
 	} else {
@@ -177,7 +180,12 @@ bool Sprite::CriaTexturaDoTexto(SDL_Renderer* renderer, const char *texto, TTF_F
 bool Sprite::CriaTexturaDoTextoC(SDL_Renderer* renderer, const char *texto, TTF_Font *fonte, SDL_Color cor, Uint32 largura){
 	this->Destruir();
 
-	SDL_Surface* txtSurface = TTF_RenderText_Blended_Wrapped(fonte, texto, cor, largura);
+	SDL_Surface* txtSurface;
+	if(*texto != '\0')
+		txtSurface = TTF_RenderText_Blended_Wrapped(fonte, texto, cor, largura);
+	else
+		txtSurface = TTF_RenderText_Blended_Wrapped(fonte, " ", cor, largura);
+
 	if(txtSurface == 0){
 		printf( "Falha ao criar Surface! SDL Error: %s\n",  TTF_GetError() );
 	} else {

@@ -9,13 +9,19 @@ class Editor :
 	public Tela
 {
 private:
-	enum {BTN_MAPA, BTN_INIMIGOS, BTN_ARMADILHAS, BTN_ITENS, BTN_PROX, BTN_ANT, BTN_MAX};
-	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_NONE};
+	enum {BTN_MAPA, BTN_INIMIGOS, BTN_ARMADILHAS, BTN_ITENS, BTN_MENU,
+		/*MAPA*/ BTN_PROX, BTN_ANT,
+		/*INIMIGO*/
+		/*ARMADILHA*/
+		/*ITENS*/
+		/*MENU*/ BTN_SAIR, BTN_SALVAR,
+		BTN_MAX};
+	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
 	Botao botoes[BTN_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
-	int bordaLateral, bordaHorizontal, estadoEditor, selecionado;
-	Sprite tileset;
+	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed;
+	Sprite tileset, input;
 	bool grid;
 
 public:

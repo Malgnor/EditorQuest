@@ -1,9 +1,5 @@
 #include "Entrada.h"
 
-bool Entrada::textInput = false;
-bool Entrada::textUpdate = false;
-std::string Entrada::texto = "";
-
 Entrada::Entrada(){
 	for(int i=0; i<KB_MAX_TECLAS; i++){
         tecla[i].pressionado = false;
@@ -18,6 +14,10 @@ Entrada::Entrada(){
         mouse.botoes[i].repeticao = 0;
 	}
 	mouse.wx = mouse.wy = 0;
+
+	textInput = textUpdate = false;
+	texto = "";
+	textSize = 0;
 }
 
 //funções de retorno de entrada, mouse e teclado
@@ -43,29 +43,34 @@ void Entrada::ativaInputTexto(){
 	if(!textInput){
 		texto = "";
 		textInput = true;
-		SDL_StartTextInput();
+		textUpdate = true;
+		//SDL_StartTextInput();
 	}
 }
 
 void Entrada::desativaInputTexto(){
 	if(textInput){
 		textInput = false;
-		SDL_StopTextInput();
+		//SDL_StopTextInput();
 	}
 }
 
 bool Entrada::toggleInputTexto(){	
 	if(textInput){
 		textInput = false;
-		SDL_StopTextInput();
+		//SDL_StopTextInput();
 	} else{
 		texto = "";
+		textUpdate = true;
 		textInput = true;
-		SDL_StartTextInput();
+		//SDL_StartTextInput();
 	}
 	return textInput;
 }
 
+void Entrada::SetaTamanhoTexto(unsigned int tamanho){
+	textSize = tamanho;
+}
 //funções para atualizar os estados do input
 void Entrada::processaTecla(KB_Botao* tecla,SDL_Event& event)
 {
@@ -224,7 +229,7 @@ void Entrada::atualiza(SDL_Event& event)
 					processaTecla(&tecla[KB_LALT], event);
 					break;
 				case SDLK_BACKSPACE:
-					if(textInput){
+					if(textInput && event.type == SDL_KEYDOWN && texto.size()){
 						texto.pop_back();
 						textUpdate = true;
 					}
@@ -294,12 +299,13 @@ void Entrada::atualiza(SDL_Event& event)
 			}
 			break; //break dos eventos de mouse button up
 		case SDL_TEXTINPUT:
-			if(textInput){
+			if(textInput && texto.size() < textSize){
 				texto += event.text.text;
 				textUpdate = true;
 			}
 			break;
 	}
+
 	if(event.window.event == SDL_WINDOWEVENT_CLOSE){
 		tecla[KB_ENCERRA].pressionado = true;
 		tecla[KB_ENCERRA].ativo = true;
