@@ -1,5 +1,7 @@
 #include "Mapa.h"
 #include <vector>
+#include <fstream>
+
 
 using namespace std;
 
@@ -24,11 +26,9 @@ Mapa::~Mapa()
 	largura = altura = qtdColisao = 0;
 }
 
-void Mapa::Inicializar(SDL_Renderer* renderer, unsigned int **_mapa, unsigned int _altura, unsigned int _largura)
+void Mapa::Inicializar(SDL_Renderer* renderer)
 {
-	mapa = _mapa;
-	largura = _largura;
-	altura = _altura;
+	
 	sprite.CriaTexturaMapa(renderer, mapa, largura, altura);
 
 	for(unsigned int i = 0; i < altura; i++)
@@ -75,6 +75,46 @@ void Mapa::Renderizar(SDL_Renderer* renderer, SDL_Rect* camera)
 		sprite.Renderizar(renderer, (double)-camera->x, (double)-camera->y);
 	else
 		sprite.Renderizar(renderer, 0.0, 0.0);
+}
+
+void Mapa::Salvar(std::string nome)
+{
+	ofstream out;
+	out.open(nome+".equest", std::ios_base::binary);
+	if(out.is_open())
+	{
+		out.write((char*)&largura,sizeof(unsigned int));
+		out.write((char*)&altura,sizeof(unsigned int));
+		for(unsigned int i = 0; i < altura; i++)
+		{
+			for(unsigned int j = 0; j < largura; j++)
+			{
+				out.write((char*)&mapa[i][j],sizeof(unsigned int));
+			}
+		}
+		out.close();
+	}
+}
+
+void Mapa::Carregar(std::string nome)
+{
+	ifstream in;
+	in.open(nome+".equest", std::ios_base::binary);
+	if(in.is_open())
+	{
+		in.read((char*)&largura, sizeof(unsigned int));
+		in.read((char*)&altura, sizeof(unsigned int));
+		mapa = new unsigned int*[altura];
+		for(unsigned int i = 0; i < altura; i++)
+		{
+			mapa[i] = new unsigned int[largura];
+			for(unsigned int j = 0; j < largura; j++)
+			{
+				in.read((char*)&mapa[i][j], sizeof(unsigned int));
+			}
+		}
+		in.close();
+	}
 }
 
 SDL_Rect Mapa::PegaDimensaoemTiles()

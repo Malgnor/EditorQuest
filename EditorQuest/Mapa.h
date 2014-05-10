@@ -3,6 +3,7 @@
 
 #include "globaldef.h"
 #include "Sprite.h"
+#include <string>
 
 struct cMap
 {
@@ -21,8 +22,10 @@ public:
 	Mapa();
 	~Mapa();
 
-	void Inicializar(SDL_Renderer* renderer, unsigned int **_mapa, unsigned int _altura, unsigned int _largura);
+	void Inicializar(SDL_Renderer* renderer);
 	void Renderizar(SDL_Renderer* renderer, SDL_Rect* camera);
+	void Salvar(std::string nome);
+	void Carregar(std::string nome);
 
 	SDL_Rect PegaDimensaoemTiles();
 	SDL_Rect PegaDimensaoAbsoluta();

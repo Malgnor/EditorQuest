@@ -86,27 +86,9 @@ void Ingame::Inicializar(Janela* _janela){
 	}
 	*/
 
-	unsigned int altura, largura;
-	unsigned int** mapp = 0;
-	ifstream in;
-	in.open("teste.equest", std::ios_base::binary);
-	if(in.is_open())
-	{
-		in.read((char*)&largura, sizeof(unsigned int));
-		in.read((char*)&altura, sizeof(unsigned int));
-		mapp = new unsigned int*[altura];
-		for(unsigned int i = 0; i < altura; i++)
-		{
-			mapp[i] = new unsigned int[largura];
-			for(unsigned int j = 0; j < largura; j++)
-			{
-				in.read((char*)&mapp[i][j], sizeof(unsigned int));
-			}
-		}
-		in.close();
-	}
+	mapa.Carregar("teste");
 
-	mapa.Inicializar(janela->renderer, mapp, altura, largura);	
+	mapa.Inicializar(janela->renderer);	
 	int w, h;
 	janela->PegaTamanho(w, h);
 	camera.x = 0;
@@ -129,6 +111,9 @@ void Ingame::Inicializar(Janela* _janela){
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
 	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
+	int altura, largura;
+	largura = mapa.PegaDimensaoemTiles().w;
+	altura = mapa.PegaDimensaoemTiles().h;
 	for(unsigned int i = 0; i < largura/8; i++){
 		for(int j = 0; j < 7; j++){
 			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+32.0*j+256*i, (altura-7)*32.0, 0.0, ARMADILHA_ESPINHOS));
@@ -164,9 +149,10 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	SDL_Color cor = {0, 0, 0};
 	Item** inventario;
 	int altura, largura;
-	printf("%d\n", deltaTime);
+	//printf("%d\n", deltaTime);
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
+
 	switch(estado)
 	{
 	case ESTADO_INGAME:

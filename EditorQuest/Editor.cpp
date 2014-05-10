@@ -4,6 +4,11 @@
 
 using namespace std;
 
+Editor::Editor(string _nome)
+	: nome(_nome)
+{
+}
+
 void Editor::Inicializar(Janela* _janela)
 {
 	janela = _janela;
@@ -20,8 +25,13 @@ void Editor::Inicializar(Janela* _janela)
 	janela->entrada.SetaTamanhoTexto(16);
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
+	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	SDL_Color cor = {0, 0, 0};
+	SDL_Color cor2 = {255, 255, 255};
 	input.CriaTexturaDoTexto(janela->renderer, " ", fonte, cor);
+	scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte, cor2);
+	scrollTxt.CriaTexturaDoTexto(janela->renderer, "Scroll Speed", fonteS, cor2);
+	nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonteS, cor2);
 	botoes[BTN_MAPA].Inicializar(janela->renderer, "Tile", fonte, cor);
 	botoes[BTN_INIMIGOS].Inicializar(janela->renderer, "Inimigo", fonte, cor);
 	botoes[BTN_ARMADILHAS].Inicializar(janela->renderer, "Armadilha", fonte, cor);
@@ -30,45 +40,34 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_PROX].Inicializar(janela->renderer, ">", fonte, cor);
 	botoes[BTN_ANT].Inicializar(janela->renderer, "<", fonte, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
+	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
+	botoes[BTN_PLUS].Inicializar(janela->renderer, "+", fonte, cor);
 	botoes[BTN_SALVAR].Inicializar(janela->renderer, "Salvar", fonte, cor);
 	int px = 800;
 	for(int i = EDIT_NONE; i > 0; i--){
 		px -= 10+botoes[i-1].PegaDimensao().w;
 		botoes[i-1].SetaPosicao(px, 10);
 	}
-
+	
 	botoes[BTN_ANT].SetaPosicao(5, 300);
 	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 300);
 
 	botoes[BTN_SAIR].SetaPosicao((bordaLateral-botoes[BTN_SAIR].PegaDimensao().w)/2, 500);
 	botoes[BTN_SALVAR].SetaPosicao((bordaLateral-botoes[BTN_SALVAR].PegaDimensao().w)/2, 400);
+	botoes[BTN_MINUS].SetaPosicao(5, 200);
+	botoes[BTN_PLUS].SetaPosicao(bordaLateral-5-botoes[BTN_PLUS].PegaDimensao().w, 200);
 
-	unsigned int altura, largura;
-	unsigned int** mapp = 0;
-	ifstream in;
-	in.open("teste.equest", std::ios_base::binary);
-	if(in.is_open())
-	{
-		in.read((char*)&largura, sizeof(unsigned int));
-		in.read((char*)&altura, sizeof(unsigned int));
-		mapp = new unsigned int*[altura];
-		for(unsigned int i = 0; i < altura; i++)
-		{
-			mapp[i] = new unsigned int[largura];
-			for(unsigned int j = 0; j < largura; j++)
-			{
-				in.read((char*)&mapp[i][j], sizeof(unsigned int));
-			}
-		}
-		in.close();
-	}
+	mapa.Carregar(nome);
+	
 
-	mapa.Inicializar(janela->renderer, mapp, altura, largura);
+	mapa.Inicializar(janela->renderer);
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
 	camera.w = w;
 	camera.h = h;
+	
 	TTF_CloseFont(fonte);
+	TTF_CloseFont(fonteS);
 }
 
 void Editor::Atualizar(Uint32 deltaTime)
@@ -76,6 +75,9 @@ void Editor::Atualizar(Uint32 deltaTime)
 	int largura, altura;
 	M_Mouse* mouse = PegaMouse();
 	KB_Botao* tecla = PegaTecla();
+	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
+	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 32);
+	SDL_Color cor = {255, 255, 255};
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
 
@@ -83,13 +85,13 @@ void Editor::Atualizar(Uint32 deltaTime)
 		if(estadoEditor != i)
 			botoes[i].Atualizar();
 	
-	if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 500 && tecla[KB_LALT].ativo))
+	if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
 		camera.y+= scrollSpeed;
-	else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 200 && tecla[KB_LALT].ativo))
+	else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 300 && tecla[KB_LALT].ativo))
 		camera.y-= scrollSpeed;
-	if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 700 && tecla[KB_LALT].ativo))
+	if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 600 && tecla[KB_LALT].ativo))
 		camera.x+= scrollSpeed;
-	else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 200 && tecla[KB_LALT].ativo))
+	else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 300 && tecla[KB_LALT].ativo))
 		camera.x-= scrollSpeed;
 	if(camera.x < -bordaLateral)
 		camera.x = -bordaLateral;
@@ -104,10 +106,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 		grid = !grid;
 
 	if(janela->entrada.textoUpdate()){
-		TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
-		SDL_Color cor = {255, 255, 255};
 		input.CriaTexturaDoTexto(janela->renderer, janela->entrada.pegaTexto().c_str(), fonte, cor);
-		TTF_CloseFont(fonte);
 	}
 	
 	for(int i = 0; i < EDIT_NONE; i++)
@@ -142,10 +141,27 @@ void Editor::Atualizar(Uint32 deltaTime)
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Atualizar();
 		botoes[BTN_SAIR].Atualizar();
+		botoes[BTN_MINUS].Atualizar();
+		botoes[BTN_PLUS].Atualizar();
+		if(botoes[BTN_MINUS].Pressed() && scrollSpeed > 1){
+			scrollSpeed--;
+			scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte2, cor);
+
+		}
+		if(botoes[BTN_PLUS].Pressed() && scrollSpeed < 99){
+			scrollSpeed++;
+			scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte2, cor);
+		}
+		if(botoes[BTN_SALVAR].Pressionado()){
+			mapa.Salvar(nome);
+		}
 		break;
 	case EDIT_NONE:
 		break;
 	}
+	
+	TTF_CloseFont(fonte);
+	TTF_CloseFont(fonte2);
 }
 
 void Editor::Renderizar()
@@ -177,7 +193,7 @@ void Editor::Renderizar()
 	for(int i = 0; i < EDIT_NONE; i++)
 		if(estadoEditor != i)
 			botoes[i].Renderizar(janela->renderer);
-
+	nomeMapa.Renderizar(janela->renderer, 5, bordaHorizontal +5);
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
@@ -203,7 +219,11 @@ void Editor::Renderizar()
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Renderizar(janela->renderer);
 		botoes[BTN_SAIR].Renderizar(janela->renderer);
+		botoes[BTN_MINUS].Renderizar(janela->renderer);
+		botoes[BTN_PLUS].Renderizar(janela->renderer);
 		input.Renderizar(janela->renderer, 5, 5);
+		scrollSpd.Renderizar(janela->renderer, (bordaLateral-scrollSpd.PegaDimensao().w)/2, 204);
+		scrollTxt.Renderizar(janela->renderer, (bordaLateral-scrollTxt.PegaDimensao().w)/2, 170);
 		break;
 	case EDIT_NONE:
 		break;

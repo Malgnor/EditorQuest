@@ -10,7 +10,7 @@ void MenuInicial::Inicializar(Janela* _janela){
 	janela->PegaTamanho(w, h);
 	janela->SetaCorFundo(255, 255, 255);
 	janela->Mostrar();
-	unsigned int altura, largura;
+	/*unsigned int altura, largura;
 	altura = (unsigned int)ceil((double)h/32.0);
 	largura = (unsigned int)ceil((double)w/32.0);
 
@@ -21,14 +21,14 @@ void MenuInicial::Inicializar(Janela* _janela){
 
 	for(unsigned int i = 0; i < altura; i++){
 		for(unsigned int j = 0; j < largura; j++){
-			if( i == 0 || j == 0 || j == largura-1 || i == altura-1 /*|| (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16)*/)
+			if( i == 0 || j == 0 || j == largura-1 || i == altura-1)
 				map[i][j] = 1;
 			else
 				map[i][j] = 2;
 		}
 	}
 
-	mapa.Inicializar(janela->renderer, map, altura, largura);
+	mapa.Inicializar(janela->renderer);*/
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
 	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", w/2.0-71.0, h/10.0*4.0);
@@ -93,7 +93,7 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 	if(c == 6 && !editor)
 	{
 		editor = true;
-		new Janela(new Editor(), janela->jGerente);
+		new Janela(new Editor("teste"), janela->jGerente);
 		janela->ModoJanela();
 		janela->SetaTamanho(800, 600);
 		resolucao = true;
@@ -104,7 +104,7 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 void MenuInicial::Renderizar(){
 	int w, h;
 	janela->PegaTamanho(w, h);
-	mapa.Renderizar(janela->renderer, 0);
+	//mapa.Renderizar(janela->renderer, 0);
 	titulo.Renderizar(janela->renderer, ((w-(double)titulo.PegaDimensao().w)/2.0), 25.0);
 	portal.Renderizar(janela->renderer, ((w-(double)portal.PegaDimensao().w)/2.0), h/1.9, indice);
 	jogar.Renderizar(janela->renderer);
