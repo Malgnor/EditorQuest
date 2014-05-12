@@ -23,9 +23,10 @@ public:
 	~Mapa();
 
 	void Inicializar(SDL_Renderer* renderer);
+	void Novo(unsigned int _largura, unsigned int _altura);
 	void Renderizar(SDL_Renderer* renderer, SDL_Rect* camera);
-	void Salvar(std::string nome);
-	void Carregar(std::string nome);
+	bool Salvar(std::string nome);
+	bool Carregar(std::string nome);
 
 	SDL_Rect PegaDimensaoemTiles();
 	SDL_Rect PegaDimensaoAbsoluta();

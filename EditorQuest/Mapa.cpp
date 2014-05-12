@@ -28,7 +28,11 @@ Mapa::~Mapa()
 
 void Mapa::Inicializar(SDL_Renderer* renderer)
 {
-	
+	if(colisao){
+		delete[] colisao;
+		colisao = 0;
+	}
+
 	sprite.CriaTexturaMapa(renderer, mapa, largura, altura);
 
 	for(unsigned int i = 0; i < altura; i++)
@@ -69,6 +73,32 @@ void Mapa::Inicializar(SDL_Renderer* renderer)
 
 }
 
+void Mapa::Novo(unsigned int _largura, unsigned int _altura){
+	altura = _altura;
+	largura = _largura;
+
+	if(mapa){
+		for(unsigned int i = 0; i < altura; i++)
+		{
+
+			delete[] mapa[i];
+			mapa[i] = 0;
+		}
+		delete[] mapa;
+		mapa = 0;	
+	}
+
+	mapa = new unsigned int*[altura];
+	for(unsigned int i = 0; i < altura; i++)
+	{
+		mapa[i] = new unsigned int[largura];
+		for(unsigned int j = 0; j < largura; j++)
+		{
+			mapa[i][j] = 0;
+		}
+	}
+}
+
 void Mapa::Renderizar(SDL_Renderer* renderer, SDL_Rect* camera)
 {
 	if(camera)
@@ -77,10 +107,10 @@ void Mapa::Renderizar(SDL_Renderer* renderer, SDL_Rect* camera)
 		sprite.Renderizar(renderer, 0.0, 0.0);
 }
 
-void Mapa::Salvar(std::string nome)
+bool Mapa::Salvar(std::string nome)
 {
 	ofstream out;
-	out.open(nome+".equest", std::ios_base::binary);
+	out.open("resources/maps/"+nome+"/map.equest", std::ios_base::binary);
 	if(out.is_open())
 	{
 		out.write((char*)&largura,sizeof(unsigned int));
@@ -93,13 +123,16 @@ void Mapa::Salvar(std::string nome)
 			}
 		}
 		out.close();
+		return true;
 	}
+	out.close();
+	return false;
 }
 
-void Mapa::Carregar(std::string nome)
+bool Mapa::Carregar(std::string nome)
 {
 	ifstream in;
-	in.open(nome+".equest", std::ios_base::binary);
+	in.open("resources/maps/"+nome+"/map.equest", std::ios_base::binary);
 	if(in.is_open())
 	{
 		in.read((char*)&largura, sizeof(unsigned int));
@@ -114,7 +147,10 @@ void Mapa::Carregar(std::string nome)
 			}
 		}
 		in.close();
+		return true;
 	}
+	in.close();
+	return false;
 }
 
 SDL_Rect Mapa::PegaDimensaoemTiles()
