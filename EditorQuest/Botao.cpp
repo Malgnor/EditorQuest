@@ -1,4 +1,5 @@
 #include "Botao.h"
+#include "Entrada.h"
 
 void Botao::Inicializar(SDL_Renderer* renderer, char* _texto, TTF_Font* fonte, SDL_Color cor){
 	texto = _texto;
@@ -16,11 +17,8 @@ void Botao::Inicializar(SDL_Renderer* renderer, char* _texto, double _x, double 
 	sprite[1].CriaTexturaMenu(renderer, "resources/imgs/botaop.png", texto.c_str(), fonte, cor);
 }
 
-void Botao::Atualizar(){
-	int mx = 0;
-	int my = 0;
-	SDL_GetMouseState(&mx, &my);
-	if(mx > x && mx < x+sprite[0].PegaDimensao().w && my > y && my < y+sprite[0].PegaDimensao().h)
+void Botao::Atualizar(M_Mouse* m){
+	if(m->x > x && m->x < x+sprite[0].PegaDimensao().w && m->y > y && m->y < y+sprite[0].PegaDimensao().h)
 	{
 		hover = true;
 		if(SDL_GetMouseState(0,0)&SDL_BUTTON(1))

@@ -114,7 +114,7 @@ void Ingame::Inicializar(Janela* _janela){
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
-	for(unsigned int i = 0; i < largura/8; i++){
+	for(int i = 0; i < largura/8; i++){
 		for(int j = 0; j < 7; j++){
 			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+32.0*j+256*i, (altura-7)*32.0, 0.0, ARMADILHA_ESPINHOS));
 		}
@@ -138,7 +138,9 @@ void Ingame::Inicializar(Janela* _janela){
 	skills[1].CriaTexturaDaImagem(janela->renderer, "resources/imgs/2.png");
 	skills[2].CriaTexturaDaImagem(janela->renderer, "resources/imgs/3.png");
 	estado = ESTADO_INGAME;
-	invselecionado = 0;	
+	invselecionado = 0;
+	janela->entrada.SetaTamanhoTexto(10);
+	janela->entrada.ativaInputTexto();
 }
 
 void Ingame::Atualizar(Uint32 deltaTime){
@@ -149,7 +151,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	SDL_Color cor = {0, 0, 0};
 	Item** inventario;
 	int altura, largura;
-	//printf("%d\n", deltaTime);
+	//printf("%d\t", deltaTime);
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
 
@@ -166,15 +168,33 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			camera.y = 0;
 		else if(camera.y > altura-camera.h)
 			camera.y = altura-camera.h;
+
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
-		if(Teclas[KB_Z].pressionado)
-			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[KB_X].pressionado)
-			gerenteAtor.Adicionar(new Crowley(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[KB_C].pressionado)
-			gerenteAtor.Adicionar(new Lucifer(gerenteAtor, Mouse->x+(double)camera.x, Mouse->y+(double)camera.y, jogador, &mapa));
-		if(Teclas[KB_ESC].pressionado)
-			estado = ESTADO_PAUSADO;
+		
+		if(janela->entrada.pegaTexto() == "reload"){
+			mapa.Carregar("teste");
+			mapa.Inicializar(janela->renderer);
+			janela->entrada.toggleInputTexto();
+			janela->entrada.toggleInputTexto();
+		} else if(janela->entrada.pegaTexto() == "godmode"){
+			jogador->Godmode();
+			janela->entrada.toggleInputTexto();
+			janela->entrada.toggleInputTexto();
+		} else if(janela->entrada.pegaTexto() == "ghost"){
+			jogador->Ghost();
+			janela->entrada.toggleInputTexto();
+			janela->entrada.toggleInputTexto();
+		} else if(janela->entrada.pegaTexto() == "aspirina"){
+			jogador->PegaAtributos().hpatual = jogador->PegaAtributos().hp;
+			janela->entrada.toggleInputTexto();
+			janela->entrada.toggleInputTexto();
+		}
+
+		if(Teclas[KB_ESC].pressionado){
+			estado = ESTADO_PAUSADO;			
+			janela->entrada.toggleInputTexto();
+			janela->entrada.toggleInputTexto();
+		}
 		if(!jogador->EstaNoJogo())
 			estado = ESTADO_LOSE;
 		if(!boss->EstaNoJogo())
@@ -182,7 +202,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_PAUSADO:
 		for(int i = 0; i < BOTAO_QTD; i++)
-			botoes[i].Atualizar();				
+			botoes[i].Atualizar(Mouse);				
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -206,8 +226,8 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		}
 	break;
 	case ESTADO_STATUS:
-		botoes[BOTAO_VOLTAR].Atualizar();		
-		botoes[BOTAO_USAR2].Atualizar();
+		botoes[BOTAO_VOLTAR].Atualizar(Mouse);		
+		botoes[BOTAO_USAR2].Atualizar(Mouse);
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -237,9 +257,9 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_INVENTARIO:
 		inventario = jogador->PegaInventario();
-		botoes[BOTAO_USAR].Atualizar();		
-		botoes[BOTAO_VOLTAR].Atualizar();		
-		botoes[BOTAO_DESTRUIR].Atualizar();		
+		botoes[BOTAO_USAR].Atualizar(Mouse);		
+		botoes[BOTAO_VOLTAR].Atualizar(Mouse);		
+		botoes[BOTAO_DESTRUIR].Atualizar(Mouse);		
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
 				 << "\nMP/MPMax = " << a.mpatual << "/" << a.mp
@@ -266,7 +286,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_WIN:
 	case ESTADO_LOSE:
-		botoes[BOTAO_MENUINICIAL].Atualizar();
+		botoes[BOTAO_MENUINICIAL].Atualizar(Mouse);
 		break;
 	}
 }

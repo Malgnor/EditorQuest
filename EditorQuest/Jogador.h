@@ -21,6 +21,8 @@ private:
 	bool andando;
 	friend class Item;
 
+	bool gm, ghost;
+
 public:
 	Jogador(GerenteAtor& _gerente);
 	
@@ -46,5 +48,8 @@ public:
 	virtual void Atualizar(Uint32 deltaTime, SDL_Rect* camera);	
 	virtual void Renderizar(SDL_Rect* camera);
 	virtual void Finalizar();
+
+	void Godmode();
+	void Ghost();
 };
 #endif

@@ -5,6 +5,8 @@
 #include "Sprite.h"
 #include <string>
 
+struct M_Mouse;
+
 class Botao
 {
 protected:
@@ -16,7 +18,7 @@ protected:
 public:
 	virtual void Inicializar(SDL_Renderer* renderer, char* _texto, TTF_Font* fonte, SDL_Color cor);
 	virtual void Inicializar(SDL_Renderer* renderer, char* _texto, double _x, double _y, TTF_Font* fonte, SDL_Color cor);
-	virtual void Atualizar();
+	virtual void Atualizar(M_Mouse* m);
 	virtual void Renderizar(SDL_Renderer* renderer);
 	void SetaPosicao(double _x, double _y);
 	SDL_Rect PegaPosicao();

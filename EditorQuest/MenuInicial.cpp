@@ -52,8 +52,8 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 		time -= 125;
 		indice = (indice+1)%4;
 	}
-	jogar.Atualizar();
-	sair.Atualizar();
+	jogar.Atualizar(Mouse);
+	sair.Atualizar(Mouse);
 	if (Teclas[KB_1].pressionado)
 	{
 		janela->ModoJanela();

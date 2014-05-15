@@ -72,6 +72,7 @@ void Editor::Inicializar(Janela* _janela)
 
 void Editor::Atualizar(Uint32 deltaTime)
 {
+	//printf("%d\t", deltaTime);
 	int largura, altura;
 	M_Mouse* mouse = PegaMouse();
 	KB_Botao* tecla = PegaTecla();
@@ -83,7 +84,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 
 	for(int i = 0; i < EDIT_NONE; i++)
 		if(estadoEditor != i)
-			botoes[i].Atualizar();
+			botoes[i].Atualizar(mouse);
 	
 	if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
 		camera.y+= scrollSpeed;
@@ -115,14 +116,35 @@ void Editor::Atualizar(Uint32 deltaTime)
 			selecionado = 0;
 		}
 
+	if(tecla[KB_1].pressionado)
+		selecionado = 1;
+	else if(tecla[KB_2].pressionado)
+		selecionado = 2;
+	else if(tecla[KB_3].pressionado)
+		selecionado = 3;
+	else if(tecla[KB_4].pressionado)
+		selecionado = 4;
+	else if(tecla[KB_5].pressionado)
+		selecionado = 5;
+	else if(tecla[KB_6].pressionado)
+		selecionado = 6;
+	else if(tecla[KB_7].pressionado)
+		selecionado = 7;
+	else if(tecla[KB_8].pressionado)
+		selecionado = 8;
+	else if(tecla[KB_9].pressionado)
+		selecionado = 9;
+	else if(tecla[KB_0].pressionado)
+		selecionado = 0;
+
 	if(tecla[KB_ESC].pressionado)
 		estadoEditor = EDIT_MENU;
 
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
-		botoes[BTN_ANT].Atualizar();
-		botoes[BTN_PROX].Atualizar();
+		botoes[BTN_ANT].Atualizar(mouse);
+		botoes[BTN_PROX].Atualizar(mouse);
 		if(botoes[BTN_ANT].Pressionado())
 			selecionado--;
 		else if(botoes[BTN_PROX].Pressionado())
@@ -131,6 +153,9 @@ void Editor::Atualizar(Uint32 deltaTime)
 			selecionado = 0;
 		else if(selecionado < 0)
 			selecionado = 9;
+		if(mouse->botoes[M_ESQUERDO].ativo && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal)
+			if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado))
+				mapa.Inicializar(janela->renderer);
 		break;
 	case EDIT_INIMIGOS:
 		break;
@@ -139,10 +164,10 @@ void Editor::Atualizar(Uint32 deltaTime)
 	case EDIT_ITENS:
 		break;
 	case EDIT_MENU:
-		botoes[BTN_SALVAR].Atualizar();
-		botoes[BTN_SAIR].Atualizar();
-		botoes[BTN_MINUS].Atualizar();
-		botoes[BTN_PLUS].Atualizar();
+		botoes[BTN_SALVAR].Atualizar(mouse);
+		botoes[BTN_SAIR].Atualizar(mouse);
+		botoes[BTN_MINUS].Atualizar(mouse);
+		botoes[BTN_PLUS].Atualizar(mouse);
 		if(botoes[BTN_MINUS].Pressed() && scrollSpeed > 1){
 			scrollSpeed--;
 			scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte2, cor);

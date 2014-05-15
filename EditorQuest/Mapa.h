@@ -24,9 +24,13 @@ public:
 
 	void Inicializar(SDL_Renderer* renderer);
 	void Novo(unsigned int _largura, unsigned int _altura);
+
 	void Renderizar(SDL_Renderer* renderer, SDL_Rect* camera);
+
 	bool Salvar(std::string nome);
 	bool Carregar(std::string nome);
+
+	bool Alterar(unsigned int x, unsigned int y, unsigned int id);
 
 	SDL_Rect PegaDimensaoemTiles();
 	SDL_Rect PegaDimensaoAbsoluta();

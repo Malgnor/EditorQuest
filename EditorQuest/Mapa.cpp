@@ -2,7 +2,6 @@
 #include <vector>
 #include <fstream>
 
-
 using namespace std;
 
 Mapa::Mapa()
@@ -14,50 +13,56 @@ Mapa::Mapa()
 
 Mapa::~Mapa()
 {
-	for(unsigned int i = 0; i < altura; i++)
-	{
-		delete[] mapa[i];
-		mapa[i] = 0;
+	if(mapa){
+		for(unsigned int i = 0; i < altura; i++)
+		{
+			delete[] mapa[i];
+			mapa[i] = 0;
+		}
+		delete[] mapa;
+		mapa = 0;
 	}
-	delete[] mapa;
-	mapa = 0;
-	delete[] colisao;
-	colisao = 0;
+	if(colisao){
+		delete[] colisao;
+		colisao = 0;
+	}
 	largura = altura = qtdColisao = 0;
 }
 
 void Mapa::Inicializar(SDL_Renderer* renderer)
 {
-	if(colisao){
-		delete[] colisao;
-		colisao = 0;
-	}
+	if(mapa){
+		if(colisao){
+			delete[] colisao;
+			colisao = 0;
+		}
+		sprite.CriaTexturaMapa(renderer, mapa, largura, altura);
 
-	sprite.CriaTexturaMapa(renderer, mapa, largura, altura);
-
-	for(unsigned int i = 0; i < altura; i++)
-	{
-		for(unsigned int j = 0; j < largura; j++)
+		for(unsigned int i = 0; i < altura; i++)
 		{
-			if(mapa[i][j] == 1 || mapa[i][j] == 3 || mapa[i][j] == 4)
+			for(unsigned int j = 0; j < largura; j++)
 			{
-				qtdColisao++;
+				if(mapa[i][j] == 1)
+				{
+					qtdColisao++;
+				}
 			}
 		}
-	}
-
-	colisao = new cMap[qtdColisao];
-	unsigned int qtdc = 0;
-	for(unsigned int i = 0; i < altura; i++)
-	{
-		for(unsigned int j = 0; j < largura; j++)
-		{
-			if(mapa[i][j] == 1 || mapa[i][j] == 3 || mapa[i][j] == 4)
+		if(qtdColisao){
+			colisao = new cMap[qtdColisao];
+			unsigned int qtdc = 0;
+			for(unsigned int i = 0; i < altura; i++)
 			{
-				colisao[qtdc].id = mapa[i][j];
-				colisao[qtdc].rect.x = j*32;
-				colisao[qtdc].rect.y = i*32;
-				colisao[qtdc++].rect.w = colisao[qtdc].rect.h = 32;
+				for(unsigned int j = 0; j < largura; j++)
+				{
+					if(mapa[i][j] == 1)
+					{
+						colisao[qtdc].id = mapa[i][j];
+						colisao[qtdc].rect.x = j*32;
+						colisao[qtdc].rect.y = i*32;
+						colisao[qtdc++].rect.w = colisao[qtdc].rect.h = 32;
+					}
+				}
 			}
 		}
 	}
@@ -152,6 +157,19 @@ bool Mapa::Carregar(std::string nome)
 	in.close();
 	return false;
 }
+
+bool Mapa::Alterar(unsigned int x, unsigned int y, unsigned int id){
+	if(x >= largura || y  >= altura || id > 9)
+		return false;
+	
+	if(id == mapa[y][x])
+		return false;
+
+	mapa[y][x] = id;
+
+	return true;
+}
+
 
 SDL_Rect Mapa::PegaDimensaoemTiles()
 {

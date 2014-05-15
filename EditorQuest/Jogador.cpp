@@ -34,11 +34,13 @@ void Jogador::AtualizarAtributos(){
 }
 
 void Jogador::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
-	if(tipo == 0){
-		atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.defesa/100.0)))));
-	}
-	else if(tipo == 1){
-		atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.magia/100.0)))));
+	if(!gm){
+		if(tipo == 0){
+			atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.defesa/100.0)))));
+		}
+		else if(tipo == 1){
+			atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.magia/100.0)))));
+		}
 	}
 }
 
@@ -83,35 +85,37 @@ void Jogador::Colidiu(Ator* ator, SDL_Rect* colisao){
 }
 
 void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
-	double dx,dy;
-	switch (tile->id)
-	{
-	case 1:
-		if(colisao->w > colisao->h)
+	if(!ghost){
+		double dx,dy;
+		switch (tile->id)
 		{
-			dy = (double)(y-tile->rect.y);
-			if( dy > 0)
+		case 1:
+			if(colisao->w > colisao->h)
 			{
-				y += colisao->h;
+				dy = (double)(y-tile->rect.y);
+				if( dy > 0)
+				{
+					y += colisao->h;
+				}
+				else
+				{
+					y -= colisao->h;
+				}
 			}
 			else
-			{
-				y -= colisao->h;
+			{			
+				dx = (double)(x-tile->rect.x);
+				if( dx > 0)
+				{
+					x += colisao->w;
+				}
+				else
+				{
+					x -= colisao->w;
+				}
 			}
+			break;
 		}
-		else
-		{			
-			dx = (double)(x-tile->rect.x);
-			if( dx > 0)
-			{
-				x += colisao->w;
-			}
-			else
-			{
-				x -= colisao->w;
-			}
-		}
-		break;
 	}
 }
 
@@ -134,6 +138,7 @@ void Jogador::Inicializar(){
 		inventario[i] = 0;
 	for(int i = 0; i < EQUIP_QTD; i++)
 		equipamentos[i] = 0;
+	gm = ghost = false;
 }
 
 void Jogador::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
@@ -246,4 +251,12 @@ void Jogador::Finalizar(){
 		delete equipamentos[i];
 		equipamentos[i] = 0;
 	}
+}
+
+void Jogador::Godmode(){
+	gm = !gm;
+}
+
+void Jogador::Ghost(){
+	ghost = !ghost;
 }
