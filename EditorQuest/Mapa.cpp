@@ -140,6 +140,17 @@ bool Mapa::Carregar(std::string nome)
 	in.open("resources/maps/"+nome+"/map.equest", std::ios_base::binary);
 	if(in.is_open())
 	{
+		if(mapa){
+			for(unsigned int i = 0; i < altura; i++)
+			{
+
+				delete[] mapa[i];
+				mapa[i] = 0;
+			}
+			delete[] mapa;
+			mapa = 0;	
+		}
+
 		in.read((char*)&largura, sizeof(unsigned int));
 		in.read((char*)&altura, sizeof(unsigned int));
 		mapa = new unsigned int*[altura];

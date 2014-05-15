@@ -19,10 +19,17 @@ void Editor::Inicializar(Janela* _janela)
 	bordaHorizontal = 60;
 	bordaLateral = 150;
 	estadoEditor = EDIT_NONE;
+	eInput = INPUT_NOME;
 	selecionado = 0;
 	scrollSpeed = 32;
 	grid = input = false;
 	janela->entrada.SetaTamanhoTexto(8);
+	
+	mapa.Carregar(nome);
+	mapa.Inicializar(janela->renderer);
+	mAltura = mapa.PegaDimensaoemTiles().h;
+	mLargura = mapa.PegaDimensaoemTiles().w;
+
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
@@ -32,6 +39,8 @@ void Editor::Inicializar(Janela* _janela)
 	scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte, cor2);
 	scrollTxt.CriaTexturaDoTexto(janela->renderer, "Scroll Speed", fonteS, cor2);
 	nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonteS, cor2);
+	larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte, cor2);
+	alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte, cor2);
 	botoes[BTN_MAPA].Inicializar(janela->renderer, "Tile", fonte, cor);
 	botoes[BTN_INIMIGOS].Inicializar(janela->renderer, "Inimigo", fonte, cor);
 	botoes[BTN_ARMADILHAS].Inicializar(janela->renderer, "Armadilha", fonte, cor);
@@ -39,10 +48,14 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_MENU].Inicializar(janela->renderer, "Menu", fonte, cor);
 	botoes[BTN_PROX].Inicializar(janela->renderer, ">", fonte, cor);
 	botoes[BTN_ANT].Inicializar(janela->renderer, "<", fonte, cor);
+	botoes[BTN_LARGURA].Inicializar(janela->renderer, "Largura", fonteS, cor);
+	botoes[BTN_ALTURA].Inicializar(janela->renderer, "Altura", fonteS, cor);
+	botoes[BTN_MODIFICAR].Inicializar(janela->renderer, "Modificar", fonteS, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
 	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
 	botoes[BTN_PLUS].Inicializar(janela->renderer, "+", fonte, cor);
 	botoes[BTN_SALVAR].Inicializar(janela->renderer, "Salvar", fonte, cor);
+	botoes[BTN_CARREGAR].Inicializar(janela->renderer, "Carregar", fonteS, cor);
 	botoes[BTN_GRID].Inicializar(janela->renderer, "Grid", fonte, cor);
 	botoes[BTN_ALTNOME].Inicializar(janela->renderer, "Alterar nome", fonte2, cor);
 	int px = 800;
@@ -51,20 +64,20 @@ void Editor::Inicializar(Janela* _janela)
 		botoes[i-1].SetaPosicao(px, 10);
 	}
 	
-	botoes[BTN_ANT].SetaPosicao(5, 300);
-	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 300);
+	botoes[BTN_ANT].SetaPosicao(5, 500);
+	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 500);
+	botoes[BTN_LARGURA].SetaPosicao((bordaLateral-botoes[BTN_LARGURA].PegaDimensao().w)/2, 230);
+	botoes[BTN_ALTURA].SetaPosicao((bordaLateral-botoes[BTN_ALTURA].PegaDimensao().w)/2, 300);
+	botoes[BTN_MODIFICAR].SetaPosicao((bordaLateral-botoes[BTN_MODIFICAR].PegaDimensao().w)/2, 350);
 
 	botoes[BTN_SAIR].SetaPosicao((bordaLateral-botoes[BTN_SAIR].PegaDimensao().w)/2, 500);
 	botoes[BTN_SALVAR].SetaPosicao((bordaLateral-botoes[BTN_SALVAR].PegaDimensao().w)/2, 400);
+	botoes[BTN_CARREGAR].SetaPosicao((bordaLateral-botoes[BTN_CARREGAR].PegaDimensao().w)/2, 450);
 	botoes[BTN_GRID].SetaPosicao((bordaLateral-botoes[BTN_GRID].PegaDimensao().w)/2, 300);
 	botoes[BTN_ALTNOME].SetaPosicao((bordaLateral-botoes[BTN_ALTNOME].PegaDimensao().w)/2, bordaHorizontal+35);
 	botoes[BTN_MINUS].SetaPosicao(5, 200);
 	botoes[BTN_PLUS].SetaPosicao(bordaLateral-5-botoes[BTN_PLUS].PegaDimensao().w, 200);
 
-	mapa.Carregar(nome);
-	
-
-	mapa.Inicializar(janela->renderer);
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
 	camera.w = w;
@@ -92,11 +105,15 @@ void Editor::Atualizar(Uint32 deltaTime)
 		if(estadoEditor != i)
 			botoes[i].Atualizar(mouse);
 
-	for(int i = 0; i < EDIT_NONE; i++)
+	for(int i = 0; i < EDIT_NONE; i++){
 		if(botoes[i].Pressionado()){
 			estadoEditor = i;
 			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
 		}
+	}
+
 	if(!input){
 		if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
 			camera.y+= scrollSpeed;
@@ -155,6 +172,9 @@ void Editor::Atualizar(Uint32 deltaTime)
 	case EDIT_MAPA:
 		botoes[BTN_ANT].Atualizar(mouse);
 		botoes[BTN_PROX].Atualizar(mouse);
+		botoes[BTN_ALTURA].Atualizar(mouse);
+		botoes[BTN_LARGURA].Atualizar(mouse);
+		botoes[BTN_MODIFICAR].Atualizar(mouse);
 		if(botoes[BTN_ANT].Pressionado())
 			selecionado--;
 		else if(botoes[BTN_PROX].Pressionado())
@@ -163,6 +183,28 @@ void Editor::Atualizar(Uint32 deltaTime)
 			selecionado = 0;
 		else if(selecionado < 0)
 			selecionado = 9;
+		if(botoes[BTN_LARGURA].Pressionado()){
+			input = janela->entrada.toggleInputTexto();
+			eInput = INPUT_LARGURA;
+			if(!input){
+				if(mLargura < 24)
+					mLargura = 24;
+				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor);
+			}
+		}
+		if(botoes[BTN_ALTURA].Pressionado()){
+			input = janela->entrada.toggleInputTexto();
+			eInput = INPUT_ALTURA;
+			if(!input){
+				if(mAltura < 24)
+					mAltura = 24;
+				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor);
+			}
+		}
+		if(botoes[BTN_MODIFICAR].Pressionado()){
+			mapa.Novo(mLargura, mAltura);
+			mapa.Inicializar(janela->renderer);
+		}
 		if(mouse->botoes[M_ESQUERDO].ativo && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal)
 			if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado))
 				mapa.Inicializar(janela->renderer);
@@ -175,6 +217,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 		break;
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Atualizar(mouse);
+		botoes[BTN_CARREGAR].Atualizar(mouse);
 		botoes[BTN_SAIR].Atualizar(mouse);
 		botoes[BTN_MINUS].Atualizar(mouse);
 		botoes[BTN_PLUS].Atualizar(mouse);
@@ -192,23 +235,45 @@ void Editor::Atualizar(Uint32 deltaTime)
 		if(botoes[BTN_SALVAR].Pressionado()){
 			mapa.Salvar(nome);
 		}
+		if(botoes[BTN_CARREGAR].Pressionado()){
+			if(mapa.Carregar(nome))
+				mapa.Inicializar(janela->renderer);
+		}
 		if(botoes[BTN_GRID].Pressionado()){
 			grid = !grid;
 		}
 		if(botoes[BTN_ALTNOME].Pressionado()){
 			input = janela->entrada.toggleInputTexto();
+			eInput = INPUT_NOME;
 			if(!input)
 				nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor);
-		}
-		if(janela->entrada.textoUpdate()){
-			nome = janela->entrada.pegaTexto();
-			nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
 		}
 		break;
 	case EDIT_NONE:
 		break;
 	}
 	
+	if(janela->entrada.textoUpdate()){
+		switch (eInput)
+		{
+		case INPUT_NOME:
+			nome = janela->entrada.pegaTexto();
+			nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
+			break;
+		case INPUT_ALTURA:
+			if(janela->entrada.pegaTexto().size()){
+				mAltura = stoi(janela->entrada.pegaTexto());
+				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor2);
+			}
+			break;
+		case INPUT_LARGURA:
+			if(janela->entrada.pegaTexto().size()){
+				mLargura = stoi(janela->entrada.pegaTexto());
+				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor2);
+			}
+			break;
+		}
+	}
 	TTF_CloseFont(fonte);
 	TTF_CloseFont(fonte2);
 }
@@ -248,7 +313,12 @@ void Editor::Renderizar()
 	case EDIT_MAPA:
 		botoes[BTN_ANT].Renderizar(janela->renderer);
 		botoes[BTN_PROX].Renderizar(janela->renderer);
-		tileset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 300.0, selecionado); 
+		botoes[BTN_ALTURA].Renderizar(janela->renderer);
+		botoes[BTN_LARGURA].Renderizar(janela->renderer);
+		botoes[BTN_MODIFICAR].Renderizar(janela->renderer);
+		larguraTxt.Renderizar(janela->renderer, (bordaLateral-larguraTxt.PegaDimensao().w)/2, 200);
+		alturaTxt.Renderizar(janela->renderer, (bordaLateral-alturaTxt.PegaDimensao().w)/2, 270);
+		tileset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
 		if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
 			a = mouse->x + offX;
 			rect.x = a-bordaLateral-offX-(a-bordaLateral)%32+bordaLateral;
@@ -267,6 +337,7 @@ void Editor::Renderizar()
 		break;
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Renderizar(janela->renderer);
+		botoes[BTN_CARREGAR].Renderizar(janela->renderer);
 		botoes[BTN_SAIR].Renderizar(janela->renderer);
 		botoes[BTN_MINUS].Renderizar(janela->renderer);
 		botoes[BTN_PLUS].Renderizar(janela->renderer);
