@@ -15,15 +15,15 @@ private:
 		/*INIMIGO*/
 		/*ARMADILHA*/
 		/*ITENS*/
-		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_MINUS, BTN_PLUS,
+		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
 		BTN_MAX};
 	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
 	Botao botoes[BTN_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
 	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed;
-	Sprite tileset, input, scrollSpd, scrollTxt, nomeMapa;
-	bool grid;
+	Sprite tileset, scrollSpd, scrollTxt, nomeMapa;
+	bool grid, input;
 	std::string nome;
 
 public:
