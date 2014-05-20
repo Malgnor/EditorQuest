@@ -228,6 +228,9 @@ void Entrada::atualiza(SDL_Event& event)
 				case SDLK_LALT:
 					processaTecla(&tecla[KB_LALT], event);
 					break;
+				case SDLK_LSHIFT:
+					processaTecla(&tecla[KB_LSHIFT], event);
+					break;
 				case SDLK_BACKSPACE:
 					if(textInput && event.type == SDL_KEYDOWN && texto.size()){
 						texto.pop_back();

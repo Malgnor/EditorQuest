@@ -79,9 +79,6 @@ void Mapa::Inicializar(SDL_Renderer* renderer)
 }
 
 void Mapa::Novo(unsigned int _largura, unsigned int _altura){
-	altura = _altura;
-	largura = _largura;
-
 	if(mapa){
 		for(unsigned int i = 0; i < altura; i++)
 		{
@@ -92,6 +89,9 @@ void Mapa::Novo(unsigned int _largura, unsigned int _altura){
 		delete[] mapa;
 		mapa = 0;	
 	}
+	
+	altura = _altura;
+	largura = _largura;
 
 	mapa = new unsigned int*[altura];
 	for(unsigned int i = 0; i < altura; i++)

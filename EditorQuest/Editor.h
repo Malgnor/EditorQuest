@@ -18,11 +18,10 @@ private:
 		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
 		BTN_MAX};
 	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
-	enum {INPUT_NOME, INPUT_ALTURA, INPUT_LARGURA};
 	Botao botoes[BTN_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
-	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed, mLargura, mAltura, eInput;
+	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed, mLargura, mAltura;
 	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, larguraTxt, alturaTxt;
 	bool grid, input;
 	std::string nome;

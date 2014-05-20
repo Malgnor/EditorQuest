@@ -19,7 +19,6 @@ void Editor::Inicializar(Janela* _janela)
 	bordaHorizontal = 60;
 	bordaLateral = 150;
 	estadoEditor = EDIT_NONE;
-	eInput = INPUT_NOME;
 	selecionado = 0;
 	scrollSpeed = 32;
 	grid = input = false;
@@ -183,19 +182,25 @@ void Editor::Atualizar(Uint32 deltaTime)
 			selecionado = 0;
 		else if(selecionado < 0)
 			selecionado = 9;
-		if(botoes[BTN_LARGURA].Pressionado()){
-			input = janela->entrada.toggleInputTexto();
-			eInput = INPUT_LARGURA;
-			if(!input){
+		if(botoes[BTN_LARGURA].Hover()){
+			if(mouse->wy > 0){
+				mLargura += tecla[KB_LSHIFT].ativo ? 10 : 1;
+				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor);
+			}
+			else if(mouse->wy < 0){
+				mLargura -= tecla[KB_LSHIFT].ativo ? 10 : 1;
 				if(mLargura < 24)
 					mLargura = 24;
 				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor);
 			}
 		}
-		if(botoes[BTN_ALTURA].Pressionado()){
-			input = janela->entrada.toggleInputTexto();
-			eInput = INPUT_ALTURA;
-			if(!input){
+		if(botoes[BTN_ALTURA].Hover()){
+			if(mouse->wy > 0){
+				mAltura += tecla[KB_LSHIFT].ativo ? 10 : 1;
+				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor);
+			}
+			else if(mouse->wy < 0){
+				mAltura -= tecla[KB_LSHIFT].ativo ? 10 : 1;
 				if(mAltura < 24)
 					mAltura = 24;
 				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor);
@@ -244,7 +249,6 @@ void Editor::Atualizar(Uint32 deltaTime)
 		}
 		if(botoes[BTN_ALTNOME].Pressionado()){
 			input = janela->entrada.toggleInputTexto();
-			eInput = INPUT_NOME;
 			if(!input)
 				nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor);
 		}
@@ -254,25 +258,8 @@ void Editor::Atualizar(Uint32 deltaTime)
 	}
 	
 	if(janela->entrada.textoUpdate()){
-		switch (eInput)
-		{
-		case INPUT_NOME:
-			nome = janela->entrada.pegaTexto();
-			nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
-			break;
-		case INPUT_ALTURA:
-			if(janela->entrada.pegaTexto().size()){
-				mAltura = stoi(janela->entrada.pegaTexto());
-				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor2);
-			}
-			break;
-		case INPUT_LARGURA:
-			if(janela->entrada.pegaTexto().size()){
-				mLargura = stoi(janela->entrada.pegaTexto());
-				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor2);
-			}
-			break;
-		}
+		nome = janela->entrada.pegaTexto();
+		nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
 	}
 	TTF_CloseFont(fonte);
 	TTF_CloseFont(fonte2);
