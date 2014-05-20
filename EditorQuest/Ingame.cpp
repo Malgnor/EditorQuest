@@ -110,7 +110,7 @@ void Ingame::Inicializar(Janela* _janela){
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
-	gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
+	//gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
@@ -120,10 +120,41 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0+48.0, 0.0, ARMADILHA_FLECHA));
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0-32.0, 0.0, ARMADILHA_FLECHA));
+		/*
 		if(i%2 == 0)
 			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
 		else
 			gerenteAtor.Adicionar(new Crowley(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
+			*/
+	}
+	ifstream mobfile("resources/maps/teste/mob.equest", ios_base::binary);
+	if(mobfile.is_open()){
+		unsigned int id, qtd;
+		int posX, posY;
+		Atributos atributos;
+		mobfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			mobfile.read((char*)&id, sizeof(unsigned int));
+			mobfile.read((char*)&posX, sizeof(int));
+			mobfile.read((char*)&posY, sizeof(int));
+			mobfile.read((char*)&atributos, sizeof(Atributos));
+			Inimigo* a = 0;
+			switch (id)
+			{
+			case 0:
+				gerenteAtor.Adicionar(a = new Lobisomem(gerenteAtor, posX, posY, atributos, jogador, &mapa)); 
+				break;
+			case 1:
+				gerenteAtor.Adicionar(a = new Crowley(gerenteAtor, posX, posY, atributos, jogador, &mapa)); 
+				break;
+			case 2:
+				gerenteAtor.Adicionar(a = new Lucifer(gerenteAtor, posX, posY, atributos, jogador, &mapa)); 
+				break;
+			default:
+				break;
+			}
+		}
+		mobfile.close();
 	}
 	Atributos a = jogador->PegaAtributos();
 	status.str("");

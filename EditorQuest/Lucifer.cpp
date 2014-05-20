@@ -4,10 +4,12 @@
 #include "EnergyBall.h"
 #include "Slash.h"
 
-Lucifer::Lucifer(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
+Lucifer::Lucifer(GerenteAtor& _gerente, double _x, double _y, Atributos _atributos, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {
 	x = _x;
 	y = _y;
+	atributos = _atributos;
+	id = 2;
 }
 
 void Lucifer::Inicializar(){
@@ -16,13 +18,6 @@ void Lucifer::Inicializar(){
 	visao = 250.0;
 	time = animtime = 0;
 	indicex = indicey = 0;
-	atributos.hpatual = atributos.hp = 100;
-	atributos.hpregen = 1;
-	atributos.mpatual = atributos.mp = 100;
-	atributos.mpregen = 2;
-	atributos.forca = 5;
-	atributos.defesa = 5;
-	atributos.magia = 5;
 }		
 
 void Lucifer::Atualizar(Uint32 deltaTime, SDL_Rect* camera){

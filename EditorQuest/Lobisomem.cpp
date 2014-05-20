@@ -3,10 +3,12 @@
 #include "Jogador.h"
 #include "Claw.h"
 
-Lobisomem::Lobisomem(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
+Lobisomem::Lobisomem(GerenteAtor& _gerente, double _x, double _y, Atributos _atributos, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {
 	x = _x;
 	y = _y;
+	atributos = _atributos;
+	id = 0;
 }
 
 void Lobisomem::Inicializar(){
@@ -15,13 +17,6 @@ void Lobisomem::Inicializar(){
 	visao = 200.0;
 	time = animtime = 0;
 	indicex = indicey = 0;
-	atributos.hpatual = atributos.hp = 100;
-	atributos.hpregen = 1;
-	atributos.mpatual = atributos.mp = 100;
-	atributos.mpregen = 2;
-	atributos.forca = 5;
-	atributos.defesa = 5;
-	atributos.magia = 5;
 }		
 
 void Lobisomem::Atualizar(Uint32 deltaTime, SDL_Rect* camera){

@@ -1,5 +1,8 @@
 #include "Editor.h"
 #include "Janela.h"
+#include "Lobisomem.h"
+#include "Crowley.h"
+#include "Lucifer.h"
 #include <fstream>
 
 using namespace std;
@@ -22,14 +25,49 @@ void Editor::Inicializar(Janela* _janela)
 	selecionado = 0;
 	scrollSpeed = 32;
 	grid = input = false;
+	
+	boss = 0;
+	gerenteAtores.Inicializar(janela);
+
 	janela->entrada.SetaTamanhoTexto(8);
 	
 	mapa.Carregar(nome);
 	mapa.Inicializar(janela->renderer);
-	mAltura = mapa.PegaDimensaoemTiles().h;
-	mLargura = mapa.PegaDimensaoemTiles().w;
+	ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+	if(mobfile.is_open()){
+		unsigned int id, qtd;
+		int posX, posY;
+		Atributos atributos;
+		mobfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			mobfile.read((char*)&id, sizeof(unsigned int));
+			mobfile.read((char*)&posX, sizeof(int));
+			mobfile.read((char*)&posY, sizeof(int));
+			mobfile.read((char*)&atributos, sizeof(Atributos));
+			Inimigo* a = 0;
+			switch (id)
+			{
+			case 0:
+				inimigos.push_back(a = new Lobisomem(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+				break;
+			case 1:
+				inimigos.push_back(a = new Crowley(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+				break;
+			case 2:
+				inimigos.push_back(a = new Lucifer(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+				break;
+			default:
+				break;
+			}
+			if(a){
+				a->Inicializar();
+			}
+		}
+		mobfile.close();
+	}
 
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
+	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);
@@ -38,8 +76,6 @@ void Editor::Inicializar(Janela* _janela)
 	scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte, cor2);
 	scrollTxt.CriaTexturaDoTexto(janela->renderer, "Scroll Speed", fonteS, cor2);
 	nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonteS, cor2);
-	larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte, cor2);
-	alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte, cor2);
 	botoes[BTN_MAPA].Inicializar(janela->renderer, "Tile", fonte, cor);
 	botoes[BTN_INIMIGOS].Inicializar(janela->renderer, "Inimigo", fonte, cor);
 	botoes[BTN_ARMADILHAS].Inicializar(janela->renderer, "Armadilha", fonte, cor);
@@ -47,8 +83,6 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_MENU].Inicializar(janela->renderer, "Menu", fonte, cor);
 	botoes[BTN_PROX].Inicializar(janela->renderer, ">", fonte, cor);
 	botoes[BTN_ANT].Inicializar(janela->renderer, "<", fonte, cor);
-	botoes[BTN_LARGURA].Inicializar(janela->renderer, "Largura", fonteS, cor);
-	botoes[BTN_ALTURA].Inicializar(janela->renderer, "Altura", fonteS, cor);
 	botoes[BTN_MODIFICAR].Inicializar(janela->renderer, "Modificar", fonteS, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
 	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
@@ -65,8 +99,6 @@ void Editor::Inicializar(Janela* _janela)
 	
 	botoes[BTN_ANT].SetaPosicao(5, 500);
 	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 500);
-	botoes[BTN_LARGURA].SetaPosicao((bordaLateral-botoes[BTN_LARGURA].PegaDimensao().w)/2, 230);
-	botoes[BTN_ALTURA].SetaPosicao((bordaLateral-botoes[BTN_ALTURA].PegaDimensao().w)/2, 300);
 	botoes[BTN_MODIFICAR].SetaPosicao((bordaLateral-botoes[BTN_MODIFICAR].PegaDimensao().w)/2, 350);
 
 	botoes[BTN_SAIR].SetaPosicao((bordaLateral-botoes[BTN_SAIR].PegaDimensao().w)/2, 500);
@@ -76,6 +108,56 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_ALTNOME].SetaPosicao((bordaLateral-botoes[BTN_ALTNOME].PegaDimensao().w)/2, bordaHorizontal+35);
 	botoes[BTN_MINUS].SetaPosicao(5, 200);
 	botoes[BTN_PLUS].SetaPosicao(bordaLateral-5-botoes[BTN_PLUS].PegaDimensao().w, 200);
+	
+	stats[STAT_LARGURA].botao.Inicializar(janela->renderer, "Largura", fonteS, cor);
+	stats[STAT_LARGURA].data = mapa.PegaDimensaoemTiles().w;
+	stats[STAT_LARGURA].min = 24;
+	stats[STAT_LARGURA].estado = EDIT_MAPA;
+	stats[STAT_LARGURA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_LARGURA].data).c_str(), fonte, cor2);
+	stats[STAT_LARGURA].botao.SetaPosicao((bordaLateral-stats[STAT_LARGURA].botao.PegaDimensao().w)/2, 230);
+
+	stats[STAT_ALTURA].botao.Inicializar(janela->renderer, "Altura", fonteS, cor);
+	stats[STAT_ALTURA].data = mapa.PegaDimensaoemTiles().h;
+	stats[STAT_ALTURA].min = 24;
+	stats[STAT_ALTURA].estado = EDIT_MAPA;
+	stats[STAT_ALTURA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_ALTURA].data).c_str(), fonte, cor2);
+	stats[STAT_ALTURA].botao.SetaPosicao((bordaLateral-stats[STAT_ALTURA].botao.PegaDimensao().w)/2, 300);
+
+	/*INIMIGO*/ //STAT_HP, STAT_HPR, STAT_FORCA, STAT_DEFESA, STAT_MAGIA
+	stats[STAT_HP].botao.Inicializar(janela->renderer, "HP", fonteS, cor);
+	stats[STAT_HP].data = 100;
+	stats[STAT_HP].min = 0;
+	stats[STAT_HP].estado = EDIT_INIMIGOS;
+	stats[STAT_HP].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_HP].data).c_str(), fonte, cor2);
+	stats[STAT_HP].botao.SetaPosicao((bordaLateral-stats[STAT_HP].botao.PegaDimensao().w)/2, 130);
+
+	stats[STAT_HPR].botao.Inicializar(janela->renderer, "HP/S", fonteS, cor);
+	stats[STAT_HPR].data = 1;
+	stats[STAT_HPR].min = 0;
+	stats[STAT_HPR].estado = EDIT_INIMIGOS;
+	stats[STAT_HPR].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_HPR].data).c_str(), fonte, cor2);
+	stats[STAT_HPR].botao.SetaPosicao((bordaLateral-stats[STAT_HPR].botao.PegaDimensao().w)/2, 200);
+
+	stats[STAT_FORCA].botao.Inicializar(janela->renderer, "Forca", fonteS, cor);
+	stats[STAT_FORCA].data = 5;
+	stats[STAT_FORCA].min = 0;
+	stats[STAT_FORCA].estado = EDIT_INIMIGOS;
+	stats[STAT_FORCA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_FORCA].data).c_str(), fonte, cor2);
+	stats[STAT_FORCA].botao.SetaPosicao((bordaLateral-stats[STAT_FORCA].botao.PegaDimensao().w)/2, 270);
+
+	stats[STAT_DEFESA].botao.Inicializar(janela->renderer, "Defesa", fonteS, cor);
+	stats[STAT_DEFESA].data = 5;
+	stats[STAT_DEFESA].min = 0;
+	stats[STAT_DEFESA].estado = EDIT_INIMIGOS;
+	stats[STAT_DEFESA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_DEFESA].data).c_str(), fonte, cor2);
+	stats[STAT_DEFESA].botao.SetaPosicao((bordaLateral-stats[STAT_DEFESA].botao.PegaDimensao().w)/2, 340);
+
+	stats[STAT_MAGIA].botao.Inicializar(janela->renderer, "Magia", fonteS, cor);
+	stats[STAT_MAGIA].data = 5;
+	stats[STAT_MAGIA].min = 0;
+	stats[STAT_MAGIA].estado = EDIT_INIMIGOS;
+	stats[STAT_MAGIA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_MAGIA].data).c_str(), fonte, cor2);
+	stats[STAT_MAGIA].botao.SetaPosicao((bordaLateral-stats[STAT_MAGIA].botao.PegaDimensao().w)/2, 410);
 
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
@@ -97,6 +179,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {255, 255, 255};
 	SDL_Color cor2 = {255, 0, 0};
+	
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
 
@@ -154,25 +237,56 @@ void Editor::Atualizar(Uint32 deltaTime)
 		else if(tecla[KB_0].pressionado)
 			selecionado = 0;
 
-		if(tecla[KB_ESC].pressionado || tecla[KB_M].pressionado)
+		if(tecla[KB_ESC].pressionado || tecla[KB_M].pressionado){
 			estadoEditor = EDIT_MENU;
-		else if(tecla[KB_Q].pressionado)
+			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
+		} else if(tecla[KB_Q].pressionado){
 			estadoEditor = EDIT_MAPA;
-		else if(tecla[KB_W].pressionado)
+			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
+		} else if(tecla[KB_W].pressionado){
 			estadoEditor = EDIT_INIMIGOS;
-		else if(tecla[KB_E].pressionado)
+			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
+		} else if(tecla[KB_E].pressionado){
 			estadoEditor = EDIT_ARMADILHAS;
-		else if(tecla[KB_R].pressionado)
+			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
+		} else if(tecla[KB_R].pressionado){
 			estadoEditor = EDIT_ITENS;
+			selecionado = 0;
+			if(input)
+				input = janela->entrada.toggleInputTexto();
+		}
 	}
 
+	for(int i = 0; i < STAT_MAX; i++){
+		if(stats[i].estado == estadoEditor){
+			stats[i].botao.Atualizar(mouse);
+			if(stats[i].botao.Hover()){
+				if(mouse->wy > 0){
+					stats[i].data += tecla[KB_LSHIFT].ativo ? 10 : 1;
+					stats[i].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[i].data).c_str(), fonte2, cor);
+				}
+				else if(mouse->wy < 0){
+					stats[i].data -= tecla[KB_LSHIFT].ativo ? 10 : 1;
+					if(stats[i].data < stats[i].min)
+						stats[i].data = stats[i].min;
+					stats[i].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[i].data).c_str(), fonte2, cor);
+				}
+			}
+		}
+	}
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
 		botoes[BTN_ANT].Atualizar(mouse);
 		botoes[BTN_PROX].Atualizar(mouse);
-		botoes[BTN_ALTURA].Atualizar(mouse);
-		botoes[BTN_LARGURA].Atualizar(mouse);
 		botoes[BTN_MODIFICAR].Atualizar(mouse);
 		if(botoes[BTN_ANT].Pressionado())
 			selecionado--;
@@ -182,39 +296,48 @@ void Editor::Atualizar(Uint32 deltaTime)
 			selecionado = 0;
 		else if(selecionado < 0)
 			selecionado = 9;
-		if(botoes[BTN_LARGURA].Hover()){
-			if(mouse->wy > 0){
-				mLargura += tecla[KB_LSHIFT].ativo ? 10 : 1;
-				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor);
-			}
-			else if(mouse->wy < 0){
-				mLargura -= tecla[KB_LSHIFT].ativo ? 10 : 1;
-				if(mLargura < 24)
-					mLargura = 24;
-				larguraTxt.CriaTexturaDoTexto(janela->renderer, to_string(mLargura).c_str(), fonte2, cor);
-			}
-		}
-		if(botoes[BTN_ALTURA].Hover()){
-			if(mouse->wy > 0){
-				mAltura += tecla[KB_LSHIFT].ativo ? 10 : 1;
-				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor);
-			}
-			else if(mouse->wy < 0){
-				mAltura -= tecla[KB_LSHIFT].ativo ? 10 : 1;
-				if(mAltura < 24)
-					mAltura = 24;
-				alturaTxt.CriaTexturaDoTexto(janela->renderer, to_string(mAltura).c_str(), fonte2, cor);
-			}
-		}
 		if(botoes[BTN_MODIFICAR].Pressionado()){
-			mapa.Novo(mLargura, mAltura);
+			mapa.Novo(stats[STAT_LARGURA].data, stats[STAT_ALTURA].data);
 			mapa.Inicializar(janela->renderer);
 		}
-		if(mouse->botoes[M_ESQUERDO].ativo && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal)
-			if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado))
+		if(mouse->botoes[M_ESQUERDO].ativo && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+			if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado)){
 				mapa.Inicializar(janela->renderer);
+			}
+		}
 		break;
 	case EDIT_INIMIGOS:
+		botoes[BTN_ANT].Atualizar(mouse);
+		botoes[BTN_PROX].Atualizar(mouse);
+		if(botoes[BTN_ANT].Pressionado())
+			selecionado--;
+		else if(botoes[BTN_PROX].Pressionado())
+			selecionado++;
+		if(selecionado > 9)
+			selecionado = 0;
+		else if(selecionado < 0)
+			selecionado = 9;
+		if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+			Atributos atributos = {stats[STAT_HP].data, stats[STAT_HP].data, stats[STAT_HPR].data, 0, 0, 0, stats[STAT_FORCA].data, stats[STAT_DEFESA].data, stats[STAT_MAGIA].data};
+			Inimigo* a = 0;
+			switch (selecionado)
+			{
+			case 0:
+				inimigos.push_back(a = new Lobisomem(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+				break;
+			case 1:
+				inimigos.push_back(a = new Crowley(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+				break;
+			case 2:
+				inimigos.push_back(a = new Lucifer(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+				break;
+			default:
+				break;
+			}
+			if(a){
+				a->Inicializar();
+			}
+		}
 		break;
 	case EDIT_ARMADILHAS:
 		break;
@@ -239,10 +362,70 @@ void Editor::Atualizar(Uint32 deltaTime)
 		}
 		if(botoes[BTN_SALVAR].Pressionado()){
 			mapa.Salvar(nome);
+			if(!inimigos.empty()){
+				ofstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+				if(mobfile.is_open()){
+					unsigned int id, qtd;
+					int posX, posY;
+					qtd = inimigos.size();
+					mobfile.write((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < inimigos.size(); i++){
+						id = inimigos[i]->PegaId();
+						posX = inimigos[i]->PegaBoundingBox().x;
+						posY = inimigos[i]->PegaBoundingBox().y;
+						mobfile.write((char*)&id, sizeof(unsigned int));
+						mobfile.write((char*)&posX, sizeof(int));
+						mobfile.write((char*)&posY, sizeof(int));
+						mobfile.write((char*)&inimigos[i]->PegaAtributos(), sizeof(Atributos));
+					}
+					mobfile.close();
+				}
+			}
 		}
 		if(botoes[BTN_CARREGAR].Pressionado()){
-			if(mapa.Carregar(nome))
+			if(mapa.Carregar(nome)){
 				mapa.Inicializar(janela->renderer);
+				if(!inimigos.empty()){
+					for(unsigned int i = 0; i < inimigos.size(); i++){
+						inimigos[i]->Finalizar();
+						delete inimigos[i];
+						inimigos[i] = 0;
+					}
+				}
+				inimigos.clear();
+				ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+				if(mobfile.is_open()){
+					unsigned int id, qtd;
+					int posX, posY;
+					Atributos atributos;
+					mobfile.read((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < qtd; i++){
+						mobfile.read((char*)&id, sizeof(unsigned int));
+						mobfile.read((char*)&posX, sizeof(int));
+						mobfile.read((char*)&posY, sizeof(int));
+						mobfile.read((char*)&atributos, sizeof(Atributos));
+						Inimigo* a = 0;
+						switch (id)
+						{
+						case 0:
+							inimigos.push_back(a = new Lobisomem(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+							break;
+						case 1:
+							inimigos.push_back(a = new Crowley(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+							break;
+						case 2:
+							inimigos.push_back(a = new Lucifer(gerenteAtores, posX, posY, atributos, 0, &mapa)); 
+							break;
+						default:
+							break;
+						}
+						if(a){
+							a->Inicializar();
+						}
+					}
+					mobfile.close();
+				}
+			}
 		}
 		if(botoes[BTN_GRID].Pressionado()){
 			grid = !grid;
@@ -273,6 +456,12 @@ void Editor::Renderizar()
 	int offX = (camera.x+bordaLateral)%32;
 	int offY = (camera.y+bordaHorizontal)%32;
 	mapa.Renderizar(janela->renderer, &camera);
+
+	if(!inimigos.empty()){
+		for(unsigned int i = 0; i < inimigos.size(); i++){
+			inimigos[i]->Renderizar(&camera);
+		}
+	}
 	SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
 	if(grid){
 		for(int y = 0; y < 1+(600-bordaHorizontal)/32; y++){
@@ -291,20 +480,27 @@ void Editor::Renderizar()
 	SDL_RenderDrawLine(janela->renderer, 0, bordaHorizontal, 800, bordaHorizontal);
 	SDL_RenderDrawLine(janela->renderer, bordaLateral, bordaHorizontal, bordaLateral, 600);
 
-	for(int i = 0; i < EDIT_NONE; i++)
-		if(estadoEditor != i)
+	for(int i = 0; i < EDIT_NONE; i++){
+		if(estadoEditor != i){
 			botoes[i].Renderizar(janela->renderer);
+		}
+	}
+
+	for(int i = 0; i < STAT_MAX; i++){
+		if(stats[i].estado == estadoEditor){
+			stats[i].botao.Renderizar(janela->renderer);
+			stats[i].sprite.Renderizar(janela->renderer, (bordaLateral-stats[i].sprite.PegaDimensao().w)/2, stats[i].botao.PegaPosicao().y-30);
+		}
+	}
+
 	nomeMapa.Renderizar(janela->renderer, (bordaLateral-nomeMapa.PegaDimensao().w)/2, bordaHorizontal +5);
+
 	switch (estadoEditor)
 	{
 	case EDIT_MAPA:
 		botoes[BTN_ANT].Renderizar(janela->renderer);
 		botoes[BTN_PROX].Renderizar(janela->renderer);
-		botoes[BTN_ALTURA].Renderizar(janela->renderer);
-		botoes[BTN_LARGURA].Renderizar(janela->renderer);
 		botoes[BTN_MODIFICAR].Renderizar(janela->renderer);
-		larguraTxt.Renderizar(janela->renderer, (bordaLateral-larguraTxt.PegaDimensao().w)/2, 200);
-		alturaTxt.Renderizar(janela->renderer, (bordaLateral-alturaTxt.PegaDimensao().w)/2, 270);
 		tileset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
 		if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
 			a = mouse->x + offX;
@@ -317,6 +513,12 @@ void Editor::Renderizar()
 		}	
 		break;
 	case EDIT_INIMIGOS:
+		botoes[BTN_ANT].Renderizar(janela->renderer);
+		botoes[BTN_PROX].Renderizar(janela->renderer);
+		mobset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
+		if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+			mobset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado);
+		}
 		break;
 	case EDIT_ARMADILHAS:
 		break;
@@ -340,6 +542,14 @@ void Editor::Renderizar()
 
 void Editor::Finalizar()
 {
+	if(!inimigos.empty()){
+		for(unsigned int i = 0; i < inimigos.size(); i++){
+			inimigos[i]->Finalizar();
+			delete inimigos[i];
+			inimigos[i] = 0;
+		}
+	}
+	inimigos.clear();
 }
 
 Tela* Editor::ProximaTela()

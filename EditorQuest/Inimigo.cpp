@@ -13,6 +13,10 @@ Inimigo::Inimigo(GerenteAtor& _gerente, Jogador* _jogador, Mapa* _mapa) : Ator(_
 	mapa = _mapa;
 }
 
+unsigned int Inimigo::PegaId(){
+	return id;
+}
+
 void Inimigo::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
 	double d = atan2(y-colisao->y, x-colisao->x);
 	if(tipo == 0){

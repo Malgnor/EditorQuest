@@ -4,27 +4,43 @@
 #include "tela.h"
 #include "BotaoPersonalizado.h"
 #include "Mapa.h"
+#include "Inimigo.h"
+#include "GerenteAtor.h"
+#include <vector>
 #include <string>
+
+struct StatBtn{
+	Botao botao;
+	int data, min, estado;
+	Sprite sprite;
+};
 
 class Editor :
 	public Tela
 {
 private:
 	enum {BTN_MAPA, BTN_INIMIGOS, BTN_ARMADILHAS, BTN_ITENS, BTN_MENU,
-		/*MAPA*/ BTN_PROX, BTN_ANT, BTN_LARGURA, BTN_ALTURA, BTN_MODIFICAR, 
+		/*MAPA*/ BTN_PROX, BTN_ANT, BTN_MODIFICAR, 
 		/*INIMIGO*/
 		/*ARMADILHA*/
 		/*ITENS*/
 		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
 		BTN_MAX};
 	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
+	enum {/*MAPA*/STAT_ALTURA, STAT_LARGURA,
+		  /*INIMIGO*/ STAT_HP, STAT_HPR, STAT_FORCA, STAT_DEFESA, STAT_MAGIA,  
+		  STAT_MAX};
 	Botao botoes[BTN_MAX];
+	StatBtn stats[STAT_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
-	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed, mLargura, mAltura;
-	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, larguraTxt, alturaTxt;
+	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed;
+	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, mobset;
 	bool grid, input;
+	GerenteAtor gerenteAtores;
 	std::string nome;
+	std::vector<Inimigo*> inimigos;
+	Inimigo* boss;
 
 public:
 	Editor(std::string _nome);

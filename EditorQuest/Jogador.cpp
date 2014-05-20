@@ -35,11 +35,16 @@ void Jogador::AtualizarAtributos(){
 
 void Jogador::FoiAtingido(int dano, unsigned int tipo, SDL_Rect* colisao){
 	if(!gm){
+		double d = atan2(y-colisao->y, x-colisao->x);
 		if(tipo == 0){
 			atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.defesa/100.0)))));
+			x += cos(d)*16;
+			y += sin(d)*16;
 		}
 		else if(tipo == 1){
 			atributos.hpatual -= (int)(floor((dano*atributos.hp)/(atributos.hp*(1.0+(atributos.magia/100.0)))));
+			x += cos(d)*8;
+			y += sin(d)*8;
 		}
 	}
 }

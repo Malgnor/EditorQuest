@@ -16,7 +16,7 @@ protected:
 	Mapa* mapa;
 	Sprite sprite;
 	double x, y, direcao, visao;
-	unsigned int indicex, indicey;
+	unsigned int indicex, indicey, id;
 	Atributos atributos;
 	Uint32 time, animtime;
 
@@ -27,6 +27,7 @@ public:
 	unsigned int PegaTipo();
 	Atributos& PegaAtributos();
 	double PegaDirecao();
+	unsigned int PegaId();
 
 	bool EstaNoJogo();
 

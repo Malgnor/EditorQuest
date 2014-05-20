@@ -3,10 +3,12 @@
 #include "Jogador.h"
 #include "EnergyBall.h"
 
-Crowley::Crowley(GerenteAtor& _gerente, double _x, double _y, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
+Crowley::Crowley(GerenteAtor& _gerente, double _x, double _y, Atributos _atributos, Jogador* _jogador, Mapa* _mapa) :Inimigo(_gerente, _jogador, _mapa)
 {
 	x = _x;
 	y = _y;
+	atributos = _atributos;
+	id = 1;
 }
 
 void Crowley::Inicializar(){
@@ -15,13 +17,6 @@ void Crowley::Inicializar(){
 	visao = 250.0;
 	time = animtime = 0;
 	indicex = indicey = 0;
-	atributos.hpatual = atributos.hp = 100;
-	atributos.hpregen = 1;
-	atributos.mpatual = atributos.mp = 100;
-	atributos.mpregen = 2;
-	atributos.forca = 5;
-	atributos.defesa = 5;
-	atributos.magia = 5;
 }		
 
 void Crowley::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
