@@ -25,8 +25,8 @@ void Editor::Inicializar(Janela* _janela)
 	selecionado = 0;
 	scrollSpeed = 32;
 	grid = input = false;
-	
-	boss = 0;
+	inisel = 0;
+
 	gerenteAtores.Inicializar(janela);
 
 	janela->entrada.SetaTamanhoTexto(8);
@@ -179,6 +179,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {255, 255, 255};
 	SDL_Color cor2 = {255, 0, 0};
+	SDL_Rect mouserect = {mouse->x+camera.x, mouse->y+camera.y, 1, 1};
 	
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
@@ -318,24 +319,35 @@ void Editor::Atualizar(Uint32 deltaTime)
 		else if(selecionado < 0)
 			selecionado = 9;
 		if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-			Atributos atributos = {stats[STAT_HP].data, stats[STAT_HP].data, stats[STAT_HPR].data, 0, 0, 0, stats[STAT_FORCA].data, stats[STAT_DEFESA].data, stats[STAT_MAGIA].data};
-			Inimigo* a = 0;
-			switch (selecionado)
-			{
-			case 0:
-				inimigos.push_back(a = new Lobisomem(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-				break;
-			case 1:
-				inimigos.push_back(a = new Crowley(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-				break;
-			case 2:
-				inimigos.push_back(a = new Lucifer(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-				break;
-			default:
-				break;
+			bool colidiu = false;
+			SDL_Rect col;
+			if(!inimigos.empty()){
+				for(unsigned int i = 0; i < inimigos.size(); i++){
+					if(SDL_IntersectRect(&mouserect, &inimigos[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+						colidiu = true;
+					}
+				}
 			}
-			if(a){
-				a->Inicializar();
+			if(!colidiu){
+				Atributos atributos = {stats[STAT_HP].data, stats[STAT_HP].data, stats[STAT_HPR].data, 0, 0, 0, stats[STAT_FORCA].data, stats[STAT_DEFESA].data, stats[STAT_MAGIA].data};
+				Inimigo* a = 0;
+				switch (selecionado)
+				{
+				case 0:
+					inimigos.push_back(a = new Lobisomem(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+					break;
+				case 1:
+					inimigos.push_back(a = new Crowley(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+					break;
+				case 2:
+					inimigos.push_back(a = new Lucifer(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+					break;
+				default:
+					break;
+				}
+				if(a){
+					a->Inicializar();
+				}
 			}
 		}
 		break;

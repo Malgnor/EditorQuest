@@ -40,7 +40,7 @@ private:
 	GerenteAtor gerenteAtores;
 	std::string nome;
 	std::vector<Inimigo*> inimigos;
-	Inimigo* boss;
+	Inimigo* inisel;
 
 public:
 	Editor(std::string _nome);

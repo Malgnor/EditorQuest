@@ -152,7 +152,8 @@ void Ingame::Inicializar(Janela* _janela){
 				break;
 			default:
 				break;
-			}
+			}			
+			boss = a;
 		}
 		mobfile.close();
 	}
