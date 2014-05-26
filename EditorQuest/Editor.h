@@ -21,7 +21,7 @@ class Editor :
 private:
 	enum {BTN_MAPA, BTN_INIMIGOS, BTN_ARMADILHAS, BTN_ITENS, BTN_MENU,
 		/*MAPA*/ BTN_PROX, BTN_ANT, BTN_MODIFICAR, 
-		/*INIMIGO*/
+		/*INIMIGO*/ BTN_BOSS, BTN_REMOVER, 
 		/*ARMADILHA*/
 		/*ITENS*/
 		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
@@ -36,7 +36,7 @@ private:
 	SDL_Rect camera;
 	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed;
 	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, mobset;
-	bool grid, input;
+	bool grid, input, edit;
 	GerenteAtor gerenteAtores;
 	std::string nome;
 	std::vector<Inimigo*> inimigos;

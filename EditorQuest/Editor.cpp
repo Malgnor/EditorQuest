@@ -24,7 +24,7 @@ void Editor::Inicializar(Janela* _janela)
 	estadoEditor = EDIT_NONE;
 	selecionado = 0;
 	scrollSpeed = 32;
-	grid = input = false;
+	grid = input = edit = false;
 	inisel = 0;
 
 	gerenteAtores.Inicializar(janela);
@@ -84,6 +84,8 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_PROX].Inicializar(janela->renderer, ">", fonte, cor);
 	botoes[BTN_ANT].Inicializar(janela->renderer, "<", fonte, cor);
 	botoes[BTN_MODIFICAR].Inicializar(janela->renderer, "Modificar", fonteS, cor);
+	botoes[BTN_BOSS].Inicializar(janela->renderer, "Boss", fonteS, cor);
+	botoes[BTN_REMOVER].Inicializar(janela->renderer, "Remover", fonteS, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
 	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
 	botoes[BTN_PLUS].Inicializar(janela->renderer, "+", fonte, cor);
@@ -101,6 +103,9 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 500);
 	botoes[BTN_MODIFICAR].SetaPosicao((bordaLateral-botoes[BTN_MODIFICAR].PegaDimensao().w)/2, 350);
 
+	botoes[BTN_BOSS].SetaPosicao((bordaLateral-botoes[BTN_BOSS].PegaDimensao().w)/2, 500);
+	botoes[BTN_REMOVER].SetaPosicao((bordaLateral-botoes[BTN_REMOVER].PegaDimensao().w)/2, 550);
+
 	botoes[BTN_SAIR].SetaPosicao((bordaLateral-botoes[BTN_SAIR].PegaDimensao().w)/2, 500);
 	botoes[BTN_SALVAR].SetaPosicao((bordaLateral-botoes[BTN_SALVAR].PegaDimensao().w)/2, 400);
 	botoes[BTN_CARREGAR].SetaPosicao((bordaLateral-botoes[BTN_CARREGAR].PegaDimensao().w)/2, 450);
@@ -111,14 +116,14 @@ void Editor::Inicializar(Janela* _janela)
 	
 	stats[STAT_LARGURA].botao.Inicializar(janela->renderer, "Largura", fonteS, cor);
 	stats[STAT_LARGURA].data = mapa.PegaDimensaoemTiles().w;
-	stats[STAT_LARGURA].min = 24;
+	stats[STAT_LARGURA].min = 1;
 	stats[STAT_LARGURA].estado = EDIT_MAPA;
 	stats[STAT_LARGURA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_LARGURA].data).c_str(), fonte, cor2);
 	stats[STAT_LARGURA].botao.SetaPosicao((bordaLateral-stats[STAT_LARGURA].botao.PegaDimensao().w)/2, 230);
 
 	stats[STAT_ALTURA].botao.Inicializar(janela->renderer, "Altura", fonteS, cor);
 	stats[STAT_ALTURA].data = mapa.PegaDimensaoemTiles().h;
-	stats[STAT_ALTURA].min = 24;
+	stats[STAT_ALTURA].min = 1;
 	stats[STAT_ALTURA].estado = EDIT_MAPA;
 	stats[STAT_ALTURA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_ALTURA].data).c_str(), fonte, cor2);
 	stats[STAT_ALTURA].botao.SetaPosicao((bordaLateral-stats[STAT_ALTURA].botao.PegaDimensao().w)/2, 300);
@@ -126,7 +131,7 @@ void Editor::Inicializar(Janela* _janela)
 	/*INIMIGO*/ //STAT_HP, STAT_HPR, STAT_FORCA, STAT_DEFESA, STAT_MAGIA
 	stats[STAT_HP].botao.Inicializar(janela->renderer, "HP", fonteS, cor);
 	stats[STAT_HP].data = 100;
-	stats[STAT_HP].min = 0;
+	stats[STAT_HP].min = 1;
 	stats[STAT_HP].estado = EDIT_INIMIGOS;
 	stats[STAT_HP].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_HP].data).c_str(), fonte, cor2);
 	stats[STAT_HP].botao.SetaPosicao((bordaLateral-stats[STAT_HP].botao.PegaDimensao().w)/2, 130);
@@ -147,22 +152,22 @@ void Editor::Inicializar(Janela* _janela)
 
 	stats[STAT_DEFESA].botao.Inicializar(janela->renderer, "Defesa", fonteS, cor);
 	stats[STAT_DEFESA].data = 5;
-	stats[STAT_DEFESA].min = 0;
+	stats[STAT_DEFESA].min = -999;
 	stats[STAT_DEFESA].estado = EDIT_INIMIGOS;
 	stats[STAT_DEFESA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_DEFESA].data).c_str(), fonte, cor2);
 	stats[STAT_DEFESA].botao.SetaPosicao((bordaLateral-stats[STAT_DEFESA].botao.PegaDimensao().w)/2, 340);
 
 	stats[STAT_MAGIA].botao.Inicializar(janela->renderer, "Magia", fonteS, cor);
 	stats[STAT_MAGIA].data = 5;
-	stats[STAT_MAGIA].min = 0;
+	stats[STAT_MAGIA].min = -999;
 	stats[STAT_MAGIA].estado = EDIT_INIMIGOS;
 	stats[STAT_MAGIA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_MAGIA].data).c_str(), fonte, cor2);
 	stats[STAT_MAGIA].botao.SetaPosicao((bordaLateral-stats[STAT_MAGIA].botao.PegaDimensao().w)/2, 410);
 
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
-	camera.w = w;
-	camera.h = h;
+	camera.w = w-bordaLateral;
+	camera.h = h-bordaHorizontal;
 	
 	TTF_CloseFont(fonte);
 	TTF_CloseFont(fonteS);
@@ -198,22 +203,31 @@ void Editor::Atualizar(Uint32 deltaTime)
 	}
 
 	if(!input){
-		if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
-			camera.y+= scrollSpeed;
-		else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 300 && tecla[KB_LALT].ativo))
-			camera.y-= scrollSpeed;
-		if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 600 && tecla[KB_LALT].ativo))
-			camera.x+= scrollSpeed;
-		else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 300 && tecla[KB_LALT].ativo))
-			camera.x-= scrollSpeed;
-		if(camera.x < -bordaLateral)
+		if(camera.w < largura){
+			if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 600 && tecla[KB_LALT].ativo))
+				camera.x+= scrollSpeed;
+			else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 300 && tecla[KB_LALT].ativo))
+				camera.x-= scrollSpeed;
+			if(camera.x < -bordaLateral)
+				camera.x = -bordaLateral;
+			else if(camera.x > largura-camera.w-bordaLateral)
+				camera.x = largura-camera.w-bordaLateral;
+		} else {
 			camera.x = -bordaLateral;
-		else if(camera.x > largura-camera.w)
-			camera.x = largura-camera.w;
-		if(camera.y < -bordaHorizontal)
+		}
+
+		if(altura > camera.h){
+			if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
+				camera.y+= scrollSpeed;
+			else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 300 && tecla[KB_LALT].ativo))
+				camera.y-= scrollSpeed;
+			if(camera.y < -bordaHorizontal)
+				camera.y = -bordaHorizontal;
+			else if(camera.y > altura-camera.h-bordaHorizontal)
+				camera.y = altura-camera.h-bordaHorizontal;
+		} else {
 			camera.y = -bordaHorizontal;
-		else if(camera.y > altura-camera.h)
-			camera.y = altura-camera.h;
+		}
 
 		if(tecla[KB_G].pressionado)
 			grid = !grid;
@@ -298,6 +312,15 @@ void Editor::Atualizar(Uint32 deltaTime)
 		else if(selecionado < 0)
 			selecionado = 9;
 		if(botoes[BTN_MODIFICAR].Pressionado()){
+			if(!inimigos.empty()){
+				for(unsigned int i = 0; i < inimigos.size(); i++){
+					inimigos[i]->Finalizar();
+					delete inimigos[i];
+					inimigos[i] = 0;
+				}
+			}
+			inimigos.clear();
+			inisel = 0;
 			mapa.Novo(stats[STAT_LARGURA].data, stats[STAT_ALTURA].data);
 			mapa.Inicializar(janela->renderer);
 		}
@@ -308,45 +331,108 @@ void Editor::Atualizar(Uint32 deltaTime)
 		}
 		break;
 	case EDIT_INIMIGOS:
-		botoes[BTN_ANT].Atualizar(mouse);
-		botoes[BTN_PROX].Atualizar(mouse);
-		if(botoes[BTN_ANT].Pressionado())
-			selecionado--;
-		else if(botoes[BTN_PROX].Pressionado())
-			selecionado++;
-		if(selecionado > 9)
-			selecionado = 0;
-		else if(selecionado < 0)
-			selecionado = 9;
-		if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-			bool colidiu = false;
-			SDL_Rect col;
-			if(!inimigos.empty()){
-				for(unsigned int i = 0; i < inimigos.size(); i++){
-					if(SDL_IntersectRect(&mouserect, &inimigos[i]->PegaBoundingBox(), &col) == SDL_TRUE){
-						colidiu = true;
+		if(tecla[KB_ESPACO].pressionado)
+			edit = !edit;
+		if(!edit){
+			botoes[BTN_ANT].Atualizar(mouse);
+			botoes[BTN_PROX].Atualizar(mouse);
+			if(botoes[BTN_ANT].Pressionado())
+				selecionado--;
+			else if(botoes[BTN_PROX].Pressionado())
+				selecionado++;
+			if(selecionado > 9)
+				selecionado = 0;
+			else if(selecionado < 0)
+				selecionado = 9;
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal && mouse->x+camera.x <= largura && mouse->y+camera.y <= altura){
+				SDL_Rect col;
+				inisel = 0;
+				if(!inimigos.empty()){
+					for(unsigned int i = 0; i < inimigos.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &inimigos[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							inisel = inimigos[i];
+						}
+					}
+				}
+				if(!inisel){
+					Atributos atributos = {stats[STAT_HP].data, stats[STAT_HP].data, stats[STAT_HPR].data, 0, 0, 0, stats[STAT_FORCA].data, stats[STAT_DEFESA].data, stats[STAT_MAGIA].data};
+					switch (selecionado)
+					{
+					case 0:
+						inimigos.push_back(inisel = new Lobisomem(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+						break;
+					case 1:
+						inimigos.push_back(inisel = new Crowley(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+						break;
+					case 2:
+						inimigos.push_back(inisel = new Lucifer(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
+						break;
+					default:
+						break;
+					}
+					if(inisel){
+						inisel->Inicializar();
 					}
 				}
 			}
-			if(!colidiu){
-				Atributos atributos = {stats[STAT_HP].data, stats[STAT_HP].data, stats[STAT_HPR].data, 0, 0, 0, stats[STAT_FORCA].data, stats[STAT_DEFESA].data, stats[STAT_MAGIA].data};
-				Inimigo* a = 0;
-				switch (selecionado)
-				{
-				case 0:
-					inimigos.push_back(a = new Lobisomem(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-					break;
-				case 1:
-					inimigos.push_back(a = new Crowley(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-					break;
-				case 2:
-					inimigos.push_back(a = new Lucifer(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), atributos, 0, &mapa)); 
-					break;
-				default:
-					break;
+		} else {
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				SDL_Rect col;
+				inisel = 0;
+				if(!inimigos.empty()){
+					for(unsigned int i = 0; i < inimigos.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &inimigos[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							inisel = inimigos[i];
+						}
+					}
 				}
-				if(a){
-					a->Inicializar();
+				if(inisel){
+					Atributos atributos = inisel->PegaAtributos();
+					stats[STAT_HP].data = atributos.hp;
+					stats[STAT_HPR].data = atributos.hpregen;
+					stats[STAT_FORCA].data = atributos.forca;
+					stats[STAT_DEFESA].data = atributos.defesa;
+					stats[STAT_MAGIA].data = atributos.magia;
+					for(int i = 0; i < STAT_MAX; i++){
+						if(stats[i].estado == estadoEditor){
+							stats[i].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[i].data).c_str(), fonte2, cor);
+						}
+					}
+				}
+			}
+			if(inisel){
+				Atributos& atributos = inisel->PegaAtributos();
+				atributos.hp = atributos.hpatual = stats[STAT_HP].data;
+				atributos.hpregen = stats[STAT_HPR].data;
+				atributos.forca = stats[STAT_FORCA].data;
+				atributos.defesa = stats[STAT_DEFESA].data;
+				atributos.magia = stats[STAT_MAGIA].data;
+
+				if(inisel != inimigos[inimigos.size()-1]){
+					botoes[BTN_BOSS].Atualizar(mouse);
+					if(botoes[BTN_BOSS].Pressionado()){
+						Inimigo* aux = inimigos[inimigos.size()-1];
+						for(unsigned int i = 0; i < inimigos.size(); i++){
+							if(inimigos[i] == inisel){
+								inimigos[inimigos.size()-1] = inisel;
+								inimigos[i] = aux;
+								break;
+							}
+						}
+					}
+				}
+				botoes[BTN_REMOVER].Atualizar(mouse);
+				if (botoes[BTN_REMOVER].Pressionado()){
+					std::vector<Inimigo*> a;
+					for (unsigned int i = 0; i < inimigos.size(); i++){
+						if (!(inimigos[i] == inisel)){
+							a.push_back(inimigos[i]);
+						}
+					}
+					swap(a, inimigos);
+					delete inisel;
+					inisel = 0;
+					a.clear();
 				}
 			}
 		}
@@ -405,6 +491,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 					}
 				}
 				inimigos.clear();
+				inisel = 0;
 				ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
 				if(mobfile.is_open()){
 					unsigned int id, qtd;
@@ -525,11 +612,27 @@ void Editor::Renderizar()
 		}	
 		break;
 	case EDIT_INIMIGOS:
-		botoes[BTN_ANT].Renderizar(janela->renderer);
-		botoes[BTN_PROX].Renderizar(janela->renderer);
-		mobset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
-		if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-			mobset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado);
+		if(!edit){
+			botoes[BTN_ANT].Renderizar(janela->renderer);
+			botoes[BTN_PROX].Renderizar(janela->renderer);
+			mobset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
+			if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				mobset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado);
+			}
+		} else {
+			if(inisel){
+				botoes[BTN_REMOVER].Renderizar(janela->renderer);
+				rect = inisel->PegaBoundingBox();
+				rect.x -= camera.x;
+				rect.y -= camera.y;
+				SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
+				if(inisel == inimigos[inimigos.size()-1]){
+					SDL_SetRenderDrawColor(janela->renderer, 255, 0, 0, 255);
+				} else {
+					botoes[BTN_BOSS].Renderizar(janela->renderer);
+				}
+				SDL_RenderDrawRect(janela->renderer, &rect);
+			}
 		}
 		break;
 	case EDIT_ARMADILHAS:
@@ -562,6 +665,7 @@ void Editor::Finalizar()
 		}
 	}
 	inimigos.clear();
+	inisel = 0;
 }
 
 Tela* Editor::ProximaTela()

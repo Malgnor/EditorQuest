@@ -16,76 +16,6 @@ void Ingame::Inicializar(Janela* _janela){
 	janela->SetaTitulo("Walachia - Ingame");
 	janela->SetaCorFundo(0, 0, 0);
 
-	/*	
-	unsigned int map[32][32] = { 
-		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 3, 2, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 4, 2, 4, 4, 4, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 5, 2, 5, 5, 5, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 5, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 6, 2, 6, 6, 6, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 6, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 7, 2, 7, 7, 7, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 7, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 8, 2, 8, 8, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 8, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 9, 2, 9, 9, 9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 0, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0 },
-		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
-		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	};
-	
-	unsigned int altura, largura;
-	altura = 32;
-	largura = 65;
-	unsigned int** map = new unsigned int*[altura];
-	for(unsigned int i = 0; i < altura; i++){
-		map[i] = new unsigned int[largura];
-	}
-
-	for(unsigned int i = 0; i < altura; i++){
-			for(unsigned int j = 0; j < largura; j++){
-				if( i == 0 || j == 0 || j == largura-1 || i == altura-1 || (0 == j%16 && i > 4) || (0 == j%8 && i < altura-4 && 0 != j%16))
-					map[i][j] = 1;
-				else
-					map[i][j] = 2;
-			}
-	}
-
-	ofstream out;
-	out.open("teste.equest", std::ios_base::binary);
-	if(out.is_open())
-	{
-		out.write((char*)&largura,sizeof(unsigned int));
-		out.write((char*)&altura,sizeof(unsigned int));
-		for(unsigned int i = 0; i < altura; i++)
-		{
-			for(unsigned int j = 0; j < largura; j++)
-			{
-				out.write((char*)&map[i][j],sizeof(unsigned int));
-			}
-		}
-		out.close();
-	}
-	*/
-
 	mapa.Carregar("teste");
 
 	mapa.Inicializar(janela->renderer);	
@@ -97,6 +27,7 @@ void Ingame::Inicializar(Janela* _janela){
 	camera.h = h;
 	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
+
 	botoes[BOTAO_STATUS].Inicializar(janela->renderer, "resources/botoes/Status.png", 50, h/10.0);
 	botoes[BOTAO_INVENTARIO].Inicializar(janela->renderer, "resources/botoes/itens.png", 50, h/10.0*2.25);
 	botoes[BOTAO_MENUINICIAL].Inicializar(janela->renderer, "resources/botoes/Menu Inicial.png", 50, h/10.0*5.50);
@@ -108,9 +39,10 @@ void Ingame::Inicializar(Janela* _janela){
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/filtro.png");
 	gameover.CriaTexturaDaImagem(janela->renderer, "resources/imgs/gameover.png");
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
+
 	gerenteAtor.Inicializar(janela);
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
-	//gerenteAtor.Adicionar(boss = new Lucifer(gerenteAtor, 1888.0, 160.0, jogador, &mapa));
+
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
@@ -120,13 +52,8 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0+48.0, 0.0, ARMADILHA_FLECHA));
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0-32.0, 0.0, ARMADILHA_FLECHA));
-		/*
-		if(i%2 == 0)
-			gerenteAtor.Adicionar(new Lobisomem(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
-		else
-			gerenteAtor.Adicionar(new Crowley(gerenteAtor, i*256.0+128.0, (altura/2)*32.0, jogador, &mapa));
-			*/
 	}
+
 	ifstream mobfile("resources/maps/teste/mob.equest", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
@@ -157,6 +84,7 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		mobfile.close();
 	}
+
 	Atributos a = jogador->PegaAtributos();
 	status.str("");
 	status << "HP/HPMax = " << a.hpatual << "/" << a.hp
@@ -192,14 +120,23 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	case ESTADO_INGAME:
 		camera.x = jogador->PegaBoundingBox().x - camera.w/2;
 		camera.y = jogador->PegaBoundingBox().y - camera.h/2;
-		if(camera.x < 0)
+
+		if(camera.w < largura){
+				if(camera.x < 0)
+				camera.x = 0;
+			else if(camera.x > largura-camera.w)
+				camera.x = largura-camera.w;
+		} else {
 			camera.x = 0;
-		else if(camera.x > largura-camera.w)
-			camera.x = largura-camera.w;
-		if(camera.y < 0)
+		}
+		if(altura > camera.h){
+			if(camera.y < 0)
+				camera.y = 0;
+			else if(camera.y > altura-camera.h)
+				camera.y = altura-camera.h;
+		} else {
 			camera.y = 0;
-		else if(camera.y > altura-camera.h)
-			camera.y = altura-camera.h;
+		}
 
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		
