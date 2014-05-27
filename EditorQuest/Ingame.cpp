@@ -46,6 +46,7 @@ void Ingame::Inicializar(Janela* _janela){
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
+	/*
 	for(int i = 0; i < largura/8; i++){
 		for(int j = 0; j < 7; j++){
 			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+32.0*j+256*i, (altura-7)*32.0, 0.0, ARMADILHA_ESPINHOS));
@@ -53,7 +54,7 @@ void Ingame::Inicializar(Janela* _janela){
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0+48.0, 0.0, ARMADILHA_FLECHA));
 		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0-32.0, 0.0, ARMADILHA_FLECHA));
 	}
-
+	*/
 	ifstream mobfile("resources/maps/teste/mob.equest", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
@@ -83,6 +84,23 @@ void Ingame::Inicializar(Janela* _janela){
 			boss = a;
 		}
 		mobfile.close();
+	}
+
+	ifstream armfile("resources/maps/teste/arm.equest", ios_base::binary);
+	if(armfile.is_open()){
+		unsigned int id, qtd;
+		int posX, posY, dano;
+		double dir;
+		armfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			armfile.read((char*)&id, sizeof(unsigned int));
+			armfile.read((char*)&posX, sizeof(int));
+			armfile.read((char*)&posY, sizeof(int));
+			armfile.read((char*)&dano, sizeof(int));
+			armfile.read((char*)&dir, sizeof(double));
+			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, posX, posY, dir, id, dano));
+		}
+		armfile.close();
 	}
 
 	Atributos a = jogador->PegaAtributos();

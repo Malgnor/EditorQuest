@@ -26,6 +26,7 @@ void Editor::Inicializar(Janela* _janela)
 	scrollSpeed = 32;
 	grid = input = edit = false;
 	inisel = 0;
+	armsel = 0;
 
 	gerenteAtores.Inicializar(janela);
 
@@ -66,8 +67,30 @@ void Editor::Inicializar(Janela* _janela)
 		mobfile.close();
 	}
 
+	ifstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+	if(armfile.is_open()){
+		unsigned int id, qtd;
+		int posX, posY, dano;
+		double dir;
+		armfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			armfile.read((char*)&id, sizeof(unsigned int));
+			armfile.read((char*)&posX, sizeof(int));
+			armfile.read((char*)&posY, sizeof(int));
+			armfile.read((char*)&dano, sizeof(int));
+			armfile.read((char*)&dir, sizeof(double));
+			Armadilha* a = 0;
+			armadilhas.push_back(a = new Armadilha(gerenteAtores, posX, posY, dir, id, dano));
+			if(a){
+				a->Inicializar();
+			}
+		}
+		armfile.close();
+	}
+
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
+	armset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/armset.png", 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);
@@ -163,6 +186,21 @@ void Editor::Inicializar(Janela* _janela)
 	stats[STAT_MAGIA].estado = EDIT_INIMIGOS;
 	stats[STAT_MAGIA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_MAGIA].data).c_str(), fonte, cor2);
 	stats[STAT_MAGIA].botao.SetaPosicao((bordaLateral-stats[STAT_MAGIA].botao.PegaDimensao().w)/2, 410);
+
+	/*ARMADILHA*/// STAT_DIR, STAT_DANO
+	stats[STAT_DIR].botao.Inicializar(janela->renderer, "Direcao", fonteS, cor);
+	stats[STAT_DIR].data = 0;
+	stats[STAT_DIR].min = 0;
+	stats[STAT_DIR].estado = EDIT_ARMADILHAS;
+	stats[STAT_DIR].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_DIR].data).c_str(), fonte, cor2);
+	stats[STAT_DIR].botao.SetaPosicao((bordaLateral-stats[STAT_DIR].botao.PegaDimensao().w)/2, 130);
+
+	stats[STAT_DANO].botao.Inicializar(janela->renderer, "Dano", fonteS, cor);
+	stats[STAT_DANO].data = 5;
+	stats[STAT_DANO].min = -999;
+	stats[STAT_DANO].estado = EDIT_ARMADILHAS;
+	stats[STAT_DANO].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_DANO].data).c_str(), fonte, cor2);
+	stats[STAT_DANO].botao.SetaPosicao((bordaLateral-stats[STAT_DANO].botao.PegaDimensao().w)/2, 200);
 
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
@@ -321,6 +359,17 @@ void Editor::Atualizar(Uint32 deltaTime)
 			}
 			inimigos.clear();
 			inisel = 0;
+
+			if(!armadilhas.empty()){
+				for(unsigned int i = 0; i < armadilhas.size(); i++){
+					armadilhas[i]->Finalizar();
+					delete armadilhas[i];
+					armadilhas[i] = 0;
+				}
+			}
+			armadilhas.clear();
+			armsel = 0;
+
 			mapa.Novo(stats[STAT_LARGURA].data, stats[STAT_ALTURA].data);
 			mapa.Inicializar(janela->renderer);
 		}
@@ -438,6 +487,75 @@ void Editor::Atualizar(Uint32 deltaTime)
 		}
 		break;
 	case EDIT_ARMADILHAS:
+		if(tecla[KB_ESPACO].pressionado)
+			edit = !edit;
+		if(!edit){			
+			botoes[BTN_ANT].Atualizar(mouse);
+			botoes[BTN_PROX].Atualizar(mouse);
+			if(botoes[BTN_ANT].Pressionado())
+				selecionado--;
+			else if(botoes[BTN_PROX].Pressionado())
+				selecionado++;
+			if(selecionado > 9)
+				selecionado = 0;
+			else if(selecionado < 0)
+				selecionado = 9;
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal && mouse->x+camera.x <= largura && mouse->y+camera.y <= altura){
+				SDL_Rect col;
+				armsel = 0;
+				if(!armadilhas.empty()){
+					for(unsigned int i = 0; i < armadilhas.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &armadilhas[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							armsel = armadilhas[i];
+						}
+					}
+				}
+				if(!armsel){
+					armadilhas.push_back(armsel = new Armadilha(gerenteAtores, (mouse->x+camera.x), (mouse->y+camera.y), stats[STAT_DIR].data*M_PI/180.0, selecionado%2, stats[STAT_DANO].data));
+					if(armsel){
+						armsel->Inicializar();
+					}
+				}
+			}
+		} else {
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				SDL_Rect col;
+				armsel = 0;
+				if(!armadilhas.empty()){
+					for(unsigned int i = 0; i < armadilhas.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &armadilhas[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							armsel = armadilhas[i];
+						}
+					}
+				}
+				if(armsel){
+					stats[STAT_DIR].data = (int)(armsel->PegaDir()*180.0/M_PI);
+					stats[STAT_DANO].data = armsel->PegaDano();
+					for(int i = 0; i < STAT_MAX; i++){
+						if(stats[i].estado == estadoEditor){
+							stats[i].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[i].data).c_str(), fonte2, cor);
+						}
+					}
+				}
+			}
+			if(armsel){
+				armsel->PegaDir() = (double)stats[STAT_DIR].data*M_PI/180.0;
+				armsel->PegaDano() = stats[STAT_DANO].data;
+				botoes[BTN_REMOVER].Atualizar(mouse);
+				if (botoes[BTN_REMOVER].Pressionado()){
+					std::vector<Armadilha*> a;
+					for (unsigned int i = 0; i < armadilhas.size(); i++){
+						if (!(armadilhas[i] == armsel)){
+							a.push_back(armadilhas[i]);
+						}
+					}
+					swap(a, armadilhas);
+					delete armsel;
+					armsel = 0;
+					a.clear();
+				}
+			}
+		}
 		break;
 	case EDIT_ITENS:
 		break;
@@ -477,6 +595,29 @@ void Editor::Atualizar(Uint32 deltaTime)
 						mobfile.write((char*)&inimigos[i]->PegaAtributos(), sizeof(Atributos));
 					}
 					mobfile.close();
+				}
+			}
+			if(!armadilhas.empty()){
+				ofstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+				if(armfile.is_open()){
+					unsigned int id, qtd;
+					int posX, posY, dano;
+					double dir;
+					qtd = armadilhas.size();
+					armfile.write((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < armadilhas.size(); i++){
+						id = armadilhas[i]->PegaTipoArmadilha();
+						posX = armadilhas[i]->PegaBoundingBox().x;
+						posY = armadilhas[i]->PegaBoundingBox().y;
+						dir = armadilhas[i]->PegaDirecao();
+						dano = armadilhas[i]->PegaDano();
+						armfile.write((char*)&id, sizeof(unsigned int));
+						armfile.write((char*)&posX, sizeof(int));
+						armfile.write((char*)&posY, sizeof(int));
+						armfile.write((char*)&dano, sizeof(int));
+						armfile.write((char*)&dir, sizeof(double));
+					}
+					armfile.close();
 				}
 			}
 		}
@@ -524,6 +665,35 @@ void Editor::Atualizar(Uint32 deltaTime)
 					}
 					mobfile.close();
 				}
+				if(!armadilhas.empty()){
+					for(unsigned int i = 0; i < armadilhas.size(); i++){
+						armadilhas[i]->Finalizar();
+						delete armadilhas[i];
+						armadilhas[i] = 0;
+					}
+				}
+				armadilhas.clear();
+				armsel = 0;
+				ifstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+				if(armfile.is_open()){
+					unsigned int id, qtd;
+					int posX, posY, dano;
+					double dir;
+					armfile.read((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < qtd; i++){
+						armfile.read((char*)&id, sizeof(unsigned int));
+						armfile.read((char*)&posX, sizeof(int));
+						armfile.read((char*)&posY, sizeof(int));
+						armfile.read((char*)&dano, sizeof(int));
+						armfile.read((char*)&dir, sizeof(double));
+						Armadilha* a = 0;
+						armadilhas.push_back(a = new Armadilha(gerenteAtores, posX, posY, dir, id, dano));
+						if(a){
+							a->Inicializar();
+						}
+					}
+					armfile.close();
+				}
 			}
 		}
 		if(botoes[BTN_GRID].Pressionado()){
@@ -555,12 +725,19 @@ void Editor::Renderizar()
 	int offX = (camera.x+bordaLateral)%32;
 	int offY = (camera.y+bordaHorizontal)%32;
 	mapa.Renderizar(janela->renderer, &camera);
-
+	
 	if(!inimigos.empty()){
 		for(unsigned int i = 0; i < inimigos.size(); i++){
 			inimigos[i]->Renderizar(&camera);
 		}
 	}
+
+	if(!armadilhas.empty()){
+		for(unsigned int i = 0; i < armadilhas.size(); i++){
+			armadilhas[i]->Render(&camera);
+		}
+	}
+
 	SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
 	if(grid){
 		for(int y = 0; y < 1+(600-bordaHorizontal)/32; y++){
@@ -636,6 +813,23 @@ void Editor::Renderizar()
 		}
 		break;
 	case EDIT_ARMADILHAS:
+		if(!edit){
+			botoes[BTN_ANT].Renderizar(janela->renderer);
+			botoes[BTN_PROX].Renderizar(janela->renderer);
+			armset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
+			if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				armset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado, 0, (double)stats[STAT_DIR].data*M_PI/180.0);
+			}
+		} else {
+			if(armsel){
+				botoes[BTN_REMOVER].Renderizar(janela->renderer);
+				rect = armsel->PegaBoundingBox();
+				rect.x -= camera.x;
+				rect.y -= camera.y;
+				SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
+				SDL_RenderDrawRect(janela->renderer, &rect);
+			}
+		}
 		break;
 	case EDIT_ITENS:
 		break;
@@ -666,6 +860,16 @@ void Editor::Finalizar()
 	}
 	inimigos.clear();
 	inisel = 0;
+
+	if(!armadilhas.empty()){
+		for(unsigned int i = 0; i < armadilhas.size(); i++){
+			armadilhas[i]->Finalizar();
+			delete armadilhas[i];
+			armadilhas[i] = 0;
+		}
+	}
+	armadilhas.clear();
+	armsel = 0;
 }
 
 Tela* Editor::ProximaTela()
