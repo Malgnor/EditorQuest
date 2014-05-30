@@ -181,6 +181,36 @@ bool Mapa::Alterar(unsigned int x, unsigned int y, unsigned int id){
 	return true;
 }
 
+bool Mapa::AlterarBloco(unsigned int x, unsigned int y, unsigned int id){
+	if(x >= largura || y  >= altura || id > 9)
+		return false;
+	
+	if(id == mapa[y][x])
+		return false;
+
+	unsigned int src = mapa[y][x];
+	AlterarR(x, y, id, src);
+
+	return true;
+}
+
+void Mapa::AlterarR(unsigned int x, unsigned int y, unsigned int dst, unsigned int src){
+	if(x >= largura || y  >= altura || dst > 9)
+		return;
+	
+	if(src != mapa[y][x])
+		return;
+
+	mapa[y][x] = dst;
+	AlterarR(x+1, y, dst, src);
+	AlterarR(x, y+1, dst, src);
+	if(x)
+		AlterarR(x-1, y, dst, src);
+	if(y)
+		AlterarR(x, y-1, dst, src);
+}
+
+
 
 SDL_Rect Mapa::PegaDimensaoemTiles()
 {

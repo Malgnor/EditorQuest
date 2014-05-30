@@ -31,6 +31,8 @@ public:
 	bool Carregar(std::string nome);
 
 	bool Alterar(unsigned int x, unsigned int y, unsigned int id);
+	bool AlterarBloco(unsigned int x, unsigned int y, unsigned int id);
+	void AlterarR(unsigned int x, unsigned int y, unsigned int dst, unsigned int src);
 
 	SDL_Rect PegaDimensaoemTiles();
 	SDL_Rect PegaDimensaoAbsoluta();

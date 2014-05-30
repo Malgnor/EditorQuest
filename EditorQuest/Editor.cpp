@@ -374,8 +374,14 @@ void Editor::Atualizar(Uint32 deltaTime)
 			mapa.Inicializar(janela->renderer);
 		}
 		if(mouse->botoes[M_ESQUERDO].ativo && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-			if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado)){
-				mapa.Inicializar(janela->renderer);
+			if(tecla[KB_ESPACO].ativo){				
+				if(mapa.AlterarBloco((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado)){
+					mapa.Inicializar(janela->renderer);
+				}
+			} else{
+				if(mapa.Alterar((mouse->x+camera.x)/32, (mouse->y+camera.y)/32, selecionado)){
+					mapa.Inicializar(janela->renderer);
+				}
 			}
 		}
 		break;
@@ -818,7 +824,7 @@ void Editor::Renderizar()
 			botoes[BTN_PROX].Renderizar(janela->renderer);
 			armset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado);
 			if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
-				armset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado, 0, (double)stats[STAT_DIR].data*M_PI/180.0);
+				armset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado, 0, selecionado%2 == 0 ? (double)stats[STAT_DIR].data*M_PI/180.0 : 0.0);
 			}
 		} else {
 			if(armsel){

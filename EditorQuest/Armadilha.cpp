@@ -76,7 +76,7 @@ void Armadilha::Renderizar(SDL_Rect* camera){
 }
 
 void Armadilha::Render(SDL_Rect* camera){
-	spr.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, 0, 0, direcao);
+	spr.Renderizar(gerente.janela->renderer, x-(double)camera->x, y-(double)camera->y, 0, 0, tipo == 0 ? direcao : 0.0);
 }
 
 void Armadilha::Finalizar(){
