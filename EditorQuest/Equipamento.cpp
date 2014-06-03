@@ -1,8 +1,8 @@
 #include "Equipamento.h"
 #include "Jogador.h"
 
-Equipamento::Equipamento(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos _atributos, unsigned int _slot)
-	: Item(renderer, _nome, _descricao, _icone, _atributos, ITEM_EQUIPAMENTO), equipado(false), slot(_slot){}
+Equipamento::Equipamento(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int _slot, unsigned int x)
+	: Item(renderer, _nome, _descricao, _atributos, ITEM_EQUIPAMENTO, x, _slot), equipado(false), slot(_slot){}
 
 bool Equipamento::Usar(Jogador* jogador){
 	Item** inventario = jogador->PegaInventario();

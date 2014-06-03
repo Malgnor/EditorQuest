@@ -10,7 +10,7 @@ private:
 	unsigned int slot;
 
 public:
-	Equipamento(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos _atributos, unsigned int slot);
+	Equipamento(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int slot, unsigned int x);
 	virtual bool Usar(Jogador* jogador);
 	unsigned int PegaSlot();
 	bool EstaEquipado();

@@ -30,7 +30,7 @@ protected:
 
 public:
 	Item();
-	Item(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos , unsigned int _tipo);
+	Item(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int x, unsigned int y);
 
 	virtual bool Usar(Jogador* jogador) = 0;
 

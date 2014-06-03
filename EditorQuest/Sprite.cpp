@@ -301,6 +301,37 @@ bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, unsigned int **mapa, unsign
 	return (textura != 0);
 }
 
+bool Sprite::CriaTexturaIcone(SDL_Renderer* renderer, unsigned int x, unsigned int y){
+	this->Destruir();
+
+	SDL_Surface* itemSurface = IMG_Load("resources/imgs/itemset.jpg");
+	if(itemSurface == 0){
+		printf("Falha ao criar Surface! Path: resources/imgs/itemset.jpg IMG_Error: %s\n", IMG_GetError());
+	} else {
+		SDL_Surface* iconeSurface = SDL_CreateRGBSurface(0, 32, 32, 32, rmask, gmask, bmask, amask);
+		if(iconeSurface == 0){
+			printf("Falha ao criar Surface! SDL Error: %s\n", SDL_GetError());
+		} else {
+			SDL_Rect srcrect = {x*32, y*32, 32, 32};
+			SDL_Rect dstrect = {0, 0, 32, 32};
+
+			SDL_BlitSurface(itemSurface, &srcrect, iconeSurface, &dstrect);
+
+			textura = SDL_CreateTextureFromSurface(renderer, iconeSurface);
+			if(textura == 0){
+				printf("Falha ao criar textura! SDL Error: %s\n", SDL_GetError());
+			} else {
+				src = iconeSurface->clip_rect;
+			}
+		}
+		SDL_FreeSurface(iconeSurface);
+	}
+
+	SDL_FreeSurface(itemSurface);
+
+	return (textura != 0);
+}
+
 void Sprite::Renderizar(SDL_Renderer *renderer, double posX, double posY, unsigned int indiceX, unsigned int indiceY, double angulo, double escalaX, double escalaY, SDL_Point* centro, SDL_RendererFlip flip)
 {
 	if(textura == 0){		

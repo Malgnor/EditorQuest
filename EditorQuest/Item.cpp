@@ -17,12 +17,12 @@ Item::Item()
 	atributos.magia = 0;
 }
 
-Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, const char* _icone, Atributos _atributos, unsigned int _tipo)
+Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int x, unsigned int y)
 	: nome(_nome), descricao(_descricao), atributos(_atributos), tipo(_tipo)
 {
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
-	icone.CriaTexturaDaImagem(renderer, _icone);
+	icone.CriaTexturaIcone(renderer, x, y);
 	txtnome.CriaTexturaDoTexto(renderer, nome.c_str(), fonte, cor);
 	TTF_CloseFont(fonte);
 	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);

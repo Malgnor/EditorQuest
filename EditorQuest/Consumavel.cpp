@@ -3,8 +3,8 @@
 #include "GerenteAtor.h"
 
 
-Consumavel::Consumavel(SDL_Renderer* renderer, std::string _nome, std::string _descricao, const char* _icone, Atributos _atributos, unsigned int _tipo)
-	: Item(renderer, _nome, _descricao, _icone, _atributos, ITEM_CONSUMIVEL), tipopocao(_tipo)
+Consumavel::Consumavel(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int x)
+	: Item(renderer, _nome, _descricao, _atributos, ITEM_CONSUMIVEL, x, 6), tipopocao(_tipo)
 {
 
 }

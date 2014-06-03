@@ -134,6 +134,7 @@ void Inimigo::Renderizar(SDL_Rect* camera){
 }
 
 void Inimigo::Finalizar(){
+	/*
 	Item* item = 0;
 	Atributos temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	switch (rand()%11)
@@ -216,4 +217,5 @@ void Inimigo::Finalizar(){
 		break;
 	}
 	gerente.Adicionar(new DropItem(gerente, item, x, y));
+	*/
 }
