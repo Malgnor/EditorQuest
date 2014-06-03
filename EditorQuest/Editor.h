@@ -6,6 +6,7 @@
 #include "Mapa.h"
 #include "Inimigo.h"
 #include "Armadilha.h"
+#include "DropItem.h"
 #include "GerenteAtor.h"
 #include <vector>
 #include <string>
@@ -24,20 +25,21 @@ private:
 		/*MAPA*/ BTN_PROX, BTN_ANT, BTN_MODIFICAR, 
 		/*INIMIGO*/ BTN_BOSS, BTN_REMOVER, 
 		/*ARMADILHA*/
-		/*ITENS*/
+		/*ITENS*/ BTN_BAIXO,
 		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
 		BTN_MAX};
 	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
 	enum {/*MAPA*/ STAT_ALTURA, STAT_LARGURA,
 		  /*INIMIGO*/ STAT_HP, STAT_HPR, STAT_FORCA, STAT_DEFESA, STAT_MAGIA,
 		  /*ARMADILHA*/ STAT_DIR, STAT_DANO, 
+		  /*ITENS*/ STAT_IHP, STAT_IHPR, STAT_IMP, STAT_IMPR, STAT_IFORCA, STAT_IDEFESA, STAT_IMAGIA,
 		  STAT_MAX};
 	Botao botoes[BTN_MAX];
 	StatBtn stats[STAT_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
-	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, scrollSpeed;
-	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, mobset, armset;
+	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, selecionado2, scrollSpeed;
+	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, mobset, armset, itemset;
 	bool grid, input, edit;
 	GerenteAtor gerenteAtores;
 	std::string nome;
@@ -45,6 +47,8 @@ private:
 	Inimigo* inisel;
 	std::vector<Armadilha*> armadilhas;
 	Armadilha* armsel;
+	std::vector<DropItem*> items;
+	DropItem* itemsel;
 
 public:
 	Editor(std::string _nome);

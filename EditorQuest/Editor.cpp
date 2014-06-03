@@ -22,11 +22,12 @@ void Editor::Inicializar(Janela* _janela)
 	bordaHorizontal = 60;
 	bordaLateral = 150;
 	estadoEditor = EDIT_NONE;
-	selecionado = 0;
+	selecionado = selecionado2 = 0;
 	scrollSpeed = 32;
 	grid = input = edit = false;
 	inisel = 0;
 	armsel = 0;
+	itemsel = 0;
 
 	gerenteAtores.Inicializar(janela);
 
@@ -91,6 +92,7 @@ void Editor::Inicializar(Janela* _janela)
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
 	armset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/armset.png", 32);
+	itemset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/itemset.jpg", 32, 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);
@@ -109,6 +111,7 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_MODIFICAR].Inicializar(janela->renderer, "Modificar", fonteS, cor);
 	botoes[BTN_BOSS].Inicializar(janela->renderer, "Boss", fonteS, cor);
 	botoes[BTN_REMOVER].Inicializar(janela->renderer, "Remover", fonteS, cor);
+	botoes[BTN_BAIXO].Inicializar(janela->renderer, "\\/", fonteS, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
 	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
 	botoes[BTN_PLUS].Inicializar(janela->renderer, "+", fonte, cor);
@@ -122,6 +125,8 @@ void Editor::Inicializar(Janela* _janela)
 		botoes[i-1].SetaPosicao(px, 10);
 	}
 	
+	botoes[BTN_BAIXO].SetaPosicao((bordaLateral-botoes[BTN_BAIXO].PegaDimensao().w)/2, 535);
+
 	botoes[BTN_ANT].SetaPosicao(5, 500);
 	botoes[BTN_PROX].SetaPosicao(bordaLateral-5-botoes[BTN_PROX].PegaDimensao().w, 500);
 	botoes[BTN_MODIFICAR].SetaPosicao((bordaLateral-botoes[BTN_MODIFICAR].PegaDimensao().w)/2, 350);
@@ -201,6 +206,56 @@ void Editor::Inicializar(Janela* _janela)
 	stats[STAT_DANO].estado = EDIT_ARMADILHAS;
 	stats[STAT_DANO].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_DANO].data).c_str(), fonte, cor2);
 	stats[STAT_DANO].botao.SetaPosicao((bordaLateral-stats[STAT_DANO].botao.PegaDimensao().w)/2, 200);
+
+	/*ITENS*/// STAT_IHP, STAT_IHPR, STAT_IMP, STAT_IMPR, STAT_IFORCA, STAT_IDEFESA, STAT_IMAGIA,
+	stats[STAT_IHP].botao.Inicializar(janela->renderer, "HP", fonteS, cor);
+	stats[STAT_IHP].data = 5;
+	stats[STAT_IHP].min = -999;
+	stats[STAT_IHP].estado = EDIT_ITENS;
+	stats[STAT_IHP].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IHP].data).c_str(), fonte, cor2);
+	stats[STAT_IHP].botao.SetaPosicao((bordaLateral-stats[STAT_IHP].botao.PegaDimensao().w)/2, 125);
+
+	stats[STAT_IHPR].botao.Inicializar(janela->renderer, "HP/s", fonteS, cor);
+	stats[STAT_IHPR].data = 5;
+	stats[STAT_IHPR].min = -999;
+	stats[STAT_IHPR].estado = EDIT_ITENS;
+	stats[STAT_IHPR].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IHPR].data).c_str(), fonte, cor2);
+	stats[STAT_IHPR].botao.SetaPosicao((bordaLateral-stats[STAT_IHPR].botao.PegaDimensao().w)/2, 180);
+
+	stats[STAT_IMP].botao.Inicializar(janela->renderer, "MP", fonteS, cor);
+	stats[STAT_IMP].data = 5;
+	stats[STAT_IMP].min = -999;
+	stats[STAT_IMP].estado = EDIT_ITENS;
+	stats[STAT_IMP].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IMP].data).c_str(), fonte, cor2);
+	stats[STAT_IMP].botao.SetaPosicao((bordaLateral-stats[STAT_IMP].botao.PegaDimensao().w)/2, 235);
+
+	stats[STAT_IMPR].botao.Inicializar(janela->renderer, "MP/s", fonteS, cor);
+	stats[STAT_IMPR].data = 5;
+	stats[STAT_IMPR].min = -999;
+	stats[STAT_IMPR].estado = EDIT_ITENS;
+	stats[STAT_IMPR].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IMPR].data).c_str(), fonte, cor2);
+	stats[STAT_IMPR].botao.SetaPosicao((bordaLateral-stats[STAT_IMPR].botao.PegaDimensao().w)/2, 290);
+
+	stats[STAT_IFORCA].botao.Inicializar(janela->renderer, "Forca", fonteS, cor);
+	stats[STAT_IFORCA].data = 5;
+	stats[STAT_IFORCA].min = -999;
+	stats[STAT_IFORCA].estado = EDIT_ITENS;
+	stats[STAT_IFORCA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IFORCA].data).c_str(), fonte, cor2);
+	stats[STAT_IFORCA].botao.SetaPosicao((bordaLateral-stats[STAT_IFORCA].botao.PegaDimensao().w)/2, 345);
+
+	stats[STAT_IDEFESA].botao.Inicializar(janela->renderer, "Defesa", fonteS, cor);
+	stats[STAT_IDEFESA].data = 5;
+	stats[STAT_IDEFESA].min = -999;
+	stats[STAT_IDEFESA].estado = EDIT_ITENS;
+	stats[STAT_IDEFESA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IDEFESA].data).c_str(), fonte, cor2);
+	stats[STAT_IDEFESA].botao.SetaPosicao((bordaLateral-stats[STAT_IDEFESA].botao.PegaDimensao().w)/2, 400);
+
+	stats[STAT_IMAGIA].botao.Inicializar(janela->renderer, "Magia", fonteS, cor);
+	stats[STAT_IMAGIA].data = 5;
+	stats[STAT_IMAGIA].min = -999;
+	stats[STAT_IMAGIA].estado = EDIT_ITENS;
+	stats[STAT_IMAGIA].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[STAT_IMAGIA].data).c_str(), fonte, cor2);
+	stats[STAT_IMAGIA].botao.SetaPosicao((bordaLateral-stats[STAT_IMAGIA].botao.PegaDimensao().w)/2, 455);
 
 	camera.x = -bordaLateral;
 	camera.y = -bordaHorizontal;
@@ -495,7 +550,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 	case EDIT_ARMADILHAS:
 		if(tecla[KB_ESPACO].pressionado)
 			edit = !edit;
-		if(!edit){			
+		if(!edit){
 			botoes[BTN_ANT].Atualizar(mouse);
 			botoes[BTN_PROX].Atualizar(mouse);
 			if(botoes[BTN_ANT].Pressionado())
@@ -564,6 +619,29 @@ void Editor::Atualizar(Uint32 deltaTime)
 		}
 		break;
 	case EDIT_ITENS:
+		if(tecla[KB_ESPACO].pressionado)
+			edit = !edit;
+		if(!edit){
+			botoes[BTN_ANT].Atualizar(mouse);
+			botoes[BTN_PROX].Atualizar(mouse);
+			botoes[BTN_BAIXO].Atualizar(mouse);
+			if(botoes[BTN_ANT].Pressionado())
+				selecionado--;
+			else if(botoes[BTN_PROX].Pressionado())
+				selecionado++;
+			if(botoes[BTN_BAIXO].Pressionado())
+				selecionado2++;
+			if(selecionado > 9)
+				selecionado = 0;
+			else if(selecionado < 0)
+				selecionado = 9;
+			if(selecionado2 > 4)
+				selecionado2 = 0;
+			else if(selecionado2 < 0)
+				selecionado2 = 4;
+		} else {
+
+		}
 		break;
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Atualizar(mouse);
@@ -744,6 +822,12 @@ void Editor::Renderizar()
 		}
 	}
 
+	if(!items.empty()){
+		for(unsigned int i = 0; i < items.size(); i++){
+			items[i]->Renderizar(&camera);
+		}
+	}
+
 	SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
 	if(grid){
 		for(int y = 0; y < 1+(600-bordaHorizontal)/32; y++){
@@ -838,6 +922,24 @@ void Editor::Renderizar()
 		}
 		break;
 	case EDIT_ITENS:
+		if(!edit){
+			botoes[BTN_ANT].Renderizar(janela->renderer);
+			botoes[BTN_PROX].Renderizar(janela->renderer);
+			botoes[BTN_BAIXO].Renderizar(janela->renderer);
+			itemset.Renderizar(janela->renderer, bordaLateral/2.0-16.0, 500.0, selecionado, selecionado2);
+			if(mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				itemset.Renderizar(janela->renderer, mouse->x, mouse->y, selecionado, selecionado2);
+			}
+		} else {
+			if(itemsel){
+				botoes[BTN_REMOVER].Renderizar(janela->renderer);
+				rect = itemsel->PegaBoundingBox();
+				rect.x -= camera.x;
+				rect.y -= camera.y;
+				SDL_SetRenderDrawColor(janela->renderer, 255, 255, 255, 255);
+				SDL_RenderDrawRect(janela->renderer, &rect);
+			}
+		}
 		break;
 	case EDIT_MENU:
 		botoes[BTN_SALVAR].Renderizar(janela->renderer);
@@ -876,6 +978,16 @@ void Editor::Finalizar()
 	}
 	armadilhas.clear();
 	armsel = 0;
+
+	if(!items.empty()){
+		for(unsigned int i = 0; i < items.size(); i++){
+			items[i]->Finalizar();
+			delete items[i];
+			items[i] = 0;
+		}
+	}
+	items.clear();
+	itemsel = 0;
 }
 
 Tela* Editor::ProximaTela()
