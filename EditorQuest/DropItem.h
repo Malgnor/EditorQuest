@@ -13,10 +13,12 @@ private:
 	Item* item;
 	Uint32 time;
 	bool vivo;
+	bool persist;
 
 public:
-	DropItem(GerenteAtor& _gerente, Item* _item, double _x, double _y);
+	DropItem(GerenteAtor& _gerente, Item* _item, double _x, double _y, bool _persist = false);
 	
+	Item* PegaItem();
 	virtual SDL_Rect PegaBoundingBox();
 	
 	virtual double PegaDirecao();

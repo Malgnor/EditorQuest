@@ -304,9 +304,9 @@ bool Sprite::CriaTexturaMapa(SDL_Renderer* renderer, unsigned int **mapa, unsign
 bool Sprite::CriaTexturaIcone(SDL_Renderer* renderer, unsigned int x, unsigned int y){
 	this->Destruir();
 
-	SDL_Surface* itemSurface = IMG_Load("resources/imgs/itemset.jpg");
+	SDL_Surface* itemSurface = IMG_Load("resources/imgs/itemset.png");
 	if(itemSurface == 0){
-		printf("Falha ao criar Surface! Path: resources/imgs/itemset.jpg IMG_Error: %s\n", IMG_GetError());
+		printf("Falha ao criar Surface! Path: resources/imgs/itemset.png IMG_Error: %s\n", IMG_GetError());
 	} else {
 		SDL_Surface* iconeSurface = SDL_CreateRGBSurface(0, 32, 32, 32, rmask, gmask, bmask, amask);
 		if(iconeSurface == 0){

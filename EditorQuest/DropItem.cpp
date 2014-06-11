@@ -3,7 +3,8 @@
 #include "Jogador.h"
 #include "Mapa.h"
 
-DropItem::DropItem(GerenteAtor& _gerente, Item* _item, double _x, double _y) : Ator(_gerente), item(_item), x(_x), y(_y)
+DropItem::DropItem(GerenteAtor& _gerente, Item* _item, double _x, double _y, bool _persist) :
+	Ator(_gerente), item(_item), x(_x), y(_y), persist(_persist)
 {
 
 }
@@ -88,7 +89,7 @@ void DropItem::Inicializar(){
 
 void DropItem::Atualizar(Uint32 deltaTime, SDL_Rect* camera){
 	time += deltaTime;
-	if(time >= 10000 || !item)
+	if((time >= 10000 && !persist) || !item)
 		vivo = false;
 }	
 
@@ -101,4 +102,8 @@ void DropItem::Finalizar(){
 	if(item)
 		delete item;
 	item = 0;
+}
+
+Item* DropItem::PegaItem(){
+	return item;
 }

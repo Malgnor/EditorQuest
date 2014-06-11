@@ -48,8 +48,8 @@ int SDLApp::Executar(){
 	Uint32 deltaTime = 0;
 	Uint32 ticks = SDL_GetTicks();
 	while(!sair) {
-		//while(SDL_GetTicks() < ticks+(1000/60))
-		//	SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
+		while(SDL_GetTicks() < ticks+(1000/60))
+			SDL_Delay(ticks+(1000/60)-SDL_GetTicks());
 		deltaTime = SDL_GetTicks() - ticks;
 		ticks = SDL_GetTicks();
 		gerente.PegaJanelaFocada()->entrada.reseta();

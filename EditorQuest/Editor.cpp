@@ -3,6 +3,8 @@
 #include "Lobisomem.h"
 #include "Crowley.h"
 #include "Lucifer.h"
+#include "Consumavel.h"
+#include "Equipamento.h"
 #include <fstream>
 
 using namespace std;
@@ -29,12 +31,27 @@ void Editor::Inicializar(Janela* _janela)
 	armsel = 0;
 	itemsel = 0;
 
+	nomes[0] = "Arma";
+	nomes[1] = "Capacete";
+	nomes[2] = "Peitoral";
+	nomes[3] = "Calca";
+	nomes[4] = "Botas";
+	nomes[5] = "Pocao";
+
+	desc[0] = "Uma arma";
+	desc[1] = "Um capacete";
+	desc[2] = "Um peitoral";
+	desc[3] = "Uma calca";
+	desc[4] = "Um par de botas";
+	desc[5] = "Uma pocao";
+
 	gerenteAtores.Inicializar(janela);
 
 	janela->entrada.SetaTamanhoTexto(8);
 	
 	mapa.Carregar(nome);
 	mapa.Inicializar(janela->renderer);
+
 	ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
@@ -89,10 +106,39 @@ void Editor::Inicializar(Janela* _janela)
 		armfile.close();
 	}
 
+	ifstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+	if(itemfile.is_open()){
+		unsigned int id, id2, qtd;
+		int posX, posY;
+		Atributos atributos;
+		itemfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			itemfile.read((char*)&id, sizeof(unsigned int));
+			itemfile.read((char*)&id2, sizeof(unsigned int));
+			itemfile.read((char*)&posX, sizeof(int));
+			itemfile.read((char*)&posY, sizeof(int));
+			itemfile.read((char*)&atributos, sizeof(Atributos));
+			DropItem* a = 0;
+			Item* b = 0;
+			if(id2 == 5){
+				b = new Consumavel(janela->renderer, nomes[id2], desc[id2], atributos, id);
+			} else {
+				b = new Equipamento(janela->renderer, nomes[id2], desc[id2], atributos, id2, id);
+			}
+			if(b){
+				items.push_back(a = new DropItem(gerenteAtores, b, posX, posY, true));
+				if(a){
+					a->Inicializar();
+				} 
+			}
+		}
+		itemfile.close();
+	}
+
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
 	armset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/armset.png", 32);
-	itemset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/itemset.jpg", 32, 32);
+	itemset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/itemset.png", 32, 32);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);
@@ -629,18 +675,96 @@ void Editor::Atualizar(Uint32 deltaTime)
 				selecionado--;
 			else if(botoes[BTN_PROX].Pressionado())
 				selecionado++;
-			if(botoes[BTN_BAIXO].Pressionado())
+			if(botoes[BTN_BAIXO].Pressionado()){
 				selecionado2++;
+				selecionado = 0;
+			}
 			if(selecionado > 9)
 				selecionado = 0;
 			else if(selecionado < 0)
 				selecionado = 9;
-			if(selecionado2 > 4)
+			if(selecionado2 > 5)
 				selecionado2 = 0;
 			else if(selecionado2 < 0)
-				selecionado2 = 4;
+				selecionado2 = 5;
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal && mouse->x+camera.x <= largura && mouse->y+camera.y <= altura){
+				SDL_Rect col;
+				itemsel = 0;
+				if(!items.empty()){
+					for(unsigned int i = 0; i < items.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &items[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							itemsel = items[i];
+						}
+					}
+				}
+				if(!itemsel){
+					Atributos atributos = {stats[STAT_IHP].data, 0, stats[STAT_IHPR].data, stats[STAT_IMP].data, 0, stats[STAT_IMPR].data, stats[STAT_IFORCA].data, stats[STAT_IDEFESA].data, stats[STAT_IMAGIA].data};
+					Item* item = 0;
+					if(selecionado2 == 5){
+						atributos.defesa = atributos.forca = atributos.magia = atributos.hpregen = atributos.mpregen = 0;
+						item = new Consumavel(janela->renderer, nomes[selecionado2], desc[selecionado2], atributos, selecionado);
+					} else {
+						item = new Equipamento(janela->renderer, nomes[selecionado2], desc[selecionado2], atributos, selecionado2, selecionado);
+					}
+					if(item){
+						items.push_back(itemsel = new DropItem(gerenteAtores, item, (mouse->x+camera.x), (mouse->y+camera.y), true));
+						if(itemsel){
+							itemsel->Inicializar();
+						} 
+					}
+				}
+			}
 		} else {
+			if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal){
+				SDL_Rect col;
+				itemsel = 0;
+				if(!items.empty()){
+					for(unsigned int i = 0; i < items.size(); i++){
+						if(SDL_IntersectRect(&mouserect, &items[i]->PegaBoundingBox(), &col) == SDL_TRUE){
+							itemsel = items[i];
+						}
+					}
+				}
+				if(itemsel){
+					Atributos atributos = itemsel->PegaItem()->PegaAtributos();
+					stats[STAT_IHP].data = atributos.hp;
+					stats[STAT_IHPR].data = atributos.hpregen;
+					stats[STAT_IMP].data = atributos.mp;
+					stats[STAT_IMPR].data = atributos.mpregen;
+					stats[STAT_IFORCA].data = atributos.forca;
+					stats[STAT_IDEFESA].data = atributos.defesa;
+					stats[STAT_IMAGIA].data = atributos.magia;
+					for(int i = 0; i < STAT_MAX; i++){
+						if(stats[i].estado == estadoEditor){
+							stats[i].sprite.CriaTexturaDoTexto(janela->renderer, to_string(stats[i].data).c_str(), fonte2, cor);
+						}
+					}
+				}
+			}
+			if(itemsel){
+				Atributos& atributos = itemsel->PegaItem()->PegaAtributos();
+				atributos.hp = stats[STAT_IHP].data;
+				atributos.hpregen = stats[STAT_IHPR].data;
+				atributos.mp = stats[STAT_IMP].data;
+				atributos.mpregen = stats[STAT_IMPR].data;
+				atributos.forca = stats[STAT_IFORCA].data;
+				atributos.defesa = stats[STAT_IDEFESA].data;
+				atributos.magia = stats[STAT_IMAGIA].data;
 
+				botoes[BTN_REMOVER].Atualizar(mouse);
+				if (botoes[BTN_REMOVER].Pressionado()){
+					std::vector<DropItem*> a;
+					for (unsigned int i = 0; i < items.size(); i++){
+						if (!(items[i] == itemsel)){
+							a.push_back(items[i]);
+						}
+					}
+					swap(a, items);
+					delete itemsel;
+					itemsel = 0;
+					a.clear();
+				}
+			}
 		}
 		break;
 	case EDIT_MENU:
@@ -681,6 +805,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 					mobfile.close();
 				}
 			}
+
 			if(!armadilhas.empty()){
 				ofstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
 				if(armfile.is_open()){
@@ -704,10 +829,32 @@ void Editor::Atualizar(Uint32 deltaTime)
 					armfile.close();
 				}
 			}
+
+			if(!items.empty()){
+				ofstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+				if(itemfile.is_open()){
+					unsigned int id, id2, qtd;
+					int posX, posY;
+					qtd = items.size();
+					itemfile.write((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < items.size(); i++){
+						items[i]->PegaItem()->PegaXY(id, id2);
+						posX = items[i]->PegaBoundingBox().x;
+						posY = items[i]->PegaBoundingBox().y;
+						itemfile.write((char*)&id, sizeof(unsigned int));
+						itemfile.write((char*)&id2, sizeof(unsigned int));
+						itemfile.write((char*)&posX, sizeof(int));
+						itemfile.write((char*)&posY, sizeof(int));
+						itemfile.write((char*)&items[i]->PegaItem()->PegaAtributos(), sizeof(Atributos));
+					}
+					itemfile.close();
+				}
+			}
 		}
 		if(botoes[BTN_CARREGAR].Pressionado()){
 			if(mapa.Carregar(nome)){
 				mapa.Inicializar(janela->renderer);
+
 				if(!inimigos.empty()){
 					for(unsigned int i = 0; i < inimigos.size(); i++){
 						inimigos[i]->Finalizar();
@@ -717,6 +864,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 				}
 				inimigos.clear();
 				inisel = 0;
+
 				ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
 				if(mobfile.is_open()){
 					unsigned int id, qtd;
@@ -749,6 +897,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 					}
 					mobfile.close();
 				}
+
 				if(!armadilhas.empty()){
 					for(unsigned int i = 0; i < armadilhas.size(); i++){
 						armadilhas[i]->Finalizar();
@@ -758,6 +907,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 				}
 				armadilhas.clear();
 				armsel = 0;
+
 				ifstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
 				if(armfile.is_open()){
 					unsigned int id, qtd;
@@ -777,6 +927,45 @@ void Editor::Atualizar(Uint32 deltaTime)
 						}
 					}
 					armfile.close();
+				}	
+
+				if(!items.empty()){
+					for(unsigned int i = 0; i < items.size(); i++){
+						items[i]->Finalizar();
+						delete items[i];
+						items[i] = 0;
+					}
+				}
+				items.clear();
+				inisel = 0;
+
+				ifstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+				if(itemfile.is_open()){
+					unsigned int id, id2, qtd;
+					int posX, posY;
+					Atributos atributos;
+					itemfile.read((char*)&qtd, sizeof(unsigned int));
+					for(unsigned int i = 0; i < qtd; i++){
+						itemfile.read((char*)&id, sizeof(unsigned int));
+						itemfile.read((char*)&id2, sizeof(unsigned int));
+						itemfile.read((char*)&posX, sizeof(int));
+						itemfile.read((char*)&posY, sizeof(int));
+						itemfile.read((char*)&atributos, sizeof(Atributos));
+						DropItem* a = 0;
+						Item* b = 0;
+						if(id2 == 5){
+							b = new Consumavel(janela->renderer, nomes[id2], desc[id2], atributos, id);
+						} else {
+							b = new Equipamento(janela->renderer, nomes[id2], desc[id2], atributos, id2, id);
+						}
+						if(b){
+							items.push_back(a = new DropItem(gerenteAtores, b, posX, posY, true));
+							if(a){
+								a->Inicializar();
+							} 
+						}
+					}
+					itemfile.close();
 				}
 			}
 		}

@@ -26,7 +26,7 @@ protected:
 	std::string descricao;
 	Sprite icone, txtnome, txtdesc;
 	Atributos atributos;
-	unsigned int tipo;
+	unsigned int tipo, x, y;
 
 public:
 	Item();
@@ -36,11 +36,12 @@ public:
 
 	std::string PegaNome();
 	std::string PegaDescricao();
-	Atributos PegaAtributos();
+	Atributos& PegaAtributos();
 	unsigned int PegaTipo();
 	Sprite& PegaIcone();
 	Sprite& PegaTxtNome();
 	Sprite& PegaTxtDesc();
+	void PegaXY(unsigned int &_x, unsigned int &_y);
 };
 
 #endif

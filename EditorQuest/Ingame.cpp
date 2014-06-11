@@ -6,6 +6,8 @@
 #include "MenuInicial.h"
 #include "Equipamento.h"
 #include "Armadilha.h"
+#include "DropItem.h"
+#include "Consumavel.h"
 #include <fstream>
 #include <iostream>
 
@@ -16,6 +18,22 @@ void Ingame::Inicializar(Janela* _janela){
 	janela->SetaTitulo("Walachia - Ingame");
 	janela->SetaCorFundo(0, 0, 0);
 
+	string nomes[6];
+	string desc[6];
+
+	nomes[0] = "Arma";
+	nomes[1] = "Capacete";
+	nomes[2] = "Peitoral";
+	nomes[3] = "Calca";
+	nomes[4] = "Botas";
+	nomes[5] = "Pocao";
+
+	desc[0] = "Uma arma";
+	desc[1] = "Um capacete";
+	desc[2] = "Um peitoral";
+	desc[3] = "Uma calca";
+	desc[4] = "Um par de botas";
+	desc[5] = "Uma pocao";
 	mapa.Carregar("teste");
 
 	mapa.Inicializar(janela->renderer);	
@@ -46,15 +64,7 @@ void Ingame::Inicializar(Janela* _janela){
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
-	/*
-	for(int i = 0; i < largura/8; i++){
-		for(int j = 0; j < 7; j++){
-			gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+32.0*j+256*i, (altura-7)*32.0, 0.0, ARMADILHA_ESPINHOS));
-		}
-		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0+48.0, 0.0, ARMADILHA_FLECHA));
-		gerenteAtor.Adicionar(new Armadilha(gerenteAtor, 32.0+256.0*i, (altura-7)*32.0-32.0, 0.0, ARMADILHA_FLECHA));
-	}
-	*/
+
 	ifstream mobfile("resources/maps/teste/mob.equest", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
@@ -102,6 +112,31 @@ void Ingame::Inicializar(Janela* _janela){
 		}
 		armfile.close();
 	}
+	
+	ifstream itemfile("resources/maps/teste/item.equest", ios_base::binary);
+	if(itemfile.is_open()){
+		unsigned int id, id2, qtd;
+		int posX, posY;
+		Atributos atributos;
+		itemfile.read((char*)&qtd, sizeof(unsigned int));
+		for(unsigned int i = 0; i < qtd; i++){
+			itemfile.read((char*)&id, sizeof(unsigned int));
+			itemfile.read((char*)&id2, sizeof(unsigned int));
+			itemfile.read((char*)&posX, sizeof(int));
+			itemfile.read((char*)&posY, sizeof(int));
+			itemfile.read((char*)&atributos, sizeof(Atributos));
+			Item* b = 0;
+			if(id2 == 5){
+				b = new Consumavel(janela->renderer, nomes[id2], desc[id2], atributos, id);
+			} else {
+				b = new Equipamento(janela->renderer, nomes[id2], desc[id2], atributos, id2, id);
+			}
+			if(b){
+				gerenteAtor.Adicionar(new DropItem(gerenteAtor, b, posX, posY, true));
+			}
+		}
+		itemfile.close();
+	}
 
 	Atributos a = jogador->PegaAtributos();
 	status.str("");
@@ -129,7 +164,9 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	SDL_Color cor = {0, 0, 0};
 	Item** inventario;
 	int altura, largura;
-	//printf("%d\t", deltaTime);
+	if(deltaTime != 16 && deltaTime != 17){
+		printf("%d\t", deltaTime);
+	}
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
 

@@ -134,7 +134,6 @@ void Inimigo::Renderizar(SDL_Rect* camera){
 }
 
 void Inimigo::Finalizar(){
-	/*
 	Item* item = 0;
 	Atributos temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	switch (rand()%11)
@@ -147,7 +146,7 @@ void Inimigo::Finalizar(){
 		temp.forca = 5;
 		temp.defesa = 5;
 		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", "resources/espadas/EspadaBastarda.png", temp, EQUIP_ARMA);
+		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", temp, EQUIP_ARMA, 0);
 		break;
 	case 1:
 		temp.hpatual = temp.hp = 100;
@@ -157,7 +156,7 @@ void Inimigo::Finalizar(){
 		temp.forca = 5;
 		temp.defesa = 5;
 		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", "resources/equipamento/cabeca/ElmoDasCruzadas.png", temp, EQUIP_CABECA);
+		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", temp, EQUIP_CABECA, 0);
 		break;
 	case 2:
 		temp.hpatual = temp.hp = 100;
@@ -167,7 +166,7 @@ void Inimigo::Finalizar(){
 		temp.forca = 5;
 		temp.defesa = 5;
 		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", "resources/equipamento/Peito/ArmaduraDeAco.png", temp, EQUIP_TRONCO);
+		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", temp, EQUIP_TRONCO, 0);
 		break;
 	case 3:
 		temp.hpatual = temp.hp = 100;
@@ -177,7 +176,7 @@ void Inimigo::Finalizar(){
 		temp.forca = 5;
 		temp.defesa = 5;
 		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Calca", "Uma calca", "resources/equipamento/pernas/Calca de espinhos.png", temp, EQUIP_PERNAS);
+		item = new Equipamento(gerente.janela->renderer, "Calca", "Uma calca", temp, EQUIP_PERNAS, 0);
 		break;
 	case 4:
 		temp.hpatual = temp.hp = 100;
@@ -187,35 +186,34 @@ void Inimigo::Finalizar(){
 		temp.forca = 5;
 		temp.defesa = 5;
 		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", "resources/equipamento/pes/BotasDeCouro.png", temp, EQUIP_PES);
+		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", temp, EQUIP_PES, 0);
 		break;
 	case 5:
 		temp.hp = 50;
-		item = new Consumavel(gerente.janela->renderer, "Pocao de HP", "Uma pocao de vida", "resources/imgs/php.png", temp, POCAO_HP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao de HP", "Uma pocao de vida", temp, POCAO_HP);
 		break;
 	case 6:
 		temp.mp = 75;
-		item = new Consumavel(gerente.janela->renderer, "Pocao de MP", "Uma pocao de mana", "resources/imgs/pmp.png", temp, POCAO_MP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao de MP", "Uma pocao de mana", temp, POCAO_MP);
 		break;
 	case 7:
 		temp.hp = 50;
 		temp.mp = 50;
-		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida", "Uma pocao de vida e mana", "resources/imgs/phpmp.png", temp, POCAO_HPMP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida", "Uma pocao de vida e mana", temp, POCAO_HPMP);
 		break;
 	case 8:
 		temp.hp = 50;
-		item = new Consumavel(gerente.janela->renderer, "Pocao de HP+", "Uma pocao % de vida", "resources/imgs/php.png", temp, POCAO_RHP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao de HP+", "Uma pocao % de vida", temp, POCAO_RHP);
 		break;
 	case 9:
 		temp.mp = 75;
-		item = new Consumavel(gerente.janela->renderer, "Pocao de MP+", "Uma pocao % de mana", "resources/imgs/pmp.png", temp, POCAO_RMP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao de MP+", "Uma pocao % de mana", temp, POCAO_RMP);
 		break;
 	case 10:
 		temp.hp = 50;
 		temp.mp = 50;
-		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida+", "Uma pocao % de vida e mana", "resources/imgs/phpmp.png", temp, POCAO_RHPMP);
+		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida+", "Uma pocao % de vida e mana", temp, POCAO_RHPMP);
 		break;
 	}
 	gerente.Adicionar(new DropItem(gerente, item, x, y));
-	*/
 }

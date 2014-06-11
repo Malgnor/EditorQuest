@@ -11,7 +11,7 @@ private:
 	unsigned int tipopocao;
 
 public:
-	Consumavel(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int x);
+	Consumavel(SDL_Renderer* renderer, std::string _nome, std::string _descricao, Atributos _atributos, unsigned int _tipo);
 	virtual bool Usar(Jogador* jogador);
 	unsigned int pegaTipoPocao();
 };

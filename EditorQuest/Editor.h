@@ -49,6 +49,8 @@ private:
 	Armadilha* armsel;
 	std::vector<DropItem*> items;
 	DropItem* itemsel;
+	char* nomes[6];
+	char* desc[6];
 
 public:
 	Editor(std::string _nome);

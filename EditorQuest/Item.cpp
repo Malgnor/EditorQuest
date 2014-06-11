@@ -17,8 +17,8 @@ Item::Item()
 	atributos.magia = 0;
 }
 
-Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int x, unsigned int y)
-	: nome(_nome), descricao(_descricao), atributos(_atributos), tipo(_tipo)
+Item::Item(SDL_Renderer* renderer, string _nome, string _descricao, Atributos _atributos, unsigned int _tipo, unsigned int _x, unsigned int _y)
+	: nome(_nome), descricao(_descricao), atributos(_atributos), tipo(_tipo), x(_x), y(_y)
 {
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	SDL_Color cor = {0, 0, 0};
@@ -53,7 +53,7 @@ string Item::PegaDescricao(){
 	return descricao;
 }
 
-Atributos Item::PegaAtributos(){
+Atributos& Item::PegaAtributos(){
 	return atributos;
 }
 
@@ -71,4 +71,9 @@ Sprite& Item::PegaTxtNome(){
 
 Sprite& Item::PegaTxtDesc(){
 	return txtdesc;
+}
+
+void Item::PegaXY(unsigned int &_x, unsigned int &_y){
+	_y = y;
+	_x = x;
 }
