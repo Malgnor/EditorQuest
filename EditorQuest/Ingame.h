@@ -26,6 +26,7 @@ private:
 	std::string perfil, proxMapa, mapatual;
 	Sprite filtro, txtstatus, skills[3], gameover, victory;
 	unsigned int estado, invselecionado;
+	bool extra;
 
 public:
 	Ingame(std::string nome);

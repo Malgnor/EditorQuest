@@ -36,6 +36,9 @@ void Ingame::Inicializar(Janela* _janela){
 	desc[3] = "Uma calca";
 	desc[4] = "Um par de botas";
 	desc[5] = "Uma pocao";	
+
+	extra = true;
+
 	int w, h;
 	janela->PegaTamanho(w, h);
 	camera.x = 0;
@@ -338,11 +341,15 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		break;
 	case ESTADO_WIN:
 		botoes[BOTAO_MENUINICIAL].Atualizar(Mouse);
-		profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
-		if(profile.is_open()){
-			unsigned int size = proxMapa.size()+1;
-			profile.write((char*)&size, sizeof(unsigned int));
-			profile.write((char*)proxMapa.c_str(), size);
+		if(extra){
+			extra = false;
+			gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
+			profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
+			if(profile.is_open()){
+				unsigned int size = proxMapa.size()+1;
+				profile.write((char*)&size, sizeof(unsigned int));
+				profile.write((char*)proxMapa.c_str(), size);
+			}
 		}
 		if(!(proxMapa.size() == 0)){
 			botoes[BOTAO_PROX].Atualizar(Mouse);
@@ -351,11 +358,15 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	case ESTADO_LOSE:
 		botoes[BOTAO_MENUINICIAL].Atualizar(Mouse);
 		botoes[BOTAO_RETRY].Atualizar(Mouse);
-		profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
-		if(profile.is_open()){
-			unsigned int size = mapatual.size()+1;
-			profile.write((char*)&size, sizeof(unsigned int));
-			profile.write((char*)mapatual.c_str(), size);
+		if(extra){
+			extra = false;
+			gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
+			profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
+			if(profile.is_open()){
+				unsigned int size = mapatual.size()+1;
+				profile.write((char*)&size, sizeof(unsigned int));
+				profile.write((char*)mapatual.c_str(), size);
+			}
 		}
 		break;
 	}
