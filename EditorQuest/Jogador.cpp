@@ -7,7 +7,7 @@
 #include "Slash.h"
 #include "Equipamento.h"
 
-Jogador::Jogador(GerenteAtor& _gerente) : Ator(_gerente)
+Jogador::Jogador(GerenteAtor& _gerente, double posX, double posY) : Ator(_gerente), x(posX), y(posY)
 {
 
 }
@@ -125,9 +125,7 @@ void Jogador::ColidiuMapa(cMap* tile, SDL_Rect* colisao){
 }
 
 void Jogador::Inicializar(){
-	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/sprites/vlad.png", 33, 48, 0xff, 0xff, 0xff);
-	x = 160.0;
-	y = 160.0;
+	sprite.CriaTexturaDaImagemC(gerente.janela->renderer, "resources/sprites/vlad.png", 33, 48);
 	andando = false;
 	direcao = 0.0;
 	indicex = indicey = skill = 0;

@@ -115,7 +115,7 @@ void Mapa::Renderizar(SDL_Renderer* renderer, SDL_Rect* camera)
 bool Mapa::Salvar(std::string nome)
 {
 	ofstream out;
-	out.open("resources/maps/"+nome+"/map.equest", std::ios_base::binary);
+	out.open("resources/maps/"+nome+".map", std::ios_base::binary);
 	if(out.is_open())
 	{
 		out.write((char*)&largura,sizeof(unsigned int));
@@ -137,7 +137,7 @@ bool Mapa::Salvar(std::string nome)
 bool Mapa::Carregar(std::string nome)
 {
 	ifstream in;
-	in.open("resources/maps/"+nome+"/map.equest", std::ios_base::binary);
+	in.open("resources/maps/"+nome+".map", std::ios_base::binary);
 	if(in.is_open())
 	{
 		if(mapa){

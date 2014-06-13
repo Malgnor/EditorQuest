@@ -24,7 +24,7 @@ private:
 	bool gm, ghost;
 
 public:
-	Jogador(GerenteAtor& _gerente);
+	Jogador(GerenteAtor& _gerente, double posX, double posY);
 	
 	virtual SDL_Rect PegaBoundingBox();
 

@@ -26,7 +26,7 @@ private:
 		/*INIMIGO*/ BTN_BOSS, BTN_REMOVER, 
 		/*ARMADILHA*/
 		/*ITENS*/ BTN_BAIXO,
-		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_MINUS, BTN_PLUS, BTN_ALTNOME, BTN_GRID, 
+		/*MENU*/ BTN_SAIR, BTN_SALVAR, BTN_CARREGAR, BTN_ALTNOME, BTN_PROXNOME, BTN_GRID, 
 		BTN_MAX};
 	enum {EDIT_MAPA, EDIT_INIMIGOS, EDIT_ARMADILHAS, EDIT_ITENS, EDIT_MENU, EDIT_NONE};
 	enum {/*MAPA*/ STAT_ALTURA, STAT_LARGURA,
@@ -38,11 +38,11 @@ private:
 	StatBtn stats[STAT_MAX];
 	Mapa mapa;
 	SDL_Rect camera;
-	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, selecionado2, scrollSpeed;
-	Sprite tileset, scrollSpd, scrollTxt, nomeMapa, mobset, armset, itemset;
+	int bordaLateral, bordaHorizontal, estadoEditor, selecionado, selecionado2, initX, initY, eInput;
+	Sprite tileset, nomeMapa, nomeprox, mobset, armset, itemset, player;
 	bool grid, input, edit;
 	GerenteAtor gerenteAtores;
-	std::string nome;
+	std::string nome, proxMapa;
 	std::vector<Inimigo*> inimigos;
 	Inimigo* inisel;
 	std::vector<Armadilha*> armadilhas;

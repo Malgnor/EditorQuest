@@ -139,79 +139,79 @@ void Inimigo::Finalizar(){
 	switch (rand()%11)
 	{
 	case 0:
-		temp.hpatual = temp.hp = 100;
-		temp.hpregen = 1;
-		temp.mpatual = temp.mp = 100;
-		temp.mpregen = 2;
-		temp.forca = 5;
-		temp.defesa = 5;
-		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", temp, EQUIP_ARMA, 0);
+		temp.hpatual = temp.hp = rand()%atributos.hp;
+		temp.hpregen = rand()%atributos.hpregen;
+		temp.mpatual = temp.mp = rand()%atributos.mp;
+		temp.mpregen = rand()%atributos.mpregen;
+		temp.forca = rand()%atributos.forca;
+		temp.defesa = rand()%atributos.defesa;
+		temp.magia = rand()%atributos.magia;
+		item = new Equipamento(gerente.janela->renderer, "Arma", "Uma arma", temp, EQUIP_ARMA, rand()%10);
 		break;
 	case 1:
-		temp.hpatual = temp.hp = 100;
-		temp.hpregen = 1;
-		temp.mpatual = temp.mp = 100;
-		temp.mpregen = 2;
-		temp.forca = 5;
-		temp.defesa = 5;
-		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", temp, EQUIP_CABECA, 0);
+		temp.hpatual = temp.hp = rand()%atributos.hp;
+		temp.hpregen = rand()%atributos.hpregen;
+		temp.mpatual = temp.mp = rand()%atributos.mp;
+		temp.mpregen = rand()%atributos.mpregen;
+		temp.forca = rand()%atributos.forca;
+		temp.defesa = rand()%atributos.defesa;
+		temp.magia = rand()%atributos.magia;
+		item = new Equipamento(gerente.janela->renderer, "Capacete", "Um capacete", temp, EQUIP_CABECA, rand()%10);
 		break;
 	case 2:
-		temp.hpatual = temp.hp = 100;
-		temp.hpregen = 1;
-		temp.mpatual = temp.mp = 100;
-		temp.mpregen = 2;
-		temp.forca = 5;
-		temp.defesa = 5;
-		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", temp, EQUIP_TRONCO, 0);
+		temp.hpatual = temp.hp = rand()%atributos.hp;
+		temp.hpregen = rand()%atributos.hpregen;
+		temp.mpatual = temp.mp = rand()%atributos.mp;
+		temp.mpregen = rand()%atributos.mpregen;
+		temp.forca = rand()%atributos.forca;
+		temp.defesa = rand()%atributos.defesa;
+		temp.magia = rand()%atributos.magia;
+		item = new Equipamento(gerente.janela->renderer, "Peitoral", "Um peitoral", temp, EQUIP_TRONCO, rand()%10);
 		break;
 	case 3:
-		temp.hpatual = temp.hp = 100;
-		temp.hpregen = 1;
-		temp.mpatual = temp.mp = 100;
-		temp.mpregen = 2;
-		temp.forca = 5;
-		temp.defesa = 5;
-		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Calca", "Uma calca", temp, EQUIP_PERNAS, 0);
+		temp.hpatual = temp.hp = rand()%atributos.hp;
+		temp.hpregen = rand()%atributos.hpregen;
+		temp.mpatual = temp.mp = rand()%atributos.mp;
+		temp.mpregen = rand()%atributos.mpregen;
+		temp.forca = rand()%atributos.forca;
+		temp.defesa = rand()%atributos.defesa;
+		temp.magia = rand()%atributos.magia;
+		item = new Equipamento(gerente.janela->renderer, "Calca", "Uma calca", temp, EQUIP_PERNAS, rand()%10);
 		break;
 	case 4:
-		temp.hpatual = temp.hp = 100;
-		temp.hpregen = 1;
-		temp.mpatual = temp.mp = 100;
-		temp.mpregen = 2;
-		temp.forca = 5;
-		temp.defesa = 5;
-		temp.magia = 5;
-		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", temp, EQUIP_PES, 0);
+		temp.hpatual = temp.hp = rand()%atributos.hp;
+		temp.hpregen = rand()%atributos.hpregen;
+		temp.mpatual = temp.mp = rand()%atributos.mp;
+		temp.mpregen = rand()%atributos.mpregen;
+		temp.forca = rand()%atributos.forca;
+		temp.defesa = rand()%atributos.defesa;
+		temp.magia = rand()%atributos.magia;
+		item = new Equipamento(gerente.janela->renderer, "Sapatos", "Um Par de sapatos", temp, EQUIP_PES, rand()%10);
 		break;
 	case 5:
-		temp.hp = 50;
+		temp.hp = rand()%atributos.hp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao de HP", "Uma pocao de vida", temp, POCAO_HP);
 		break;
 	case 6:
-		temp.mp = 75;
+		temp.mp = rand()%atributos.mp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao de MP", "Uma pocao de mana", temp, POCAO_MP);
 		break;
 	case 7:
-		temp.hp = 50;
-		temp.mp = 50;
+		temp.hp = rand()%atributos.hp;
+		temp.mp = rand()%atributos.mp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida", "Uma pocao de vida e mana", temp, POCAO_HPMP);
 		break;
 	case 8:
-		temp.hp = 50;
+		temp.hp = rand()%atributos.hp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao de HP+", "Uma pocao % de vida", temp, POCAO_RHP);
 		break;
 	case 9:
-		temp.mp = 75;
+		temp.mp = rand()%atributos.mp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao de MP+", "Uma pocao % de mana", temp, POCAO_RMP);
 		break;
 	case 10:
-		temp.hp = 50;
-		temp.mp = 50;
+		temp.hp = rand()%atributos.hp;
+		temp.mp = rand()%atributos.mp;
 		item = new Consumavel(gerente.janela->renderer, "Pocao Hibrida+", "Uma pocao % de vida e mana", temp, POCAO_RHPMP);
 		break;
 	}

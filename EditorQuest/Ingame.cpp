@@ -13,6 +13,8 @@
 
 using namespace std;
 
+Ingame::Ingame(string nome) : perfil(nome){}
+
 void Ingame::Inicializar(Janela* _janela){
 	janela = _janela;
 	janela->SetaTitulo("Walachia - Ingame");
@@ -33,10 +35,7 @@ void Ingame::Inicializar(Janela* _janela){
 	desc[2] = "Um peitoral";
 	desc[3] = "Uma calca";
 	desc[4] = "Um par de botas";
-	desc[5] = "Uma pocao";
-	mapa.Carregar("teste");
-
-	mapa.Inicializar(janela->renderer);	
+	desc[5] = "Uma pocao";	
 	int w, h;
 	janela->PegaTamanho(w, h);
 	camera.x = 0;
@@ -54,18 +53,47 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_USAR].Inicializar(janela->renderer, "resources/botoes/Usar.png", w/10.0*8.25, h/10.0*8.75);
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "resources/botoes/Remover.png", w/10.0*7.0, h/10.0*8.75);
 	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "resources/botoes/Destruir.png", w/10.0*5.0, h/10.0*8.75);
+	botoes[BOTAO_RETRY].Inicializar(janela->renderer, "resources/botoes/Retry.png", 50, h/10.0*8.75);
+	botoes[BOTAO_PROX].Inicializar(janela->renderer, "resources/botoes/Prox.png", 50, h/10.0*8.75);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/filtro.png");
 	gameover.CriaTexturaDaImagem(janela->renderer, "resources/imgs/gameover.png");
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
 
-	gerenteAtor.Inicializar(janela);
-	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor));
+	ifstream profile("resources/profiles/"+perfil+".player", ios_base::binary);
+	if(profile.is_open()){
+		unsigned int size;
+		profile.read((char*)&size, sizeof(unsigned int));
+		profile.read((char*)mapatual.c_str(), size);
+		mapatual = mapatual.c_str();
+		profile.close();
+	}
+	if(mapatual.size() == 0){
+		mapatual = "num1";
+	}
+	mapa.Carregar(mapatual);
+	mapa.Inicializar(janela->renderer);
 
 	int altura, largura;
 	largura = mapa.PegaDimensaoemTiles().w;
 	altura = mapa.PegaDimensaoemTiles().h;
+	
+	gerenteAtor.Inicializar(janela);
+	int initX, initY;
 
-	ifstream mobfile("resources/maps/teste/mob.equest", ios_base::binary);
+	ifstream headerfile("resources/maps/"+mapatual+".header", ios_base::binary);
+	if(headerfile.is_open()){
+		unsigned int size;
+		headerfile.read((char*)&initX, sizeof(int));
+		headerfile.read((char*)&initY, sizeof(int));
+		headerfile.read((char*)&size, sizeof(unsigned int));
+		headerfile.read((char*)proxMapa.c_str(), size);
+		proxMapa = proxMapa.c_str();
+		headerfile.close();
+	}
+
+	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor, initX, initY));
+
+	ifstream mobfile("resources/maps/"+mapatual+".mob", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
 		int posX, posY;
@@ -96,7 +124,7 @@ void Ingame::Inicializar(Janela* _janela){
 		mobfile.close();
 	}
 
-	ifstream armfile("resources/maps/teste/arm.equest", ios_base::binary);
+	ifstream armfile("resources/maps/"+mapatual+".arm", ios_base::binary);
 	if(armfile.is_open()){
 		unsigned int id, qtd;
 		int posX, posY, dano;
@@ -113,7 +141,7 @@ void Ingame::Inicializar(Janela* _janela){
 		armfile.close();
 	}
 	
-	ifstream itemfile("resources/maps/teste/item.equest", ios_base::binary);
+	ifstream itemfile("resources/maps/"+mapatual+".item", ios_base::binary);
 	if(itemfile.is_open()){
 		unsigned int id, id2, qtd;
 		int posX, posY;
@@ -169,7 +197,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 	}
 	largura = mapa.PegaDimensaoAbsoluta().w;
 	altura = mapa.PegaDimensaoAbsoluta().h;
-
+	ofstream profile;
 	switch(estado)
 	{
 	case ESTADO_INGAME:
@@ -309,8 +337,26 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			estado = ESTADO_PAUSADO;
 		break;
 	case ESTADO_WIN:
+		botoes[BOTAO_MENUINICIAL].Atualizar(Mouse);
+		profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
+		if(profile.is_open()){
+			unsigned int size = proxMapa.size()+1;
+			profile.write((char*)&size, sizeof(unsigned int));
+			profile.write((char*)proxMapa.c_str(), size);
+		}
+		if(!(proxMapa.size() == 0)){
+			botoes[BOTAO_PROX].Atualizar(Mouse);
+		}
+		break;
 	case ESTADO_LOSE:
 		botoes[BOTAO_MENUINICIAL].Atualizar(Mouse);
+		botoes[BOTAO_RETRY].Atualizar(Mouse);
+		profile.open("resources/profiles/"+perfil+".player", ios_base::binary);
+		if(profile.is_open()){
+			unsigned int size = mapatual.size()+1;
+			profile.write((char*)&size, sizeof(unsigned int));
+			profile.write((char*)mapatual.c_str(), size);
+		}
 		break;
 	}
 }
@@ -426,10 +472,14 @@ void Ingame::Renderizar(){
 	case ESTADO_LOSE:
 		gameover.Renderizar(janela->renderer, (800.0-(double)gameover.PegaDimensao().w)/2.0, 50.0);
 		botoes[BOTAO_MENUINICIAL].Renderizar(janela->renderer);
+		botoes[BOTAO_RETRY].Renderizar(janela->renderer);
 		break;
 	case ESTADO_WIN:
 		victory.Renderizar(janela->renderer, (800.0-(double)gameover.PegaDimensao().w)/2.0, 50.0);
-		botoes[BOTAO_MENUINICIAL].Renderizar(janela->renderer);
+		botoes[BOTAO_MENUINICIAL].Renderizar(janela->renderer);		
+		if(!(proxMapa.size() == 0)){
+			botoes[BOTAO_PROX].Renderizar(janela->renderer);
+		}
 		break;
 	}
 }
@@ -441,6 +491,8 @@ void Ingame::Finalizar(){
 Tela* Ingame::ProximaTela(){
 	if(PegaTecla()[KB_ENCERRA].pressionado || botoes[BOTAO_SAIR].Pressionado())
 		return 0;
+	if(botoes[BOTAO_PROX].Pressionado() || botoes[BOTAO_RETRY].Pressionado())
+		return new Ingame(perfil);
 	if(botoes[BOTAO_MENUINICIAL].Pressionado())
 		return new MenuInicial();
 	return this;

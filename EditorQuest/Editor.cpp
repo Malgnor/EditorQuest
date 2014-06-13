@@ -24,12 +24,13 @@ void Editor::Inicializar(Janela* _janela)
 	bordaHorizontal = 60;
 	bordaLateral = 150;
 	estadoEditor = EDIT_NONE;
-	selecionado = selecionado2 = 0;
-	scrollSpeed = 32;
+	selecionado = selecionado2 = eInput = 0;
 	grid = input = edit = false;
 	inisel = 0;
 	armsel = 0;
 	itemsel = 0;
+
+	initX = initY = -100;
 
 	nomes[0] = "Arma";
 	nomes[1] = "Capacete";
@@ -51,8 +52,18 @@ void Editor::Inicializar(Janela* _janela)
 	
 	mapa.Carregar(nome);
 	mapa.Inicializar(janela->renderer);
+	ifstream headerfile("resources/maps/"+nome+".header", ios_base::binary);
+	if(headerfile.is_open()){
+		unsigned int size;
+		headerfile.read((char*)&initX, sizeof(int));
+		headerfile.read((char*)&initY, sizeof(int));
+		headerfile.read((char*)&size, sizeof(unsigned int));
+		headerfile.read((char*)proxMapa.c_str(), size);
+		proxMapa = proxMapa.c_str();
+		headerfile.close();
+	}
 
-	ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+	ifstream mobfile("resources/maps/"+nome+".mob", ios_base::binary);
 	if(mobfile.is_open()){
 		unsigned int id, qtd;
 		int posX, posY;
@@ -85,7 +96,7 @@ void Editor::Inicializar(Janela* _janela)
 		mobfile.close();
 	}
 
-	ifstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+	ifstream armfile("resources/maps/"+nome+".arm", ios_base::binary);
 	if(armfile.is_open()){
 		unsigned int id, qtd;
 		int posX, posY, dano;
@@ -106,7 +117,7 @@ void Editor::Inicializar(Janela* _janela)
 		armfile.close();
 	}
 
-	ifstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+	ifstream itemfile("resources/maps/"+nome+".item", ios_base::binary);
 	if(itemfile.is_open()){
 		unsigned int id, id2, qtd;
 		int posX, posY;
@@ -139,14 +150,14 @@ void Editor::Inicializar(Janela* _janela)
 	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
 	armset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/armset.png", 32);
 	itemset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/itemset.png", 32, 32);
+	player.CriaTexturaDaImagemC(janela->renderer, "resources/sprites/vlad.png", 33, 48);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);
 	SDL_Color cor = {0, 0, 0};
 	SDL_Color cor2 = {255, 255, 255};
-	scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte, cor2);
-	scrollTxt.CriaTexturaDoTexto(janela->renderer, "Scroll Speed", fonteS, cor2);
 	nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonteS, cor2);
+	nomeprox.CriaTexturaDoTexto(janela->renderer, proxMapa.c_str(), fonteS, cor2);
 	botoes[BTN_MAPA].Inicializar(janela->renderer, "Tile", fonte, cor);
 	botoes[BTN_INIMIGOS].Inicializar(janela->renderer, "Inimigo", fonte, cor);
 	botoes[BTN_ARMADILHAS].Inicializar(janela->renderer, "Armadilha", fonte, cor);
@@ -159,12 +170,11 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_REMOVER].Inicializar(janela->renderer, "Remover", fonteS, cor);
 	botoes[BTN_BAIXO].Inicializar(janela->renderer, "\\/", fonteS, cor);
 	botoes[BTN_SAIR].Inicializar(janela->renderer, "Sair", fonte, cor);
-	botoes[BTN_MINUS].Inicializar(janela->renderer, "-", fonte, cor);
-	botoes[BTN_PLUS].Inicializar(janela->renderer, "+", fonte, cor);
 	botoes[BTN_SALVAR].Inicializar(janela->renderer, "Salvar", fonte, cor);
 	botoes[BTN_CARREGAR].Inicializar(janela->renderer, "Carregar", fonteS, cor);
 	botoes[BTN_GRID].Inicializar(janela->renderer, "Grid", fonte, cor);
 	botoes[BTN_ALTNOME].Inicializar(janela->renderer, "Alterar nome", fonte2, cor);
+	botoes[BTN_PROXNOME].Inicializar(janela->renderer, "Proximo mapa", fonte2, cor);
 	int px = 800;
 	for(int i = EDIT_NONE; i > 0; i--){
 		px -= 10+botoes[i-1].PegaDimensao().w;
@@ -185,8 +195,7 @@ void Editor::Inicializar(Janela* _janela)
 	botoes[BTN_CARREGAR].SetaPosicao((bordaLateral-botoes[BTN_CARREGAR].PegaDimensao().w)/2, 450);
 	botoes[BTN_GRID].SetaPosicao((bordaLateral-botoes[BTN_GRID].PegaDimensao().w)/2, 300);
 	botoes[BTN_ALTNOME].SetaPosicao((bordaLateral-botoes[BTN_ALTNOME].PegaDimensao().w)/2, bordaHorizontal+35);
-	botoes[BTN_MINUS].SetaPosicao(5, 200);
-	botoes[BTN_PLUS].SetaPosicao(bordaLateral-5-botoes[BTN_PLUS].PegaDimensao().w, 200);
+	botoes[BTN_PROXNOME].SetaPosicao((bordaLateral-botoes[BTN_PROXNOME].PegaDimensao().w)/2, bordaHorizontal+100);
 	
 	stats[STAT_LARGURA].botao.Inicializar(janela->renderer, "Largura", fonteS, cor);
 	stats[STAT_LARGURA].data = mapa.PegaDimensaoemTiles().w;
@@ -344,9 +353,9 @@ void Editor::Atualizar(Uint32 deltaTime)
 	if(!input){
 		if(camera.w < largura){
 			if(tecla[KB_DIREITA].pressionado || (mouse->wx > 0 && tecla[KB_LCONTROL].ativo) || (mouse->x > 600 && tecla[KB_LALT].ativo))
-				camera.x+= scrollSpeed;
+				camera.x+= 32;
 			else if(tecla[KB_ESQUERDA].pressionado || (mouse->wx < 0 && tecla[KB_LCONTROL].ativo) || (mouse->x < 300 && tecla[KB_LALT].ativo))
-				camera.x-= scrollSpeed;
+				camera.x-= 32;
 			if(camera.x < -bordaLateral)
 				camera.x = -bordaLateral;
 			else if(camera.x > largura-camera.w-bordaLateral)
@@ -357,9 +366,9 @@ void Editor::Atualizar(Uint32 deltaTime)
 
 		if(altura > camera.h){
 			if(tecla[KB_BAIXO].pressionado || (mouse->wy < 0 && tecla[KB_LCONTROL].ativo) || (mouse->y > 400 && tecla[KB_LALT].ativo))
-				camera.y+= scrollSpeed;
+				camera.y+= 32;
 			else if(tecla[KB_CIMA].pressionado || (mouse->wy > 0 && tecla[KB_LCONTROL].ativo) || (mouse->y < 300 && tecla[KB_LALT].ativo))
-				camera.y-= scrollSpeed;
+				camera.y-= 32;
 			if(camera.y < -bordaHorizontal)
 				camera.y = -bordaHorizontal;
 			else if(camera.y > altura-camera.h-bordaHorizontal)
@@ -771,23 +780,29 @@ void Editor::Atualizar(Uint32 deltaTime)
 		botoes[BTN_SALVAR].Atualizar(mouse);
 		botoes[BTN_CARREGAR].Atualizar(mouse);
 		botoes[BTN_SAIR].Atualizar(mouse);
-		botoes[BTN_MINUS].Atualizar(mouse);
-		botoes[BTN_PLUS].Atualizar(mouse);
 		botoes[BTN_ALTNOME].Atualizar(mouse);
+		botoes[BTN_PROXNOME].Atualizar(mouse);
 		botoes[BTN_GRID].Atualizar(mouse);
-		if(botoes[BTN_MINUS].Pressed() && scrollSpeed > 1){
-			scrollSpeed--;
-			scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte2, cor);
 
+		if(mouse->botoes[M_ESQUERDO].pressionado && mouse->x >= bordaLateral && mouse->y >= bordaHorizontal && mouse->x+camera.x <= largura && mouse->y+camera.y <= altura){
+			initX = (mouse->x+camera.x);
+			initY = (mouse->y+camera.y);
 		}
-		if(botoes[BTN_PLUS].Pressed() && scrollSpeed < 99){
-			scrollSpeed++;
-			scrollSpd.CriaTexturaDoTexto(janela->renderer, to_string(scrollSpeed).c_str(), fonte2, cor);
-		}
+
 		if(botoes[BTN_SALVAR].Pressionado()){
 			mapa.Salvar(nome);
+			ofstream headerfile("resources/maps/"+nome+".header", ios_base::binary);
+			if(headerfile.is_open()){
+				headerfile.write((char*)&initX, sizeof(int));
+				headerfile.write((char*)&initY, sizeof(int));
+				unsigned int size = proxMapa.size()+1;
+				headerfile.write((char*)&size, sizeof(unsigned int));
+				headerfile.write((char*)proxMapa.c_str(), size);
+				headerfile.close();
+			}			
+
 			if(!inimigos.empty()){
-				ofstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+				ofstream mobfile("resources/maps/"+nome+".mob", ios_base::binary);
 				if(mobfile.is_open()){
 					unsigned int id, qtd;
 					int posX, posY;
@@ -807,7 +822,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 			}
 
 			if(!armadilhas.empty()){
-				ofstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+				ofstream armfile("resources/maps/"+nome+".arm", ios_base::binary);
 				if(armfile.is_open()){
 					unsigned int id, qtd;
 					int posX, posY, dano;
@@ -831,7 +846,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 			}
 
 			if(!items.empty()){
-				ofstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+				ofstream itemfile("resources/maps/"+nome+".item", ios_base::binary);
 				if(itemfile.is_open()){
 					unsigned int id, id2, qtd;
 					int posX, posY;
@@ -855,6 +870,18 @@ void Editor::Atualizar(Uint32 deltaTime)
 			if(mapa.Carregar(nome)){
 				mapa.Inicializar(janela->renderer);
 
+				ifstream headerfile("resources/maps/"+nome+".header", ios_base::binary);
+				if(headerfile.is_open()){
+					int size;
+					headerfile.read((char*)&initX, sizeof(int));
+					headerfile.read((char*)&initY, sizeof(int));
+					headerfile.read((char*)&size, sizeof(int));
+					headerfile.read((char*)proxMapa.c_str(), size);
+					proxMapa = proxMapa.c_str();
+					nomeprox.CriaTexturaDoTexto(janela->renderer, proxMapa.c_str(), fonte, cor);
+					headerfile.close();
+				}
+
 				if(!inimigos.empty()){
 					for(unsigned int i = 0; i < inimigos.size(); i++){
 						inimigos[i]->Finalizar();
@@ -865,7 +892,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 				inimigos.clear();
 				inisel = 0;
 
-				ifstream mobfile("resources/maps/"+nome+"/mob.equest", ios_base::binary);
+				ifstream mobfile("resources/maps/"+nome+".mob", ios_base::binary);
 				if(mobfile.is_open()){
 					unsigned int id, qtd;
 					int posX, posY;
@@ -908,7 +935,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 				armadilhas.clear();
 				armsel = 0;
 
-				ifstream armfile("resources/maps/"+nome+"/arm.equest", ios_base::binary);
+				ifstream armfile("resources/maps/"+nome+".arm", ios_base::binary);
 				if(armfile.is_open()){
 					unsigned int id, qtd;
 					int posX, posY, dano;
@@ -939,7 +966,7 @@ void Editor::Atualizar(Uint32 deltaTime)
 				items.clear();
 				inisel = 0;
 
-				ifstream itemfile("resources/maps/"+nome+"/item.equest", ios_base::binary);
+				ifstream itemfile("resources/maps/"+nome+".item", ios_base::binary);
 				if(itemfile.is_open()){
 					unsigned int id, id2, qtd;
 					int posX, posY;
@@ -972,10 +999,23 @@ void Editor::Atualizar(Uint32 deltaTime)
 		if(botoes[BTN_GRID].Pressionado()){
 			grid = !grid;
 		}
-		if(botoes[BTN_ALTNOME].Pressionado()){
+		if(botoes[BTN_ALTNOME].Pressionado() && eInput != 2){
 			input = janela->entrada.toggleInputTexto();
-			if(!input)
+			if(!input){
+				eInput = 0;
 				nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor);
+			}
+			else
+				eInput = 1;
+		}
+		if(botoes[BTN_PROXNOME].Pressionado() && eInput != 1){
+			input = janela->entrada.toggleInputTexto();
+			if(!input){
+				nomeprox.CriaTexturaDoTexto(janela->renderer, proxMapa.c_str(), fonte, cor);
+				eInput = 0;
+			}
+			else
+				eInput = 2;
 		}
 		break;
 	case EDIT_NONE:
@@ -983,8 +1023,13 @@ void Editor::Atualizar(Uint32 deltaTime)
 	}
 	
 	if(janela->entrada.textoUpdate()){
-		nome = janela->entrada.pegaTexto();
-		nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
+		if(eInput == 1){
+			nome = janela->entrada.pegaTexto();
+			nomeMapa.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
+		} else if(eInput == 2){			
+			proxMapa = janela->entrada.pegaTexto();
+			nomeprox.CriaTexturaDoTexto(janela->renderer, proxMapa.c_str(), fonte, cor2);
+		}
 	}
 	TTF_CloseFont(fonte);
 	TTF_CloseFont(fonte2);
@@ -997,8 +1042,11 @@ void Editor::Renderizar()
 	int a;
 	int offX = (camera.x+bordaLateral)%32;
 	int offY = (camera.y+bordaHorizontal)%32;
+
 	mapa.Renderizar(janela->renderer, &camera);
 	
+	player.Renderizar(janela->renderer, initX-camera.x, initY-camera.y);
+
 	if(!inimigos.empty()){
 		for(unsigned int i = 0; i < inimigos.size(); i++){
 			inimigos[i]->Renderizar(&camera);
@@ -1134,12 +1182,10 @@ void Editor::Renderizar()
 		botoes[BTN_SALVAR].Renderizar(janela->renderer);
 		botoes[BTN_CARREGAR].Renderizar(janela->renderer);
 		botoes[BTN_SAIR].Renderizar(janela->renderer);
-		botoes[BTN_MINUS].Renderizar(janela->renderer);
-		botoes[BTN_PLUS].Renderizar(janela->renderer);
 		botoes[BTN_ALTNOME].Renderizar(janela->renderer);
+		botoes[BTN_PROXNOME].Renderizar(janela->renderer);
 		botoes[BTN_GRID].Renderizar(janela->renderer);
-		scrollSpd.Renderizar(janela->renderer, (bordaLateral-scrollSpd.PegaDimensao().w)/2, 204);
-		scrollTxt.Renderizar(janela->renderer, (bordaLateral-scrollTxt.PegaDimensao().w)/2, 170);
+		nomeprox.Renderizar(janela->renderer, (bordaLateral-nomeprox.PegaDimensao().w)/2, bordaHorizontal + 75);
 		break;
 	case EDIT_NONE:
 		break;

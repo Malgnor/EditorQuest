@@ -25,31 +25,42 @@ void MenuInicial::Inicializar(Janela* _janela){
 	}
 	mapa.Inicializar(janela->renderer);
 
-	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
-	SDL_Color cor = {0, 0, 0};
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
+	cor.r = cor.g = cor.b = 0;
 	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", w/2.0-71.0, h/10.0*4.0);
 	sair.Inicializar(janela->renderer, "resources/botoes/Sair do jogo.png", w/2.0-131.0, h/10.0*8.0);
+	altnome.Inicializar(janela->renderer, "Alterar nome", 0, 575, fonte, cor);
 	titulo.CriaTexturaDaImagem(janela->renderer, "resources/imgs/Walachia.png");
 	portal.CriaTexturaDaImagem(janela->renderer, "resources/imgs/portal.png", 122);
-	TTF_CloseFont(fonte);
 	indice = 0;
+	nome = "Default";
+	nomespr.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor);
 	time = 0;
 	resolucao = false;
 	editor = false;
 	for(int i = 0; i < 6; i++)
 		code[i] = false;
+	janela->entrada.SetaTamanhoTexto(10);
+	input = false;
 }
 
 void MenuInicial::Atualizar(Uint32 deltaTime){
 	KB_Botao* Teclas = PegaTecla();
 	M_Mouse* Mouse = PegaMouse();
+	SDL_Color cor2 = {255, 0, 0};
 	time += deltaTime;
 	if(time >= 125){
 		time -= 125;
 		indice = (indice+1)%4;
 	}
+	altnome.Atualizar(Mouse);
 	jogar.Atualizar(Mouse);
 	sair.Atualizar(Mouse);
+	if(altnome.Pressionado()){
+			input = janela->entrada.toggleInputTexto();
+			if(!input)
+				nomespr.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor);
+		}
 	if (Teclas[KB_1].pressionado)
 	{
 		janela->ModoJanela();
@@ -89,12 +100,15 @@ void MenuInicial::Atualizar(Uint32 deltaTime){
 	if(c == 6 && !editor)
 	{
 		editor = true;
-		new Janela(new Editor("teste"), janela->jGerente);
+		new Janela(new Editor("num1"), janela->jGerente);
 		janela->ModoJanela();
 		janela->SetaTamanho(800, 600);
 		resolucao = true;
 	} 
-
+	if(janela->entrada.textoUpdate()){
+		nome = janela->entrada.pegaTexto();
+		nomespr.CriaTexturaDoTexto(janela->renderer, nome.c_str(), fonte, cor2);
+	}
 }
 
 void MenuInicial::Renderizar(){
@@ -105,16 +119,19 @@ void MenuInicial::Renderizar(){
 	portal.Renderizar(janela->renderer, ((w-(double)portal.PegaDimensao().w)/2.0), h/1.9, indice);
 	jogar.Renderizar(janela->renderer);
 	sair.Renderizar(janela->renderer);
+	altnome.Renderizar(janela->renderer);
+	nomespr.Renderizar(janela->renderer, 0, 560);
 }
 
 void MenuInicial::Finalizar(){
+	TTF_CloseFont(fonte);
 }
 
 Tela* MenuInicial::ProximaTela(){
 	if(PegaTecla()[KB_ENCERRA].pressionado || sair.Pressionado())
 		return 0;
 	if(jogar.Pressionado())
-		return new Ingame();
+		return new Ingame(nome);
 	if (resolucao)
 		return new MenuInicial();	
 	return this;
