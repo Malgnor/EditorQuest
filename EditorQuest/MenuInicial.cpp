@@ -25,11 +25,11 @@ void MenuInicial::Inicializar(Janela* _janela){
 	}
 	mapa.Inicializar(janela->renderer);
 
-	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 16);
+	fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	cor.r = cor.g = cor.b = 0;
 	jogar.Inicializar(janela->renderer, "resources/botoes/Jogar.png", w/2.0-71.0, h/10.0*4.0);
 	sair.Inicializar(janela->renderer, "resources/botoes/Sair do jogo.png", w/2.0-131.0, h/10.0*8.0);
-	altnome.Inicializar(janela->renderer, "Alterar nome", 0, 575, fonte, cor);
+	altnome.Inicializar(janela->renderer, "resources/botoes/alt.png", 0, 540, fonte, cor);
 	titulo.CriaTexturaDaImagem(janela->renderer, "resources/imgs/Walachia.png");
 	portal.CriaTexturaDaImagem(janela->renderer, "resources/imgs/portal.png", 122);
 	indice = 0;
@@ -120,7 +120,7 @@ void MenuInicial::Renderizar(){
 	jogar.Renderizar(janela->renderer);
 	sair.Renderizar(janela->renderer);
 	altnome.Renderizar(janela->renderer);
-	nomespr.Renderizar(janela->renderer, 0, 560);
+	nomespr.Renderizar(janela->renderer, (altnome.PegaDimensao().w-nomespr.PegaDimensao().w)/2, 515);
 }
 
 void MenuInicial::Finalizar(){

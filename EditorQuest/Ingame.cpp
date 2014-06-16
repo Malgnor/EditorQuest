@@ -56,8 +56,8 @@ void Ingame::Inicializar(Janela* _janela){
 	botoes[BOTAO_USAR].Inicializar(janela->renderer, "resources/botoes/Usar.png", w/10.0*8.25, h/10.0*8.75);
 	botoes[BOTAO_USAR2].Inicializar(janela->renderer, "resources/botoes/Remover.png", w/10.0*7.0, h/10.0*8.75);
 	botoes[BOTAO_DESTRUIR].Inicializar(janela->renderer, "resources/botoes/Destruir.png", w/10.0*5.0, h/10.0*8.75);
-	botoes[BOTAO_RETRY].Inicializar(janela->renderer, "resources/botoes/Retry.png", 50, h/10.0*8.75);
-	botoes[BOTAO_PROX].Inicializar(janela->renderer, "resources/botoes/Prox.png", 50, h/10.0*8.75);
+	botoes[BOTAO_RETRY].Inicializar(janela->renderer, "resources/botoes/Retry.png", 50, h/10.0*7.75);
+	botoes[BOTAO_PROX].Inicializar(janela->renderer, "resources/botoes/Prox.png", 50, h/10.0*7.75);
 	filtro.CriaTexturaDaImagem(janela->renderer, "resources/imgs/filtro.png");
 	gameover.CriaTexturaDaImagem(janela->renderer, "resources/imgs/gameover.png");
 	victory.CriaTexturaDaImagem(janela->renderer, "resources/imgs/vitoria.png");
@@ -95,6 +95,34 @@ void Ingame::Inicializar(Janela* _janela){
 	}
 
 	gerenteAtor.Adicionar(jogador = new Jogador(gerenteAtor, initX, initY));
+
+	ifstream inv("resources/profiles/"+perfil+".inv", ios_base::binary);
+	if(inv.is_open()){
+		Item** inventario = jogador->PegaInventario();
+		Equipamento** equip = jogador->PegaEquipamentos();
+		Atributos atributos;
+		unsigned int id, id2;
+		int slot;
+		while(true){
+			inv.read((char*)&slot, sizeof(int));
+			if(slot < 0){
+				break;
+			}
+			inv.read((char*)&id, sizeof(unsigned int));
+			inv.read((char*)&id2, sizeof(unsigned int));
+			inv.read((char*)&atributos, sizeof(Atributos));
+			if(slot < 10){
+				if(id2 == 5){
+					inventario[slot] = new Consumavel(janela->renderer, nomes[id2], desc[id2], atributos, id);
+				} else {
+					inventario[slot] = new Equipamento(janela->renderer, nomes[id2], desc[id2], atributos, id2, id);
+				}
+			} else {
+				equip[slot-10] = new Equipamento(janela->renderer, nomes[id2], desc[id2], atributos, id2, id);
+			}
+		}
+		inv.close();
+	}
 
 	ifstream mobfile("resources/maps/"+mapatual+".mob", ios_base::binary);
 	if(mobfile.is_open()){
@@ -227,7 +255,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 		gerenteAtor.Atualizar(deltaTime, &mapa, &camera);
 		
 		if(janela->entrada.pegaTexto() == "reload"){
-			mapa.Carregar("teste");
+			mapa.Carregar(mapatual);
 			mapa.Inicializar(janela->renderer);
 			janela->entrada.toggleInputTexto();
 			janela->entrada.toggleInputTexto();
@@ -256,7 +284,7 @@ void Ingame::Atualizar(Uint32 deltaTime){
 			estado = ESTADO_WIN;
 		break;
 	case ESTADO_PAUSADO:
-		for(int i = 0; i < BOTAO_QTD; i++)
+		for(int i = 0; i < BOTAO_QTD-2; i++)
 			botoes[i].Atualizar(Mouse);				
 		newstatus.str("");
 		newstatus << "HP/HPMax = " << a.hpatual << "/" << a.hp
@@ -349,6 +377,37 @@ void Ingame::Atualizar(Uint32 deltaTime){
 				unsigned int size = proxMapa.size()+1;
 				profile.write((char*)&size, sizeof(unsigned int));
 				profile.write((char*)proxMapa.c_str(), size);
+				profile.close();
+			}
+			profile.open("resources/profiles/"+perfil+".inv", ios_base::binary);
+			if(profile.is_open()){
+				Item** inventario = jogador->PegaInventario();
+				Equipamento** equip = jogador->PegaEquipamentos();
+				unsigned int id, id2;
+				int slot;
+				for(int i = 0; i < 10; i++){
+					if(inventario[i]){
+						slot = i;
+						inventario[i]->PegaXY(id, id2);						
+						profile.write((char*)&slot, sizeof(int));					
+						profile.write((char*)&id, sizeof(unsigned int));
+						profile.write((char*)&id2, sizeof(unsigned int));
+						profile.write((char*)&inventario[i]->PegaAtributos(), sizeof(Atributos));
+					}
+				}
+				for(int i = 10; i < 15; i++){
+					if(equip[i-10]){
+						slot = i;
+						equip[i-10]->PegaXY(id, id2);						
+						profile.write((char*)&slot, sizeof(int));					
+						profile.write((char*)&id, sizeof(unsigned int));
+						profile.write((char*)&id2, sizeof(unsigned int));
+						profile.write((char*)&equip[i-10]->PegaAtributos(), sizeof(Atributos));
+					}
+				}
+				slot = -1;
+				profile.write((char*)&slot, sizeof(int));					
+				profile.close();
 			}
 		}
 		if(!(proxMapa.size() == 0)){
@@ -366,6 +425,37 @@ void Ingame::Atualizar(Uint32 deltaTime){
 				unsigned int size = mapatual.size()+1;
 				profile.write((char*)&size, sizeof(unsigned int));
 				profile.write((char*)mapatual.c_str(), size);
+				profile.close();
+			}
+			profile.open("resources/profiles/"+perfil+".inv", ios_base::binary);
+			if(profile.is_open()){
+				Item** inventario = jogador->PegaInventario();
+				Equipamento** equip = jogador->PegaEquipamentos();
+				unsigned int id, id2;
+				int slot;
+				for(int i = 0; i < 10; i++){
+					if(inventario[i]){
+						slot = i;
+						inventario[i]->PegaXY(id, id2);						
+						profile.write((char*)&slot, sizeof(int));					
+						profile.write((char*)&id, sizeof(unsigned int));
+						profile.write((char*)&id2, sizeof(unsigned int));
+						profile.write((char*)&inventario[i]->PegaAtributos(), sizeof(Atributos));
+					}
+				}
+				for(int i = 10; i < 15; i++){
+					if(equip[i-10]){
+						slot = i;
+						equip[i-10]->PegaXY(id, id2);						
+						profile.write((char*)&slot, sizeof(int));					
+						profile.write((char*)&id, sizeof(unsigned int));
+						profile.write((char*)&id2, sizeof(unsigned int));
+						profile.write((char*)&equip[i-10]->PegaAtributos(), sizeof(Atributos));
+					}
+				}
+				slot = -1;
+				profile.write((char*)&slot, sizeof(int));					
+				profile.close();
 			}
 		}
 		break;

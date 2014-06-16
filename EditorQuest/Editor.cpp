@@ -149,8 +149,8 @@ void Editor::Inicializar(Janela* _janela)
 	tileset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/tileset.png", 32);
 	mobset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/mobset.png", 32);
 	armset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/armset.png", 32);
-	itemset.CriaTexturaDaImagem(janela->renderer, "resources/imgs/itemset.png", 32, 32);
-	player.CriaTexturaDaImagemC(janela->renderer, "resources/sprites/vlad.png", 33, 48);
+	itemset.CriaTexturaDaImagemC(janela->renderer, "resources/imgs/itemset.png", 32, 32, 255, 255, 255);
+	player.CriaTexturaDaImagem(janela->renderer, "resources/sprites/vlad.png", 33, 48);
 	TTF_Font* fonte = TTF_OpenFont("resources/fonts/pix.ttf", 32);
 	TTF_Font* fonteS = TTF_OpenFont("resources/fonts/pix.ttf", 22);
 	TTF_Font* fonte2 = TTF_OpenFont("resources/fonts/pix.ttf", 16);

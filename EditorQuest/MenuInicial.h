@@ -10,8 +10,7 @@ class Editor;
 
 class MenuInicial : public Tela{
 private:
-	BotaoPersonalizado jogar, sair;
-	Botao altnome;
+	BotaoPersonalizado jogar, sair, altnome;
 	Mapa mapa;
 	Sprite titulo, portal, nomespr;
 	std::string nome;
